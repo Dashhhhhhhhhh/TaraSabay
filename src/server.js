@@ -9,8 +9,16 @@ app.use(express.json());
 const authRoutes = require("./modules/auth/auth.routes");
 const driverRoutes = require("./modules/driver_profiles/driver.routes");
 
+
 app.use("/auth", authRoutes);
 app.use("/driver", driverRoutes);
+=======
+const rideOfferRoutes = require("./modules/ride_offers/ride_offers.routes");
+
+app.use("/auth", authRoutes);
+app.use("/driver", driverRoutes);
+app.use("/offer", rideOfferRoutes);
+>>>>>>> ab147cb (Initial TaraSabay backend setup with auth, driver profiles, and ride offers)
 
 app.get("/test-route", (req, res) => {
   res.json({
