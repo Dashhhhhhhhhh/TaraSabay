@@ -2,6 +2,12 @@ function cleanName(str) {
   return str ? str.trim().replace(/\s+/g, " ") : null;
 }
 
+function cleanString(str) {
+  if (!str) return null;
+  const normalized = str.trim();
+  return normalized.length > 0 ? normalized : null;
+}
+
 function normalizeMiddleInitial(str) {
   if (!str) return null;
   const cleaned = str.trim();
@@ -35,6 +41,7 @@ function isInteger(value) {
 
 module.exports = {
   cleanName,
+  cleanString,
   normalizeEmail,
   normalizeMiddleInitial,
   validateContactNumber,

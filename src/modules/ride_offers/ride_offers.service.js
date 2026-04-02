@@ -8,12 +8,7 @@ const {
 } = require("./ride_offers.repository");
 
 const { isValidUUID } = require("./../../utils/security");
-const { cleanName } = require("./../../utils/helper");
-function cleanLocation(str) {
-  if (!str) return null;
-  const normalized = str.trim();
-  return normalized.length > 0 ? normalized : null;
-}
+const { cleanName, cleanString } = require("./../../utils/helper");
 
 async function createRideOfferService(offerData) {
   const {
@@ -27,8 +22,8 @@ async function createRideOfferService(offerData) {
     notes,
   } = offerData;
 
-  const pickupLocation = cleanLocation(pickup_location);
-  const dropofflocation = cleanLocation(dropoff_location);
+  const pickupLocation = cleanString(pickup_location);
+  const dropofflocation = cleanString(dropoff_location);
 
   if (!user_id || !pickupLocation || !dropofflocation || !departure_time) {
     return {

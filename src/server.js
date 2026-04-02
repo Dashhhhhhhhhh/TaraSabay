@@ -14,11 +14,17 @@ app.use("/auth", authRoutes);
 app.use("/driver", driverRoutes);
 =======
 const rideOfferRoutes = require("./modules/ride_offers/ride_offers.routes");
+const offerRequestRoutes = require("./modules/offer_requests/offer_requests.routes");
 
 app.use("/auth", authRoutes);
 app.use("/driver", driverRoutes);
+
 app.use("/offer", rideOfferRoutes);
->>>>>>> ab147cb (Initial TaraSabay backend setup with auth, driver profiles, and ride offers)
+
+=======
+app.use("/ride-offer", rideOfferRoutes);
+app.use("/offer-request", offerRequestRoutes);
+
 
 app.get("/test-route", (req, res) => {
   res.json({

@@ -30,10 +30,10 @@ async function createDriverProfileController(req, res) {
     }
     return res.status(201).json(result);
   } catch (error) {
-    console.error("Error creating driver profile:", error);
+    console.error("Error creating ride offer:", error);
     return res.status(500).json({
       success: false,
-      message: "Internal server error during login",
+      message: "Internal server error during creating ride offer",
     });
   }
 }
