@@ -1,6 +1,10 @@
 const {
   findDriverProfileByUserId,
   createRiderOffer,
+  findRideOfferWithDriverInfoByiD,
+  getAllRideOffers,
+  updateRideOffer,
+  cancelRideOffer,
 } = require("./ride_offers.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -132,4 +136,180 @@ async function createRideOfferService(offerData) {
   };
 }
 
-module.exports = { createRideOfferService };
+async function findRideOfferWithDriverInfoByiDService(ride_offer_id) {
+  if (!ride_offer_id) {
+    return {
+      success: false,
+      code: "MISSING_RIDE_OFFER_ID",
+      message: "Ride offer ID is required.",
+    };
+  }
+
+  if (!isValidUUID(ride_offer_id)) {
+    return {
+      success: false,
+      code: "INVALID_RIDE_OFFER_ID",
+      message: "Ride offer ID must be a valid UUID.",
+    };
+  }
+
+  const offer = await findRideOfferWithDriverInfoByiD(ride_offer_id);
+
+  if (!offer) {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_FOUND",
+      message: "No ride offer exists for the given ID.",
+    };
+  }
+
+  return {
+    success: true,
+    code: "FETCH_RIDE_OFFER_SUCCESS",
+    data: offer,
+  };
+}
+
+async function getAllRideOffersService() {
+  const offer = await getAllRideOffers();
+
+  return {
+    success: true,
+    code: "FETCH_RIDE_OFFERS_SUCCESS",
+    data: offer,
+  };
+}
+
+async function updateRideOfferService(ride_offer_id, updatedData) {
+  if (!ride_offer_id) {
+    return {
+      success: false,
+      code: "MISSING_RIDE_OFFER_ID",
+      message: "Ride offer ID is required.",
+    };
+  }
+
+  if (!isValidUUID(ride_offer_id)) {
+    return {
+      success: false,
+      code: "INVALID_RIDE_OFFER_ID",
+      message: "Ride offer ID must be a valid UUID.",
+    };
+  }
+
+  if (updatedData.pickup_location) {
+    const pickupLocation = cleanLocation(updatedData.pickup_location);
+
+    if (pickupLocation === updatedData.dropoff_location) {
+      return {
+        success: false,
+        code: "SAME_PICKUP_AND_DROPOFF",
+        message: "Pickup and dropoff locations must not be the same.",
+      };
+    }
+    updatedData.pickup_location = pickupLocation;
+  }
+
+  if (updatedData.dropoff_location) {
+    updatedData.dropoff_location = cleanLocation(updatedData.dropoff_location);
+  }
+
+  if (updatedData.departure_time) {
+    const departureDate = new Date(updatedData.departure_time);
+    if (isNaN(departureDate.getTime())) {
+      return {
+        success: false,
+        code: "INVALID_DEPARTURE_TIME",
+        message: "Departure time must be a valid timestamp.",
+      };
+    }
+    updatedData.departure_time = departureDate;
+  }
+
+  if (updatedData.status === "cancelled" || updatedData.status === "full") {
+    return {
+      success: false,
+      code: "INVALID_STATUS_UPDATE",
+      message: "Ride offers cannot be updated once they are cancelled or full.",
+    };
+  }
+
+  if (updatedData.notes) {
+    const note = cleanName(updatedData.notes);
+    if (note && note.length > 500) {
+      return {
+        success: false,
+        code: "INVALID_NOTES",
+        message: "Notes is too long (max 500 characters).",
+      };
+    }
+    updatedData.notes = note;
+  }
+
+  if (Object.keys(updatedData).length === 0) {
+    return {
+      success: false,
+      code: "MISSING_UPDATE_FIELDS",
+      message: "No fields provided to update.",
+    };
+  }
+
+  const offer = await updateRideOffer(ride_offer_id, updatedData);
+
+  return {
+    success: true,
+    code: "RIDE_OFFER_UPDATED",
+    message: "Ride offer updated successfully.",
+    data: offer,
+  };
+}
+
+async function cancelRideOfferService(ride_offer_id) {
+  if (!ride_offer_id) {
+    return {
+      success: false,
+      code: "MISSING_RIDE_OFFER_ID",
+      message: "Ride offer ID is required.",
+    };
+  }
+
+  if (!isValidUUID(ride_offer_id)) {
+    return {
+      success: false,
+      code: "INVALID_RIDE_OFFER_ID",
+      message: "Ride offer ID must be a valid UUID.",
+    };
+  }
+
+  const offer = await cancelRideOffer(ride_offer_id);
+
+  if (!offer) {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_FOUND",
+      message: "No ride offer exists for the given ID.",
+    };
+  }
+
+  if (offer.status === "cancelled") {
+    return {
+      success: false,
+      code: "RIDE_OFFER_ALREADY_CANCELLED",
+      message: "Ride offer was already cancelled.",
+    };
+  }
+
+  return {
+    success: true,
+    code: "RIDE_OFFER_CANCELLED",
+    message: "Ride offer successfully cancelled.",
+    data: offer,
+  };
+}
+module.exports = {
+  createRideOfferService,
+  findRideOfferWithDriverInfoByiDService,
+  getAllRideOffersService,
+  updateRideOfferService,
+  cancelRideOfferService,
+};
