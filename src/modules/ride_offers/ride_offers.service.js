@@ -5,6 +5,7 @@ const {
   getAllRideOffers,
   updateRideOffer,
   cancelRideOffer,
+  getRideOfferById,
 } = require("./ride_offers.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -175,7 +176,12 @@ async function getAllRideOffersService() {
   };
 }
 
-async function updateRideOfferService(ride_offer_id, updatedData) {
+async function updateRideOfferService(
+  ride_offer_id,
+  user_id,
+  role,
+  updatedData,
+) {
   if (!ride_offer_id) {
     return {
       success: false,
@@ -183,7 +189,6 @@ async function updateRideOfferService(ride_offer_id, updatedData) {
       message: "Ride offer ID is required.",
     };
   }
-
   if (!isValidUUID(ride_offer_id)) {
     return {
       success: false,
@@ -191,22 +196,68 @@ async function updateRideOfferService(ride_offer_id, updatedData) {
       message: "Ride offer ID must be a valid UUID.",
     };
   }
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "Invalid user ID.",
+    };
+  }
+  if (Object.keys(updatedData).length === 0) {
+    return {
+      success: false,
+      code: "MISSING_UPDATE_FIELDS",
+      message: "No fields provided to update.",
+    };
+  }
+
+  const rideOffer = await getRideOfferById(ride_offer_id);
+
+  if (!rideOffer) {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_FOUND",
+      message: "No ride offer exists for the given ID.",
+    };
+  }
+
+  if (rideOffer.status !== "open") {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_EDITABLE",
+      message: "This ride offer is not open and cannot be edited.",
+    };
+  }
+
+  if (Object.prototype.hasOwnProperty.call(updatedData, "status")) {
+    return {
+      success: false,
+      code: "INVALID_STATUS_UPDATE",
+      message: "Status cannot be updated through this endpoint.",
+    };
+  }
+
+  if (rideOffer.user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to update this ride offer.",
+    };
+  }
 
   if (updatedData.pickup_location) {
-    const pickupLocation = cleanLocation(updatedData.pickup_location);
-
-    if (pickupLocation === updatedData.dropoff_location) {
-      return {
-        success: false,
-        code: "SAME_PICKUP_AND_DROPOFF",
-        message: "Pickup and dropoff locations must not be the same.",
-      };
-    }
-    updatedData.pickup_location = pickupLocation;
+    updatedData.pickup_location = cleanName(updatedData.pickup_location);
   }
 
   if (updatedData.dropoff_location) {
-    updatedData.dropoff_location = cleanLocation(updatedData.dropoff_location);
+    updatedData.dropoff_location = cleanName(updatedData.dropoff_location);
   }
 
   if (updatedData.departure_time) {
@@ -221,14 +272,6 @@ async function updateRideOfferService(ride_offer_id, updatedData) {
     updatedData.departure_time = departureDate;
   }
 
-  if (updatedData.status === "cancelled" || updatedData.status === "full") {
-    return {
-      success: false,
-      code: "INVALID_STATUS_UPDATE",
-      message: "Ride offers cannot be updated once they are cancelled or full.",
-    };
-  }
-
   if (updatedData.notes) {
     const note = cleanName(updatedData.notes);
     if (note && note.length > 500) {
@@ -241,11 +284,15 @@ async function updateRideOfferService(ride_offer_id, updatedData) {
     updatedData.notes = note;
   }
 
-  if (Object.keys(updatedData).length === 0) {
+  const finalPickup = updatedData.pickup_location ?? rideOffer.pickup_location;
+  const finalDropoff =
+    updatedData.dropoff_location ?? rideOffer.dropoff_location;
+
+  if (finalPickup && finalDropoff && finalPickup === finalDropoff) {
     return {
       success: false,
-      code: "MISSING_UPDATE_FIELDS",
-      message: "No fields provided to update.",
+      code: "SAME_PICKUP_AND_DROPOFF",
+      message: "Pickup and dropoff locations must not be the same.",
     };
   }
 
@@ -259,7 +306,7 @@ async function updateRideOfferService(ride_offer_id, updatedData) {
   };
 }
 
-async function cancelRideOfferService(ride_offer_id) {
+async function cancelRideOfferService(ride_offer_id, user_id, role) {
   if (!ride_offer_id) {
     return {
       success: false,
@@ -276,7 +323,22 @@ async function cancelRideOfferService(ride_offer_id) {
     };
   }
 
-  const offer = await cancelRideOffer(ride_offer_id);
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "Invalid user ID.",
+    };
+  }
+  const offer = await getRideOfferById(ride_offer_id);
 
   if (!offer) {
     return {
@@ -286,11 +348,37 @@ async function cancelRideOfferService(ride_offer_id) {
     };
   }
 
+  if (offer.user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to cancel this ride offer.",
+    };
+  }
+
   if (offer.status === "cancelled") {
     return {
       success: false,
       code: "RIDE_OFFER_ALREADY_CANCELLED",
-      message: "Ride offer was already cancelled.",
+      message: "This ride offer has already been cancelled.",
+    };
+  }
+
+  if (offer.status !== "open") {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_CANCELLABLE",
+      message: "Only ride offers with status 'open' can be cancelled.",
+    };
+  }
+
+  const cancelledRideOffer = await cancelRideOffer(ride_offer_id);
+
+  if (!cancelledRideOffer) {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_FOUND",
+      message: "No ride offer exists for the given ID.",
     };
   }
 
@@ -298,7 +386,7 @@ async function cancelRideOfferService(ride_offer_id) {
     success: true,
     code: "RIDE_OFFER_CANCELLED",
     message: "Ride offer successfully cancelled.",
-    data: offer,
+    data: cancelledRideOffer,
   };
 }
 module.exports = {

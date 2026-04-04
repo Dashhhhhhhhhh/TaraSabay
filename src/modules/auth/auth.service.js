@@ -8,8 +8,6 @@ const {
   findUserByEmail,
   findUserAuthByEmail,
   findUserProfileById,
-  findDriverProfileById,
-  updateDriverProfile,
 } = require("../auth/auth.repository.js");
 
 const {

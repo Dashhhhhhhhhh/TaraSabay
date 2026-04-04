@@ -1,7 +1,11 @@
 const {
-  findRideOfferRequest,
   findExistingPendingOfferRequest,
   createOfferRequest,
+  getOfferRequestById,
+  findRideOfferById,
+  getOfferRequestsByOfferId,
+  getMyOfferRequest,
+  cancelOfferRequest,
 } = require("./offer_requests.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -63,7 +67,7 @@ async function createOfferRequestService(requestData) {
     };
   }
 
-  const rideOffer = await findRideOfferRequest(ride_offer_id);
+  const rideOffer = await findRideOfferById(ride_offer_id);
   if (!rideOffer) {
     return {
       success: false,
@@ -131,4 +135,198 @@ async function createOfferRequestService(requestData) {
   };
 }
 
-module.exports = { createOfferRequestService };
+async function getOfferRequestByIdService(offer_request_id, user_id, role) {
+  if (!offer_request_id) {
+    return {
+      success: false,
+      code: "MISSING_OFFER_REQUEST_ID",
+      message: "Offer request ID is required.",
+    };
+  }
+
+  if (!isValidUUID(offer_request_id)) {
+    return {
+      success: false,
+      code: "INVALID_OFFER_REQUEST_ID",
+      message: "Invalid offer request ID.",
+    };
+  }
+
+  const offer = await getOfferRequestById(offer_request_id);
+
+  if (!offer) {
+    return {
+      success: false,
+      code: "OFFER_REQUEST_NOT_FOUND",
+      message: "Offer request not found.",
+    };
+  }
+
+  if (offer.passenger_user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to access this offer request.",
+    };
+  }
+
+  return {
+    success: true,
+    code: "FETCH_OFFER_REQUEST_SUCCESS",
+    message: "Offer request fetched successfully.",
+    data: offer,
+  };
+}
+
+async function getOfferRequestsByOfferIdService(ride_offer_id, user_id, role) {
+  if (!ride_offer_id) {
+    return {
+      success: false,
+      code: "MISSING_RIDE_OFFER_ID",
+      message: "Ride offer ID is required.",
+    };
+  }
+
+  if (!isValidUUID(ride_offer_id)) {
+    return {
+      success: false,
+      code: "INVALID_RIDE_OFFER_ID",
+      message: "Invalid ride offer ID.",
+    };
+  }
+
+  const existingRideOffer = await findRideOfferById(ride_offer_id);
+  if (!existingRideOffer) {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_FOUND",
+      message: "No ride offer exists for the given ID.",
+    };
+  }
+  if (existingRideOffer.user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message:
+        "You are not authorized to access the offer requests for this ride offer.",
+    };
+  }
+
+  const offerRequests = await getOfferRequestsByOfferId(ride_offer_id);
+
+  return {
+    success: true,
+    code: "FETCH_OFFER_REQUESTS_SUCCESS",
+    message: "Offer requests fetched successfully.",
+    offerRequests,
+  };
+}
+
+async function getMyOfferRequestService(passenger_user_id, offer_request_id) {
+  if (!offer_request_id) {
+    return {
+      success: false,
+      code: "MISSING_PASSENGER_USER_ID",
+      message: "Passenger user ID is required.",
+    };
+  }
+  if (!isValidUUID(passenger_user_id)) {
+    return {
+      success: false,
+      code: "INVALID_PASSENGER_USER_ID",
+      message: "Invalid ride offer ID.",
+    };
+  }
+
+  const myOffer = await getMyOfferRequest(passenger_user_id);
+
+  return {
+    success: true,
+    code: "FETCH_MY_OFFER_REQUESTS_SUCCESS",
+    message: "Offer request fetched successfully.",
+    data: myOffer,
+  };
+}
+
+async function cancelOfferRequestService(
+  offer_request_id,
+  passenger_user_id,
+  role,
+) {
+  if (!offer_request_id) {
+    return {
+      success: false,
+      code: "MISSING_OFFER_REQUEST_ID",
+      message: "Offer request ID is required.",
+    };
+  }
+
+  if (!isValidUUID(offer_request_id)) {
+    return {
+      success: false,
+      code: "INVALID_OFFER_REQUEST_ID",
+      message: "Invalid offer request ID.",
+    };
+  }
+
+  if (!passenger_user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+
+  if (!isValidUUID(passenger_user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "Invalid user ID.",
+    };
+  }
+
+  const existingOfferRequest = await getOfferRequestById(offer_request_id);
+
+  if (!existingOfferRequest) {
+    return {
+      success: false,
+      code: "OFFER_REQUEST_NOT_FOUND",
+      message: "No offer request exists for the given ID.",
+    };
+  }
+
+  if (
+    existingOfferRequest.passenger_user_id !== passenger_user_id &&
+    role !== "Admin"
+  ) {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to cancel this offer request.",
+    };
+  }
+
+  if (existingOfferRequest.status !== "pending") {
+    return {
+      success: false,
+      code: "REQUEST_ALREADY_FINAL",
+      message: "Only pending offer requests can be cancelled.",
+    };
+  }
+
+  const cancelledOfferRequest = await cancelOfferRequest(offer_request_id);
+
+  return {
+    success: true,
+    code: "OFFER_REQUEST_CANCELLED",
+    message: "Offer request has been cancelled successfully.",
+    data: cancelledOfferRequest,
+  };
+}
+module.exports = {
+  createOfferRequestService,
+  getOfferRequestByIdService,
+  getOfferRequestsByOfferIdService,
+  getMyOfferRequestService,
+  cancelOfferRequestService,
+};

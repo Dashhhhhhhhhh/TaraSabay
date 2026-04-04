@@ -84,21 +84,34 @@ async function updateRideOfferController(req, res) {
   try {
     const { ride_offer_id } = req.params;
     const { updatedData } = req.body;
-    const result = await updateRideOfferService(ride_offer_id, updatedData);
+    const user_id = req.user.user_id;
+
+    const { role } = req.user;
+    result = await updateRideOfferService(
+      ride_offer_id,
+      user_id,
+      role,
+      updatedData,
+    );
 
     if (!result.success) {
       const statusMap = {
         MISSING_RIDE_OFFER_ID: 400,
-        INVALID_RODE_OFFER_ID: 404,
-        NO_UPDATE_DATA: 400,
+        INVALID_RIDE_OFFER_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MISSING_UPDATE_FIELDS: 400,
+        RIDE_OFFER_NOT_FOUND: 404,
+        RIDE_OFFER_NOT_EDITABLE: 409,
+        INVALID_STATUS_UPDATE: 400,
+        FORBIDDEN_ACCESS: 403,
         INVALID_PICKUP_LOCATION: 400,
         INVALID_DROPOFF_LOCATION: 400,
         SAME_PICKUP_AND_DROPOFF: 400,
         INVALID_DEPARTURE_TIME: 400,
         INVALID_NOTES: 400,
-        MISSING_UPDATE_FIELDS: 404,
-        RIDE_OFFER_NOT_FOUND: 404,
       };
+
       const status = statusMap[result.code] || 500;
       return res.status(status).json(result);
     }
@@ -115,13 +128,19 @@ async function updateRideOfferController(req, res) {
 async function cancelRideOfferController(req, res) {
   try {
     const rideOfferId = req.params.ride_offer_id;
-    const result = await cancelRideOfferService(rideOfferId);
+    const user_id = req.user.user_id;
+    const { role } = req.user;
+    const result = await cancelRideOfferService(rideOfferId, user_id, role);
 
     if (!result.success) {
       const statusMap = {
         MISSING_RIDE_OFFER_ID: 400,
         INVALID_RIDE_OFFER_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        FORBIDDEN_ACCESS: 403,
         RIDE_OFFER_NOT_FOUND: 404,
+        RIDE_OFFER_NOT_CANCELLABLE: 409,
         RIDE_OFFER_ALREADY_CANCELLED: 409,
       };
       const status = statusMap[result.code] || 500;
@@ -129,10 +148,10 @@ async function cancelRideOfferController(req, res) {
     }
     return res.status(200).json(result);
   } catch (error) {
-    console.error("Error cancelling offers:", error);
+    console.error("Error cancelling ride offer:", error);
     return res.status(500).json({
       success: false,
-      message: "Internal server error during cancelling offer",
+      message: "Internal server error while cancelling ride offer.",
     });
   }
 }

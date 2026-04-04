@@ -1,10 +1,7 @@
-<<<<<<< HEAD
 const { isValidUUID } = require("./../../utils/security");
 
 const { cleanName, isInteger } = require("../../utils/helper.js");
 
-=======
->>>>>>> ab147cb (Initial TaraSabay backend setup with auth, driver profiles, and ride offers)
 const {
   findDriverProfileByUserId,
   findUserById,
@@ -14,13 +11,6 @@ const {
   updateDriverProfile,
 } = require("./driver.repository");
 
-<<<<<<< HEAD
-=======
-const { isValidUUID } = require("./../../utils/security");
-
-const { cleanName, isInteger } = require("../../utils/helper.js");
-
->>>>>>> ab147cb (Initial TaraSabay backend setup with auth, driver profiles, and ride offers)
 async function createDriverProfileService(driverData) {
   const { user_id, vehicle_type, seat_capacity } = driverData;
 

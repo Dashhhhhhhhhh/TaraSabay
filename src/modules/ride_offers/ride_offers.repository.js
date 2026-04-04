@@ -148,6 +148,29 @@ async function cancelRideOffer(ride_offer_id) {
   return result.rows[0];
 }
 
+async function getRideOfferById(ride_offer_id) {
+  const result = await pool.query(
+    `SELECT
+          ride_offer_id,
+          user_id,
+          driver_profile_id,
+          pickup_location,
+          dropoff_location,
+          departure_time,
+          vehicle_type_snapshot,
+          seat_capacity_snapshot,
+          available_seats,
+          status,
+          notes,
+          created_at,
+          updated_at
+        FROM ride_offers
+        WHERE ride_offer_id = $1`,
+    [ride_offer_id],
+  );
+  return result.rows[0];
+}
+
 module.exports = {
   findDriverProfileByUserId,
   createRiderOffer,
@@ -155,4 +178,5 @@ module.exports = {
   getAllRideOffers,
   updateRideOffer,
   cancelRideOffer,
+  getRideOfferById,
 };

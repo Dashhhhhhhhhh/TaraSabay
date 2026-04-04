@@ -9,22 +9,14 @@ app.use(express.json());
 const authRoutes = require("./modules/auth/auth.routes");
 const driverRoutes = require("./modules/driver_profiles/driver.routes");
 
-
-app.use("/auth", authRoutes);
-app.use("/driver", driverRoutes);
-=======
 const rideOfferRoutes = require("./modules/ride_offers/ride_offers.routes");
 const offerRequestRoutes = require("./modules/offer_requests/offer_requests.routes");
 
 app.use("/auth", authRoutes);
 app.use("/driver", driverRoutes);
 
-app.use("/offer", rideOfferRoutes);
-
-=======
 app.use("/ride-offer", rideOfferRoutes);
 app.use("/offer-request", offerRequestRoutes);
-
 
 app.get("/test-route", (req, res) => {
   res.json({

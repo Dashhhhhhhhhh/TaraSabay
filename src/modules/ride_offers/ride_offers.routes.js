@@ -9,6 +9,10 @@ const {
   cancelRideOfferController,
 } = require("./ride_offers.controller");
 
+const {
+  getOfferRequestsByOfferIdController,
+} = require("./../offer_requests/offer_requests.controller");
+
 const { authenticateJWT } = require("./../../middlewares/auth.middleware");
 const { authorizeRoles } = require("./../../middlewares/auhtorizeRoles");
 
@@ -45,6 +49,13 @@ router.patch(
   authenticateJWT,
   authorizeRoles(["Admin", "Driver"]),
   cancelRideOfferController,
+);
+
+router.get(
+  "/:ride_offer_id/offer-request",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
+  getOfferRequestsByOfferIdController,
 );
 
 module.exports = router;
