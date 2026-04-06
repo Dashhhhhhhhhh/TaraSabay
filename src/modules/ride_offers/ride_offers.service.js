@@ -23,8 +23,8 @@ async function createRideOfferService(offerData) {
     notes,
   } = offerData;
 
-  const pickupLocation = cleanString(pickup_location);
-  const dropofflocation = cleanString(dropoff_location);
+  const pickupLocation = cleanName(pickup_location);
+  const dropofflocation = cleanName(dropoff_location);
 
   if (!user_id || !pickupLocation || !dropofflocation || !departure_time) {
     return {
@@ -76,7 +76,7 @@ async function createRideOfferService(offerData) {
     };
   }
 
-  const note = cleanName(notes);
+  const note = cleanString(notes);
   if (note && note.length > 500) {
     return {
       success: false,
@@ -253,11 +253,11 @@ async function updateRideOfferService(
   }
 
   if (updatedData.pickup_location) {
-    updatedData.pickup_location = cleanName(updatedData.pickup_location);
+    updatedData.pickup_location = cleanString(updatedData.pickup_location);
   }
 
   if (updatedData.dropoff_location) {
-    updatedData.dropoff_location = cleanName(updatedData.dropoff_location);
+    updatedData.dropoff_location = cleanString(updatedData.dropoff_location);
   }
 
   if (updatedData.departure_time) {

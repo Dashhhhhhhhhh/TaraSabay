@@ -1,5 +1,7 @@
 function cleanName(str) {
-  return str ? str.trim().replace(/\s+/g, " ") : null;
+  if (str == null) return null;
+  const cleaned = str.trim().replace(/\s+/g, " ");
+  return cleaned;
 }
 
 function cleanString(str) {
@@ -36,6 +38,7 @@ function cleanRoleName(role) {
 }
 
 function isInteger(value) {
+  if (value === null || value === "") return false;
   return Number.isInteger(Number(value));
 }
 

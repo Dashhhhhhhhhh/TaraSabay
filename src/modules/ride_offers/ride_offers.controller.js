@@ -12,7 +12,6 @@ async function createDriverProfileController(req, res) {
 
     if (!result.success) {
       const statusMap = {
-        RIDE_OFFER_CREATED: 201,
         MISSING_REQUIRED_FIELDS: 400,
         INVALID_USER_ID: 400,
         INVALID_PICKUP_LOCATION: 400,
@@ -87,7 +86,7 @@ async function updateRideOfferController(req, res) {
     const user_id = req.user.user_id;
 
     const { role } = req.user;
-    result = await updateRideOfferService(
+    const result = await updateRideOfferService(
       ride_offer_id,
       user_id,
       role,
