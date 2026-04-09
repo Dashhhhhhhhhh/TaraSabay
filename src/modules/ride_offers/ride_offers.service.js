@@ -210,37 +210,51 @@ async function updateRideOfferService(
       message: "Invalid user ID.",
     };
   }
-  if (Object.keys(updatedData).length === 0) {
+
+  if (!role) {
     return {
       success: false,
-      code: "MISSING_UPDATE_FIELDS",
-      message: "No fields provided to update.",
+      code: "MISSING_ROLE",
+      message: "User role is required.",
+    };
+  }
+
+  if (!updatedData || typeof updatedData !== "object") {
+    return {
+      success: false,
+      code: "INVALID_UPDATE_PAYLOAD",
+      message: "Update payload must be a valid object.",
+    };
+  }
+
+  const editableFields = [
+    "pickup_location",
+    "dropoff_location",
+    "departure_time",
+    "notes",
+  ];
+
+  const filtered = {};
+  for (const key of editableFields) {
+    if (updatedData[key] !== undefined) {
+      filtered[key] = updatedData[key];
+    }
+  }
+
+  if (Object.keys(filtered).length === 0) {
+    return {
+      success: false,
+      code: "NO_VALID_FIELDS_TO_UPDATE",
+      message: "No valid fields were provided to update.",
     };
   }
 
   const rideOffer = await getRideOfferById(ride_offer_id);
-
   if (!rideOffer) {
     return {
       success: false,
       code: "RIDE_OFFER_NOT_FOUND",
       message: "No ride offer exists for the given ID.",
-    };
-  }
-
-  if (rideOffer.status !== "open") {
-    return {
-      success: false,
-      code: "RIDE_OFFER_NOT_EDITABLE",
-      message: "This ride offer is not open and cannot be edited.",
-    };
-  }
-
-  if (Object.prototype.hasOwnProperty.call(updatedData, "status")) {
-    return {
-      success: false,
-      code: "INVALID_STATUS_UPDATE",
-      message: "Status cannot be updated through this endpoint.",
     };
   }
 
@@ -252,16 +266,41 @@ async function updateRideOfferService(
     };
   }
 
-  if (updatedData.pickup_location) {
-    updatedData.pickup_location = cleanString(updatedData.pickup_location);
+  if (rideOffer.status !== "open") {
+    return {
+      success: false,
+      code: "RIDE_OFFER_NOT_EDITABLE",
+      message: "This ride offer is not open and cannot be edited.",
+    };
   }
 
-  if (updatedData.dropoff_location) {
-    updatedData.dropoff_location = cleanString(updatedData.dropoff_location);
+  if (filtered.pickup_location !== undefined) {
+    filtered.pickup_location = cleanName(filtered.pickup_location);
+    if (filtered.pickup_location === "" || filtered.pickup_location === null) {
+      return {
+        success: false,
+        code: "INVALID_PICKUP_LOCATION",
+        message: "Pickup location cannot be empty.",
+      };
+    }
   }
 
-  if (updatedData.departure_time) {
-    const departureDate = new Date(updatedData.departure_time);
+  if (filtered.dropoff_location !== undefined) {
+    filtered.dropoff_location = cleanName(filtered.dropoff_location);
+    if (
+      filtered.dropoff_location === "" ||
+      filtered.dropoff_location === null
+    ) {
+      return {
+        success: false,
+        code: "INVALID_DROPOFF_LOCATION",
+        message: "Drop-off location cannot be empty.",
+      };
+    }
+  }
+
+  if (filtered.departure_time !== undefined) {
+    const departureDate = new Date(filtered.departure_time);
     if (isNaN(departureDate.getTime())) {
       return {
         success: false,
@@ -269,26 +308,37 @@ async function updateRideOfferService(
         message: "Departure time must be a valid timestamp.",
       };
     }
-    updatedData.departure_time = departureDate;
+
+    if (departureDate < new Date()) {
+      return {
+        success: false,
+        code: "INVALID_DEPARTURE_TIME",
+        message: "Departure time must be in the future.",
+      };
+    }
+
+    filtered.departure_time = departureDate.toISOString();
   }
 
-  if (updatedData.notes) {
-    const note = cleanName(updatedData.notes);
+  if (filtered.notes !== undefined) {
+    const note = cleanString(filtered.notes);
     if (note && note.length > 500) {
       return {
         success: false,
         code: "INVALID_NOTES",
-        message: "Notes is too long (max 500 characters).",
+        message: "Notes are too long (max 500 characters).",
       };
     }
-    updatedData.notes = note;
+    filtered.notes = note;
   }
 
-  const finalPickup = updatedData.pickup_location ?? rideOffer.pickup_location;
-  const finalDropoff =
-    updatedData.dropoff_location ?? rideOffer.dropoff_location;
-
-  if (finalPickup && finalDropoff && finalPickup === finalDropoff) {
+  const finalPickup = filtered.pickup_location ?? rideOffer.pickup_location;
+  const finalDropoff = filtered.dropoff_location ?? rideOffer.dropoff_location;
+  if (
+    finalPickup &&
+    finalDropoff &&
+    cleanName(finalPickup) === cleanName(finalDropoff)
+  ) {
     return {
       success: false,
       code: "SAME_PICKUP_AND_DROPOFF",
@@ -296,11 +346,13 @@ async function updateRideOfferService(
     };
   }
 
-  const offer = await updateRideOffer(ride_offer_id, updatedData);
+  const offer = await updateRideOffer(ride_offer_id, {
+    ...filtered,
+  });
 
   return {
     success: true,
-    code: "RIDE_OFFER_UPDATED",
+    code: "UPDATE_RIDE_OFFER_SUCCESS",
     message: "Ride offer updated successfully.",
     data: offer,
   };

@@ -113,26 +113,28 @@ async function getAllRideOffers() {
 }
 
 async function updateRideOffer(ride_offer_id, updateData) {
-  const result = await pool.query(
-    `
-            UPDATE ride_offers
-            SET
-                pickup_location = $1,
-                dropoff_location = $2,
-                departure_time = $3,
-                notes = $4
-            WHERE
-                ride_offer_id = $5
-            RETURNING *;
-            `,
-    [
-      updateData.pickup_location,
-      updateData.dropoff_location,
-      updateData.departure_time,
-      updateData.notes,
-      ride_offer_id,
-    ],
-  );
+  const fields = [];
+  const values = [];
+  let idx = 1;
+
+  for (const [key, value] of Object.entries(updateData)) {
+    if (value !== undefined) {
+      fields.push(`${key} = $${idx}`);
+      values.push(value);
+      idx++;
+    }
+  }
+
+  values.push(ride_offer_id);
+
+  const query = `
+    UPDATE ride_offers
+    SET ${fields.join(", ")}
+    WHERE ride_offer_id = $${idx}
+    RETURNING *;
+    `;
+
+  const result = await pool.query(query, values);
   return result.rows[0];
 }
 

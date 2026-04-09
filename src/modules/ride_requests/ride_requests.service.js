@@ -204,6 +204,14 @@ async function updateRideRequestService(
     };
   }
 
+  if (!role) {
+    return {
+      success: false,
+      code: "MISSING_ROLE",
+      message: "User role is required.",
+    };
+  }
+
   if (!updatedData || typeof updatedData !== "object") {
     return {
       success: false,
@@ -295,13 +303,14 @@ async function updateRideRequestService(
     }
     filtered.departure_time = departureDate.toISOString();
   }
+
   if (filtered.notes !== undefined) {
     const note = cleanString(filtered.notes);
     if (note && note.length > 500) {
       return {
         success: false,
         code: "INVALID_NOTES",
-        message: "Notes is too long (max 500 characters).",
+        message: "Notes are too long (max 500 characters).",
       };
     }
     filtered.notes = note;
@@ -338,7 +347,6 @@ async function updateRideRequestService(
 
   const request = await updateRideRequest(ride_request_id, {
     ...filtered,
-    updated_by_role: role,
   });
 
   return {

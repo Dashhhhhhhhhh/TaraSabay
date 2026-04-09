@@ -14,6 +14,10 @@ const {
   getMyOfferRequestController,
 } = require("./../offer_requests/offer_requests.controller");
 
+const {
+  getMyRequestResponseController,
+} = require("./../response_request/response_request.controller");
+
 router.post("/register", regiterAuthController);
 
 router.post("/login", loginAuthController);
@@ -27,4 +31,10 @@ router.get(
   getMyOfferRequestController,
 );
 
+router.get(
+  "/me/request-responses",
+  authenticateJWT,
+  authorizeRoles(["Driver"]),
+  getMyRequestResponseController,
+);
 module.exports = router;

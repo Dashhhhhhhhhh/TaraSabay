@@ -84,29 +84,29 @@ async function getRideRequestById(ride_request_id) {
   return result.rows[0];
 }
 
-async function updateRideRequest(ride_request_id, updatedData) {
-  const result = await pool.query(
-    `
-      UPDATE ride_requests
-      SET
-        pickup_location = $1,
-        dropoff_location = $2,
-        departure_time = $3,
-        requested_seats = $4,
-        notes = $5
-      WHERE
-        ride_request_id = $6
-      RETURNING *;
-      `,
-    [
-      updatedData.pickup_location,
-      updatedData.dropoff_location,
-      updatedData.departure_time,
-      updatedData.requested_seats,
-      updatedData.notes,
-      ride_request_id,
-    ],
-  );
+async function updateRideRequest(ride_request_id, updateData) {
+  const fields = [];
+  const values = [];
+  let idx = 1;
+
+  for (const [key, value] of Object.entries(updateData)) {
+    if (value !== undefined) {
+      fields.push(`${key} = $${idx}`);
+      values.push(value);
+      idx++;
+    }
+  }
+
+  values.push(ride_request_id);
+
+  const query = `
+    UPDATE ride_requests
+    SET ${fields.join(", ")}
+    WHERE ride_request_id = $${idx}
+    RETURNING *;
+  `;
+
+  const result = await pool.query(query, values);
   return result.rows[0];
 }
 

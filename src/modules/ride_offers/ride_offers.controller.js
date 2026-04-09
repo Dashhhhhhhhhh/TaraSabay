@@ -82,7 +82,7 @@ async function getAllRideOffersController(req, res) {
 async function updateRideOfferController(req, res) {
   try {
     const { ride_offer_id } = req.params;
-    const { updatedData } = req.body;
+    const updatedData = req.body;
     const user_id = req.user.user_id;
 
     const { role } = req.user;
@@ -99,16 +99,18 @@ async function updateRideOfferController(req, res) {
         INVALID_RIDE_OFFER_ID: 400,
         MISSING_USER_ID: 400,
         INVALID_USER_ID: 400,
-        MISSING_UPDATE_FIELDS: 400,
-        RIDE_OFFER_NOT_FOUND: 404,
+        MISSING_ROLE: 400,
+        INVALID_UPDATE_PAYLOAD: 400,
+        NO_VALID_FIELDS_TO_UPDATE: 400,
         RIDE_OFFER_NOT_EDITABLE: 409,
-        INVALID_STATUS_UPDATE: 400,
-        FORBIDDEN_ACCESS: 403,
         INVALID_PICKUP_LOCATION: 400,
         INVALID_DROPOFF_LOCATION: 400,
-        SAME_PICKUP_AND_DROPOFF: 400,
         INVALID_DEPARTURE_TIME: 400,
-        INVALID_NOTES: 400,
+        SAME_PICKUP_AND_DROPOFF: 400,
+        FORBIDDEN_ACCESS: 403,
+        RIDE_OFFER_NOT_FOUND: 404,
+        RIDE_OFFER_NOT_CANCELLABLE: 409,
+        RIDE_OFFER_ALREADY_CANCELLED: 409,
       };
 
       const status = statusMap[result.code] || 500;

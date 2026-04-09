@@ -93,6 +93,7 @@ async function updateRideRequestController(req, res) {
         INVALID_RIDE_REQUEST_ID: 400,
         MISSING_USER_ID: 400,
         INVALID_USER_ID: 400,
+        MISSING_ROLE: 400,
         INVALID_UPDATE_PAYLOAD: 400,
         NO_VALID_FIELDS_TO_UPDATE: 400,
         RIDE_REQUEST_NOT_FOUND: 404,

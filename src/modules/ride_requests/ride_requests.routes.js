@@ -12,6 +12,9 @@ const {
   cancelRideRequestController,
 } = require("./ride_requests.controller");
 
+const {
+  getRequestResponsesByRideRequestIdController,
+} = require("./../response_request/response_request.controller");
 router.post(
   "/",
   authenticateJWT,
@@ -47,4 +50,10 @@ router.patch(
   cancelRideRequestController,
 );
 
+router.get(
+  "/:ride_request_id/request-responses",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Passenger"]),
+  getRequestResponsesByRideRequestIdController,
+);
 module.exports = router;
