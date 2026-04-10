@@ -1,4 +1,7 @@
-const { createMessageService } = require("./messages.service");
+const {
+  createMessageService,
+  findMessageByIdService,
+} = require("./messages.service");
 
 async function createMessageController(req, res) {
   try {
@@ -43,4 +46,31 @@ async function createMessageController(req, res) {
   }
 }
 
-module.exports = { createMessageController };
+async function findMessageByIdController(req, res) {
+  try {
+    const message_id = req.params.message_id;
+    const result = await findMessageByIdService(message_id);
+
+    if (!result.success) {
+      const statusMap = {
+        MISSING_MESSAGE_ID: 400,
+        INVALID_MESSAGE_ID: 400,
+        MESSAGE_NOT_FOUND: 404,
+        FORBIDDEN_ACCESS: 403,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching message:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching message",
+    });
+  }
+}
+
+module.exports = { createMessageController, findMessageByIdController };

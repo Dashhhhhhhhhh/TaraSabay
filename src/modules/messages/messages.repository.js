@@ -103,6 +103,33 @@ async function findRequestResponseByRideRequestAndDriver(
   return result.rows[0];
 }
 
+async function findMessageById(message_id) {
+  const result = await pool.query(
+    `SELECT 
+      m.message_id,
+      m.sender_user_id,
+      m.receiver_user_id,
+      m.ride_offer_id,
+      m.ride_request_id,
+      m.offer_request_id,
+      m.request_response_id,
+      m.message_text,
+      m.is_read,
+      m.created_at,
+      m.updated_at,
+      sender.first_name || ' ' || sender.last_name AS sender_full_name,
+      sender.display_name AS sender_display_name,
+      receiver.first_name || ' ' || receiver.last_name AS receiver_full_name,
+      receiver.display_name AS receiver_display_name
+   FROM messages m
+   JOIN users sender ON m.sender_user_id = sender.user_id
+   JOIN users receiver ON m.receiver_user_id = receiver.user_id
+   WHERE m.message_id = $1`,
+    [message_id],
+  );
+  return result.rows[0];
+}
+
 module.exports = {
   createMessage,
   findUserById,
@@ -110,4 +137,5 @@ module.exports = {
   findRideRequestOwnerById,
   findOfferRequestByRideOfferAndPassenger,
   findRequestResponseByRideRequestAndDriver,
+  findMessageById
 };

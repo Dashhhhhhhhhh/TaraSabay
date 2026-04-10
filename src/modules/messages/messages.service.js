@@ -5,6 +5,7 @@ const {
   findRideRequestOwnerById,
   findOfferRequestByRideOfferAndPassenger,
   findRequestResponseByRideRequestAndDriver,
+  findMessageById,
 } = require("./messages.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -190,4 +191,36 @@ async function createMessageService(messageData) {
   };
 }
 
-module.exports = { createMessageService };
+async function findMessageByIdService(message_id) {
+  if (!message_id)
+    return {
+      success: false,
+      code: "MISSING_MESSAGE_ID",
+      message: "Message ID is required.",
+    };
+  if (!isValidUUID(message_id))
+    return {
+      success: false,
+      code: "INVALID_MESSAGE_ID",
+      message: "Message ID must be a valid UUID.",
+    };
+
+  const message = await findMessageById(message_id);
+
+  if (!message) {
+    return {
+      success: false,
+      code: "MESSAGE_NOT_FOUND",
+      message: "The requested message could not be found.",
+    };
+  }
+
+  return {
+    success: true,
+    code: "FETCH_MESSAGE_SUCCESS",
+    message: "Message retrieved successfully.",
+    data: message,
+  };
+}
+
+module.exports = { createMessageService, findMessageByIdService };
