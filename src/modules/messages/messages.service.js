@@ -6,6 +6,8 @@ const {
   findOfferRequestByRideOfferAndPassenger,
   findRequestResponseByRideRequestAndDriver,
   findMessageById,
+  getMyMessages,
+  markMessageAsRead,
 } = require("./messages.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -223,4 +225,99 @@ async function findMessageByIdService(message_id) {
   };
 }
 
-module.exports = { createMessageService, findMessageByIdService };
+async function getMyMessagesService(user_id) {
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+  if (!isValidUUID(user_id))
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+
+  const message = await getMyMessages(user_id);
+
+  return {
+    success: true,
+    code: "FETCH_MY_MESSAGES_SUCCESS",
+    message: "Messages retrieved successfully.",
+    data: message,
+  };
+}
+
+async function markMessageAsReadService(message_id, user_id, role) {
+  if (!message_id) {
+    return {
+      success: false,
+      code: "MISSING_MESSAGE_ID",
+      message: "Message ID is required.",
+    };
+  }
+  if (!isValidUUID(message_id))
+    return {
+      success: false,
+      code: "INVALID_MESSAGE_ID",
+      message: "Message ID must be a valid UUID.",
+    };
+
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+  if (!isValidUUID(user_id))
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+
+  const message = await findMessageById(message_id);
+
+  if (!message) {
+    return {
+      success: false,
+      code: "MESSAGE_NOT_FOUND",
+      message: "The requested message could not be found.",
+    };
+  }
+
+  if (message.receiver_user_id !== user_id && role !== "admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to access this message.",
+    };
+  }
+
+  if (message.is_read === true) {
+    return {
+      success: false,
+      code: "MESSAGE_ALREADY_READ",
+      message: "This message has already been marked as read",
+    };
+  }
+
+  const updateMessage = await markMessageAsRead(message_id);
+
+  return {
+    success: true,
+    code: "MESSAGE_MARKED_AS_READ",
+    message: "Message read successfully.",
+    data: updateMessage,
+  };
+}
+
+module.exports = {
+  createMessageService,
+  findMessageByIdService,
+  getMyMessagesService,
+  markMessageAsReadService,
+};

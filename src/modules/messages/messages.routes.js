@@ -7,6 +7,7 @@ const { authorizeRoles } = require("./../../middlewares/auhtorizeRoles");
 const {
   createMessageController,
   findMessageByIdController,
+  markMessageAsReadController,
 } = require("./messages.controller");
 
 router.post(
@@ -23,4 +24,10 @@ router.get(
   findMessageByIdController,
 );
 
+router.patch(
+  "/:message_id/read",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Passenger", "Driver"]),
+  markMessageAsReadController,
+);
 module.exports = router;

@@ -18,6 +18,10 @@ const {
   getMyRequestResponseController,
 } = require("./../response_request/response_request.controller");
 
+const {
+  getMyMessagesController,
+} = require("./../messages/messages.controller");
+
 router.post("/register", regiterAuthController);
 
 router.post("/login", loginAuthController);
@@ -36,5 +40,12 @@ router.get(
   authenticateJWT,
   authorizeRoles(["Driver"]),
   getMyRequestResponseController,
+);
+
+router.get(
+  "/me/messages",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
+  getMyMessagesController,
 );
 module.exports = router;

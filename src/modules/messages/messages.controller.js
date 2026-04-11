@@ -1,6 +1,8 @@
 const {
   createMessageService,
   findMessageByIdService,
+  getMyMessagesService,
+  markMessageAsReadService,
 } = require("./messages.service");
 
 async function createMessageController(req, res) {
@@ -73,4 +75,69 @@ async function findMessageByIdController(req, res) {
   }
 }
 
-module.exports = { createMessageController, findMessageByIdController };
+async function getMyMessagesController(req, res) {
+  try {
+    const user_id = req.user.user_id;
+    const role = req.user;
+    const result = await getMyMessagesService(user_id, role);
+
+    if (!result.success) {
+      const statusMap = {
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        FORBIDDEN_ACCESS: 403,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching message:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching message",
+    });
+  }
+}
+
+async function markMessageAsReadController(req, res) {
+  try {
+    const message_id = req.params.message_id;
+    const user_id = req.user.user_id;
+    const role = req.user;
+    const result = await markMessageAsReadService(message_id, user_id, role);
+
+    if (!result.success) {
+      const statusMap = {
+        MISSING_MESSAGE_ID: 400,
+        INVALID_MESSAGE_ID: 400,
+        MESSAGE_NOT_FOUND: 404,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MESSAGE_NOT_FOUND: 404,
+        FORBIDDEN_ACCESS: 403,
+        MESSAGE_ALREADY_READ: 409,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching message:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching message",
+    });
+  }
+}
+
+module.exports = {
+  createMessageController,
+  findMessageByIdController,
+  getMyMessagesController,
+  markMessageAsReadController,
+};
