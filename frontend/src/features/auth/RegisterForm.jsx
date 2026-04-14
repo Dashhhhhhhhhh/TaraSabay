@@ -59,7 +59,6 @@ function RegisterForm() {
         console.error("Error:", error.message);
       }
     }
-
   };
 
   return (
