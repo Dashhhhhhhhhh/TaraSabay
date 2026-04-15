@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { validateContactNumber } from "./../../utils/helper";
-import axios from "../../api/axios";
+import { registerUser } from "./auth.api";
 
 function RegisterForm() {
   const [firstName, setFirstName] = useState("");
@@ -43,15 +43,8 @@ function RegisterForm() {
     };
 
     try {
-      const response = await axios.post("/auth/register", payload);
+      const response = await registerUser(payload);
       console.log("Register success:", response.data);
-      console.log(firstName);
-      console.log(lastName);
-      console.log(email);
-      console.log(password);
-      console.log(middleInitial);
-      console.log(contactNumber);
-      console.log(role);
     } catch (error) {
       if (error.response) {
         console.error("Error:", error.response.data);

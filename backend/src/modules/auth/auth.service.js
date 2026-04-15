@@ -168,6 +168,9 @@ async function loginAuthService(userData) {
     data: {
       user: {
         id: user.user_id,
+        first_name: user.first_name,
+        middle_initial: user.middle_initial,
+        last_name: user.last_name,
         email: user.email,
         role: user.role,
       },

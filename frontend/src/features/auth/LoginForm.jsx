@@ -1,7 +1,10 @@
 import { useState } from "react";
-import axios from "../../api/axios";
+import { useNavigate } from "react-router-dom";
+
+import { loginUser } from "./auth.api";
 
 function LoginForm() {
+  const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,10 +16,15 @@ function LoginForm() {
       password,
     };
     try {
-      const response = await axios.post("/auth/login", payload);
-      console.log("Login success:", response.data);
-      console.log(email);
-      console.log(password);
+      const response = await loginUser(payload);
+
+      localStorage.setItem("token", response.data.token);
+
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+
+      console.log("Login success:", response);
+
+      navigate("/homepage");
     } catch (error) {
       if (error.response) {
         console.error("Error:", error.response.data);
@@ -25,6 +33,7 @@ function LoginForm() {
       }
     }
   };
+
   return (
     <form onSubmit={handleLogin}>
       <div>

@@ -66,6 +66,9 @@ async function findUserAuthByEmail(email) {
   const result = await pool.query(
     `SELECT  
             u.user_id,
+            u.first_name,
+            u.middle_initial,
+            u.last_name,
             u.email,
             u.password_hash,
             u.is_active,
