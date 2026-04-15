@@ -2,7 +2,6 @@ import { useNavigate } from "react-router-dom";
 
 function HomePage() {
   const navigate = useNavigate();
-
   const user = JSON.parse(localStorage.getItem("user"));
 
   if (!user) {
@@ -13,8 +12,12 @@ function HomePage() {
       </main>
     );
   }
+
   const fullName = `${user.first_name} ${user?.middle_initial ? user.middle_initial + "." : ""} ${user.last_name}`;
 
+  const handleProfile = () => {
+    navigate("/profile");
+  };
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -35,8 +38,7 @@ function HomePage() {
       <button disabled>Ride Requests (Coming Soon)</button>
       <button disabled>Messages (Coming Soon)</button>
       <button disabled>Reports (Coming Soon)</button>
-      <button disabled>Profile (Coming Soon)</button>
-
+      <button onClick={handleProfile}>Profile </button>
       <button onClick={handleLogout}>Log Out</button>
     </main>
   );
