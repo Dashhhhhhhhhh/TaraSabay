@@ -6,11 +6,12 @@ import {
 } from "react-router-dom";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
-import RegisterPage from "./features/auth/RegisterPage";
-import LoginPage from "./features/auth/LoginPage";
+import RegisterPage from "./features/auth/pages/RegisterPage";
+import LoginPage from "./features/auth/pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import { UserProvider } from "./features/profile/UserContext";
-import ProfilePage from "./features/profile/ProfilePage";
+import ProfilePage from "./features/profile/pages/ProfilePage";
+import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
 
 function App() {
   return (
@@ -33,6 +34,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ride-offer"
+            element={
+              <ProtectedRoute>
+                <RideOfferPage />
               </ProtectedRoute>
             }
           />

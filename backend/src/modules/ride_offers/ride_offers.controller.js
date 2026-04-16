@@ -6,7 +6,7 @@ const {
   cancelRideOfferService,
 } = require("./ride_offers.service");
 
-async function createDriverProfileController(req, res) {
+async function createRideOfferController(req, res) {
   try {
     const result = await createRideOfferService(req.body);
 
@@ -158,7 +158,7 @@ async function cancelRideOfferController(req, res) {
 }
 
 module.exports = {
-  createDriverProfileController,
+  createRideOfferController,
   findRideOfferWithDriverInfoByiDController,
   getAllRideOffersController,
   updateRideOfferController,

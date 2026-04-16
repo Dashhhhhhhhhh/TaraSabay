@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { validateContactNumber } from "./../../utils/helper";
-import { registerUser } from "./auth.api";
+import { registerUser } from "./api/auth.api";
 
 function RegisterForm() {
   const [firstName, setFirstName] = useState("");

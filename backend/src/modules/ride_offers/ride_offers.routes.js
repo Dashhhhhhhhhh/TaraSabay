@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 
 const {
-  createDriverProfileController,
+  createRideOfferController,
   findRideOfferWithDriverInfoByiDController,
   getAllRideOffersController,
   updateRideOfferController,
@@ -20,7 +20,7 @@ router.post(
   "/",
   authenticateJWT,
   authorizeRoles(["Admin", "Driver"]),
-  createDriverProfileController,
+  createRideOfferController,
 );
 
 router.get(

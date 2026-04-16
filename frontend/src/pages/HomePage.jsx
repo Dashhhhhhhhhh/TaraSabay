@@ -18,6 +18,11 @@ function HomePage() {
   const handleProfile = () => {
     navigate("/profile");
   };
+
+  const handleRideOffers = () => {
+    navigate("/ride-offer");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -34,10 +39,10 @@ function HomePage() {
       </p>
       <p>You are now logged in to your dashboard.</p>
 
-      <button disabled>Ride Offers (Coming Soon)</button>
+      <button onClick={handleRideOffers}>Ride Offers</button>
       <button disabled>Ride Requests (Coming Soon)</button>
       <button disabled>Messages (Coming Soon)</button>
-      <button disabled>Reports (Coming Soon)</button>
+      <button onClick>Reports (Coming Soon)</button>
       <button onClick={handleProfile}>Profile </button>
       <button onClick={handleLogout}>Log Out</button>
     </main>
