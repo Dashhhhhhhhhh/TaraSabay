@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
-import {
-  createRideOffer,
-  getRideOfferById,
-  getRideOffers,
-  updateRideOffer,
-  cancelRideOffer,
-} from "../api/rideOffers.api";
+import { useNavigate } from "react-router-dom";
+
+import { getRideOffers } from "../api/rideOffers.api";
 
 function RideOfferPage() {
+  const navigate = useNavigate();
+
   const [rideOffers, setRideOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -18,13 +16,18 @@ function RideOfferPage() {
         const response = await getRideOffers();
         setRideOffers(response.data);
       } catch (err) {
-        console.error("Failed to fetch profile:", err);
+        console.error("Failed to fetch ride offers:", err);
+        setError(err.response?.data?.message || "Error fetching ride offers");
       } finally {
         setLoading(false);
       }
     };
     fetchRideOffers();
   }, []);
+
+  const handleHomepage = () => {
+    navigate("/homepage");
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -33,6 +36,11 @@ function RideOfferPage() {
   return (
     <main>
       <h1>Ride Offers</h1>
+      <p>View current transportation options in TaraSabay</p>
+
+      <button onc>Create Ride (Coming Soon)</button>
+      <button onClick={handleHomepage}>Homepage</button>
+
       <table>
         <thead>
           <tr>

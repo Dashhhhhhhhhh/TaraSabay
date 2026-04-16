@@ -14,19 +14,17 @@ const { cleanName, cleanString } = require("./../../utils/helper");
 async function createRideOfferService(offerData) {
   const {
     user_id,
-    driver_profile_id,
     pickup_location,
     dropoff_location,
     departure_time,
-    available_seats,
-    status,
+
     notes,
   } = offerData;
 
   const pickupLocation = cleanName(pickup_location);
-  const dropofflocation = cleanName(dropoff_location);
+  const dropoffLocation = cleanName(dropoff_location);
 
-  if (!user_id || !pickupLocation || !dropofflocation || !departure_time) {
+  if (!user_id || !pickupLocation || !dropoffLocation || !departure_time) {
     return {
       success: false,
       code: "MISSING_REQUIRED_FIELDS",
@@ -46,12 +44,12 @@ async function createRideOfferService(offerData) {
   if (!existingDriverProfile) {
     return {
       success: false,
-      code: " DRIVER_PROFILE_NOT_FOUND",
-      message: "No driver profile exists for the given user ID",
+      code: "DRIVER_PROFILE_NOT_FOUND",
+      message: "No driver profile exists for the given user ID.",
     };
   }
 
-  if (pickupLocation === dropoff_location) {
+  if (pickupLocation === dropoffLocation) {
     return {
       success: false,
       code: "SAME_PICKUP_AND_DROPOFF",
@@ -67,7 +65,6 @@ async function createRideOfferService(offerData) {
       message: "Departure time must be a valid timestamp.",
     };
   }
-
   if (departureDate <= new Date()) {
     return {
       success: false,
@@ -89,25 +86,24 @@ async function createRideOfferService(offerData) {
     return {
       success: false,
       code: "INVALID_SEAT_CAPACITY",
-      message: "Seat capcaity must be greater than 0",
+      message: "Seat capacity must be greater than 0.",
     };
   }
 
   const seat_capacity_snapshot = existingDriverProfile.seat_capacity;
   const vehicle_type_snapshot = existingDriverProfile.vehicle_type;
-
   const availableSeats = seat_capacity_snapshot;
 
-  const offer = await createRiderOffer({
-    user_id: user_id,
-    driver_profile_id: driver_profile_id,
+  const offer = await createRideOffer({
+    user_id,
+    driver_profile_id: existingDriverProfile.driver_profile_id,
     pickup_location: pickupLocation,
-    dropoff_location: dropofflocation,
+    dropoff_location: dropoffLocation,
     departure_time: departureDate,
-    vehicle_type_snapshot: vehicle_type_snapshot,
-    seat_capacity_snapshot: seat_capacity_snapshot,
+    vehicle_type_snapshot,
+    seat_capacity_snapshot,
     available_seats: availableSeats,
-    status: offerData.status || "open",
+    status: "open",
     notes: note,
   });
 

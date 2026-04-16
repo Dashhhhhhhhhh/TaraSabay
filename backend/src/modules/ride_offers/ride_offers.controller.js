@@ -8,7 +8,19 @@ const {
 
 async function createRideOfferController(req, res) {
   try {
-    const result = await createRideOfferService(req.body);
+    const user_id = req.user.user_id;
+
+    const { pickup_location, dropoff_location, departure_time, notes } =
+      req.body;
+
+    const payload = {
+      user_id,
+      pickup_location,
+      dropoff_location,
+      departure_time,
+      notes,
+    };
+    const result = await createRideOfferService(payload);
 
     if (!result.success) {
       const statusMap = {

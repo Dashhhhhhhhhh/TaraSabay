@@ -23,12 +23,6 @@ async function createRideRequestService(rider_user_id, requestData) {
   const pickupLocation = cleanName(pickup_location);
   const dropoffLocation = cleanName(dropoff_location);
 
-  console.log({
-    rider_user_id,
-    pickupLocation,
-    dropoffLocation,
-    departure_time: departure_time,
-  });
   if (
     !rider_user_id ||
     !pickupLocation ||
