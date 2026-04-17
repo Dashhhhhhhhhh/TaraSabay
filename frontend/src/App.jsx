@@ -12,6 +12,7 @@ import HomePage from "./pages/HomePage";
 import { UserProvider } from "./features/profile/UserContext";
 import ProfilePage from "./features/profile/pages/ProfilePage";
 import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
+import CreateRideOfferForm from "./features/ride-offers/components/CreateRideOfferForm";
 
 function App() {
   return (
@@ -42,6 +43,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <RideOfferPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/ride-offer/create"
+            element={
+              <ProtectedRoute>
+                <CreateRideOfferForm />
               </ProtectedRoute>
             }
           />

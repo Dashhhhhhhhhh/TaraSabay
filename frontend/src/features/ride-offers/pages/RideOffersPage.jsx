@@ -29,6 +29,9 @@ function RideOfferPage() {
     navigate("/homepage");
   };
 
+  const handleCreateRide = () => {
+    navigate("/ride-offer/create");
+  };
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
   if (!rideOffers || rideOffers.length === 0)
@@ -38,7 +41,7 @@ function RideOfferPage() {
       <h1>Ride Offers</h1>
       <p>View current transportation options in TaraSabay</p>
 
-      <button onc>Create Ride (Coming Soon)</button>
+      <button onClick={handleCreateRide}>Create Ride</button>
       <button onClick={handleHomepage}>Homepage</button>
 
       <table>
