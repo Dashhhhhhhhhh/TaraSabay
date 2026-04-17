@@ -1,6 +1,6 @@
 const {
   findDriverProfileByUserId,
-  createRiderOffer,
+  createRideOffer,
   findRideOfferWithDriverInfoByiD,
   getAllRideOffers,
   updateRideOffer,

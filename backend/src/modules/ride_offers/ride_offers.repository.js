@@ -16,7 +16,7 @@ async function findDriverProfileByUserId(user_id) {
   return result.rows[0];
 }
 
-async function createRiderOffer(offerData) {
+async function createRideOffer(offerData) {
   const result = await pool.query(
     `INSERT INTO ride_offers (
         user_id,
@@ -173,7 +173,7 @@ async function getRideOfferById(ride_offer_id) {
 
 module.exports = {
   findDriverProfileByUserId,
-  createRiderOffer,
+  createRideOffer,
   findRideOfferWithDriverInfoByiD,
   getAllRideOffers,
   updateRideOffer,

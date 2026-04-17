@@ -48,7 +48,6 @@ function CreateRideOfferForm() {
       return;
     }
 
-    // only set loading once validation has passed
     setLoading(true);
 
     const payload = {
@@ -61,7 +60,7 @@ function CreateRideOfferForm() {
     try {
       const response = await createRideOffer(payload);
       console.log("Ride offer created successfully:", response.data);
-      navigate("/ride-offers");
+      navigate("/ride-offer");
     } catch (error) {
       console.error("Failed to create ride offer:", error);
       setError(error.response?.data?.message || "Error creating ride offer");
@@ -69,14 +68,19 @@ function CreateRideOfferForm() {
       setLoading(false);
     }
   };
+
+  const handleCancel = () => {
+    navigate("/ride-offer");
+  };
   return (
     <main>
       <h1>Create Ride Offer</h1>
       <p>Fill in the trip details below to post your ride for passengers.</p>
 
       {loading && <p>Submitting...</p>}
-      {error && <p style={{ color: "red" }}>Error: {error}</p>}
-
+      {error && (
+        <p style={{ color: "red", marginBottom: "1rem" }}>Error: {error}</p>
+      )}
       <form onSubmit={handleSubmit}>
         <div>
           <label>Pickup Location</label>
@@ -85,6 +89,7 @@ function CreateRideOfferForm() {
             value={pickupLocation}
             onChange={(e) => setPickupLocation(e.target.value)}
             required
+            disabled={loading} // disable while loading
           />
         </div>
 
@@ -95,6 +100,7 @@ function CreateRideOfferForm() {
             value={dropoffLocation}
             onChange={(e) => setDropoffLocation(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
 
@@ -105,6 +111,7 @@ function CreateRideOfferForm() {
             value={departureTime}
             onChange={(e) => setDepartureTime(e.target.value)}
             required
+            disabled={loading}
           />
         </div>
 
@@ -114,11 +121,16 @@ function CreateRideOfferForm() {
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             maxLength={500}
+            disabled={loading}
+            rows={5}
           />
         </div>
 
         <button type="submit" disabled={loading}>
           Create Offer
+        </button>
+        <button onClick={handleCancel} type="button" disabled={loading}>
+          cancel
         </button>
       </form>
     </main>

@@ -42,7 +42,7 @@ function HomePage() {
       <button onClick={handleRideOffers}>Ride Offers</button>
       <button disabled>Ride Requests (Coming Soon)</button>
       <button disabled>Messages (Coming Soon)</button>
-      <button onClick>Reports (Coming Soon)</button>
+      <button disabled>Reports (Coming Soon)</button>
       <button onClick={handleProfile}>Profile </button>
       <button onClick={handleLogout}>Log Out</button>
     </main>
