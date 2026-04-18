@@ -65,7 +65,7 @@ router.get(
 router.get(
   "/me/driver-profile",
   authenticateJWT,
-  authorizeRoles(["Admin", "Driver"]),
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
   getMyDriverProfileController,
 );
 

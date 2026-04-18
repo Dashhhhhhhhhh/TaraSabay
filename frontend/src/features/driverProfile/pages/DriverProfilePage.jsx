@@ -1,11 +1,20 @@
 import { useEffect, useState } from "react";
-import { getMyDriverProfile } from "../api/driverProfile.api";
+import { useNavigate } from "react-router-dom";
+
+import {
+  createDriverProfile,
+  getMyDriverProfile,
+} from "../api/driverProfile.api";
+import DriverProfileForm from "../DriverProfileForm";
 
 function DriveProfilePage() {
+  const navigate = useNavigate();
+
   const [driver, setDriver] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const [showCreateForm, setShowCreateForm] = useState(false);
   useEffect(() => {
     const fetchDriverProfile = async () => {
       try {
@@ -16,6 +25,8 @@ function DriveProfilePage() {
         setError(err.response?.data?.message || "Error fetching ride offers");
       } finally {
         setLoading(false);
+        setDriver(null);
+        setError(null);
       }
     };
     fetchDriverProfile();
@@ -44,10 +55,34 @@ function DriveProfilePage() {
             </ul>
           </div>
         ) : (
-          <p>No driver profile found.</p>
+          <div className="empty-state">
+            <h2>No Driver Profile Found</h2>
+            <p>
+              No Driver Profile Yet You can still use TaraSabay as a passenger.
+              If you also want to offer rides, set up your driver profile first.
+            </p>
+            <button onClick={() => setShowCreateForm(true)}>
+              Create Driver Profile
+            </button>
+          </div>
         )}
       </div>
-      <button onClick={handleHomepage}>Homepage </button>
+      {showCreateForm && (
+        <DriverProfileForm
+          onSubmit={async (payload) => {
+            try {
+              const response = await createDriverProfile(payload);
+              setDriver(response.data);
+              setShowCreateForm(false);
+            } catch (err) {
+              setError(
+                err.response?.data?.message || "Failed to create profile",
+              );
+            }
+          }}
+        />
+      )}
+      <button onClick={handleHomepage}>Homepage</button>
     </main>
   );
 }

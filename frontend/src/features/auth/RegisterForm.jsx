@@ -1,23 +1,19 @@
-import { useState } from "react";
-import { validateContactNumber } from "./../../utils/helper";
-import { registerUser } from "./api/auth.api";
+import { useEffect, useState } from "react";
+import { validateContactNumber } from "../../utils/helper";
 
-function RegisterForm() {
+function RegisterForm({ onSubmit }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
   const [middleInitial, setMiddleInitial] = useState("");
   const [contactNumber, setContactNumber] = useState("");
-
   const [role, setRole] = useState("");
 
-  const handleRegister = async (event) => {
+  const handleRegister = (event) => {
     event.preventDefault();
 
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
-
     if (!passwordRegex.test(password)) {
       alert(
         "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.",
@@ -42,16 +38,7 @@ function RegisterForm() {
       role_name: role,
     };
 
-    try {
-      const response = await registerUser(payload);
-      console.log("Register success:", response.data);
-    } catch (error) {
-      if (error.response) {
-        console.error("Error:", error.response.data);
-      } else {
-        console.error("Error:", error.message);
-      }
-    }
+    onSubmit(payload);
   };
 
   return (

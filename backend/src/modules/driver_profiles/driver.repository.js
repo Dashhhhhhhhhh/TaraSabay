@@ -26,7 +26,7 @@ async function findDriverProfileByUserId(user_id) {
   return result.rows[0];
 }
 
-async function findDriverProfileWithUserInfoByUserId(user_id) {
+async function getDriverProfileByUserId(user_id) {
   const result = await pool.query(
     `SELECT
         d.driver_profile_id,
@@ -122,7 +122,7 @@ module.exports = {
   findDriverProfileByUserId,
   findUserById,
   createDriverProfile,
-  findDriverProfileWithUserInfoByUserId,
+  getDriverProfileByUserId,
   findDriverProfileById,
   updateDriverProfile,
   getMyDriverProfile,

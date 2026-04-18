@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
   createDriverProfileController,
-  findDriverProfileWithUserInfoByUserIdController,
+  getDriverProfileByUserIdController,
   updateDriverProfileController,
 } = require("./driver.controller");
 
@@ -21,7 +21,7 @@ router.get(
   "/:user_id",
   authenticateJWT,
   authorizeRoles(["Admin", "Driver"]),
-  findDriverProfileWithUserInfoByUserIdController,
+  getDriverProfileByUserIdController,
 );
 
 router.patch(

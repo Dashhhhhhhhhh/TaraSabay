@@ -1,6 +1,6 @@
 const {
   createDriverProfileService,
-  findDriverProfileWithUserInfoByUserIdService,
+  getDriverProfileByUserIdService,
   updateDriverProfileService,
   getMyDriverProfileService,
 } = require("./driver.service");
@@ -31,11 +31,9 @@ async function createDriverProfileController(req, res) {
   }
 }
 
-async function findDriverProfileWithUserInfoByUserIdController(req, res) {
+async function getDriverProfileByUserIdController(req, res) {
   try {
-    const result = await findDriverProfileWithUserInfoByUserIdService(
-      req.user.user_id,
-    );
+    const result = await getDriverProfileByUserIdService(req.user.user_id);
 
     if (!result.success) {
       const statusMap = {
@@ -68,6 +66,7 @@ async function updateDriverProfileController(req, res) {
 
     if (!result.success) {
       const statusMap = {
+        MISSING_DRIVER_PROFILE_ID: 400,
         INVALID_DRIVER_PROFILE_ID: 400,
         DRIVER_PROFILE_NOT_FOUND: 404,
         INVALID_VEHICLE_TYPE: 400,
@@ -99,7 +98,7 @@ async function getMyDriverProfileController(req, res) {
         MISSING_USER_ID: 400,
         INVALID_USER_ID: 404,
         USER_NOT_FOUND: 404,
-        NO_DRIVER_PROFILE: 400,
+        DRIVER_PROFILE_NOT_FOUND: 404,
       };
       const status = statusMap[result.code] || 500;
       return res.status(status).json(result);
@@ -116,7 +115,7 @@ async function getMyDriverProfileController(req, res) {
 
 module.exports = {
   createDriverProfileController,
-  findDriverProfileWithUserInfoByUserIdController,
+  getDriverProfileByUserIdController,
   updateDriverProfileController,
   getMyDriverProfileController,
 };

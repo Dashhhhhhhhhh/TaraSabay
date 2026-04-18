@@ -15,6 +15,7 @@ import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
 import CreateRideOfferForm from "./features/ride-offers/components/CreateRideOfferForm";
 import RideOfferDetailsModal from "./features/ride-offers/components/RideOfferList";
 import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
+import DriverProfileForm from "./features/driverProfile/DriverProfileForm";
 
 function App() {
   return (
@@ -71,6 +72,15 @@ function App() {
             element={
               <ProtectedRoute>
                 <DriveProfilePage />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/driver/driver-form"
+            element={
+              <ProtectedRoute>
+                <DriverProfileForm />
               </ProtectedRoute>
             }
           />
