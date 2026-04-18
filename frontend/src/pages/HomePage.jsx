@@ -23,6 +23,10 @@ function HomePage() {
     navigate("/ride-offer");
   };
 
+  const handleDriverProfile = () => {
+    navigate("/driver");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -44,6 +48,7 @@ function HomePage() {
       <button disabled>Messages (Coming Soon)</button>
       <button disabled>Reports (Coming Soon)</button>
       <button onClick={handleProfile}>Profile </button>
+      <button onClick={handleDriverProfile}>Driver Profile</button>
       <button onClick={handleLogout}>Log Out</button>
     </main>
   );

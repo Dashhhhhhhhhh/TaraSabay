@@ -98,6 +98,26 @@ async function updateDriverProfile(driver_profile_id, updatedData) {
   return result.rows[0];
 }
 
+async function getMyDriverProfile(user_id) {
+  const result = await pool.query(
+    `SELECT
+      d.vehicle_type,
+      d.seat_capacity,
+      d.created_at,
+      d.updated_at,
+      u.first_name,
+      u.middle_initial,
+      u.last_name,
+      u.first_name || ' ' || u.last_name AS user_full_name    
+    FROM driver_profiles d
+    LEFT JOIN users u
+      ON d.user_id = u.user_id
+    WHERE d.user_id = $1 `,
+    [user_id],
+  );
+  return result.rows[0];
+}
+
 module.exports = {
   findDriverProfileByUserId,
   findUserById,
@@ -105,4 +125,5 @@ module.exports = {
   findDriverProfileWithUserInfoByUserId,
   findDriverProfileById,
   updateDriverProfile,
+  getMyDriverProfile,
 };

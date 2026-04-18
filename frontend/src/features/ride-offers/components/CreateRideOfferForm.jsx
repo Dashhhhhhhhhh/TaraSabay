@@ -16,12 +16,11 @@ function CreateRideOfferForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    setError(null); // clear old errors
+    setError(null);
 
     const cleanPickupLocation = cleanName(pickupLocation);
     const cleanDropOffLocation = cleanName(dropoffLocation);
 
-    // validation first
     if (!cleanPickupLocation || !cleanDropOffLocation || !departureTime) {
       setError("All required fields must be provided.");
       return;
@@ -89,7 +88,7 @@ function CreateRideOfferForm() {
             value={pickupLocation}
             onChange={(e) => setPickupLocation(e.target.value)}
             required
-            disabled={loading} // disable while loading
+            disabled={loading}
           />
         </div>
 

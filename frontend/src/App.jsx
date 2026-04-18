@@ -13,6 +13,8 @@ import { UserProvider } from "./features/profile/UserContext";
 import ProfilePage from "./features/profile/pages/ProfilePage";
 import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
 import CreateRideOfferForm from "./features/ride-offers/components/CreateRideOfferForm";
+import RideOfferDetailsModal from "./features/ride-offers/components/RideOfferList";
+import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
 
 function App() {
   return (
@@ -51,6 +53,24 @@ function App() {
             element={
               <ProtectedRoute>
                 <CreateRideOfferForm />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/ride-offer/:ride_offer_id"
+            element={
+              <ProtectedRoute>
+                <RideOfferDetailsModal />
+              </ProtectedRoute>
+            }
+          />
+
+          <Route
+            path="/driver"
+            element={
+              <ProtectedRoute>
+                <DriveProfilePage />
               </ProtectedRoute>
             }
           />

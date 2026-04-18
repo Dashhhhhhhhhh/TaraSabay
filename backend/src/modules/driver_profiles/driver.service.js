@@ -9,6 +9,7 @@ const {
   findDriverProfileWithUserInfoByUserId,
   findDriverProfileById,
   updateDriverProfile,
+  getMyDriverProfile,
 } = require("./driver.repository");
 
 async function createDriverProfileService(driverData) {
@@ -192,8 +193,52 @@ async function updateDriverProfileService(driver_profile_id, updatedData) {
   };
 }
 
+async function getMyDriverProfileService(user_id) {
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required",
+    };
+  }
+
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+  }
+
+  const user = await findUserById(user_id);
+  if (!user) {
+    return {
+      success: false,
+      code: "USER_NOT_FOUND",
+      message: "No user found for the given ID.",
+    };
+  }
+
+  const driver = await getMyDriverProfile(user_id);
+  if (!driver) {
+    return {
+      success: false,
+      code: "NO_DRIVER_PROFILE",
+      message: "No driver profile found for this user.",
+    };
+  }
+
+  return {
+    success: true,
+    code: "FETCH_MY_DRIVER_PROFILE_SUCCESS",
+    message: "Driver profile retrieved successfully.",
+    data: driver,
+  };
+}
+
 module.exports = {
   createDriverProfileService,
   findDriverProfileWithUserInfoByUserIdService,
   updateDriverProfileService,
+  getMyDriverProfileService,
 };

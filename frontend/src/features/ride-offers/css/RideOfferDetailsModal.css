@@ -1,0 +1,46 @@
+/* Modal overlay */
+.ride-offer-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+/* Card content */
+.ride-offer-modal-content {
+  background: #fff;
+  width: 100%;
+  max-width: 500px;
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
+}
+
+
+.ride-offer-modal-content h2 {
+  margin: 0 0 1rem;
+}
+
+.ride-offer-modal-content p {
+  margin: 0 0 0.75rem;
+  line-height: 1.4;
+}
+
+.ride-offer-modal-content button {
+  display: block;
+  width: 100%;
+  margin-top: 1rem;
+  padding: 0.75rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
