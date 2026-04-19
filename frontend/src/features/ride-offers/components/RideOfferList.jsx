@@ -1,4 +1,3 @@
-
 function RideOfferList({ rideOffers, onViewRideOffer }) {
   return (
     <table>

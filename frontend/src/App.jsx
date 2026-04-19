@@ -12,8 +12,8 @@ import HomePage from "./pages/HomePage";
 import { UserProvider } from "./features/profile/UserContext";
 import ProfilePage from "./features/profile/pages/ProfilePage";
 import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
-import CreateRideOfferForm from "./features/ride-offers/components/CreateRideOfferForm";
-import RideOfferDetailsModal from "./features/ride-offers/components/RideOfferList";
+import RideOfferForm from "./features/ride-offers/components/RideOfferForm";
+import RideOfferDetailsModal from "./features/ride-offers/components/RideOfferDetailsModal";
 import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
 import DriverProfileForm from "./features/driverProfile/DriverProfileForm";
 
@@ -50,10 +50,10 @@ function App() {
             }
           />
           <Route
-            path="/ride-offer/create"
+            path="/ride-offer/ride-offer-form"
             element={
               <ProtectedRoute>
-                <CreateRideOfferForm />
+                <RideOfferForm />
               </ProtectedRoute>
             }
           />

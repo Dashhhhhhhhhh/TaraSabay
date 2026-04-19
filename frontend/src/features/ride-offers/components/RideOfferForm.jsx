@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createRideOffer } from "../api/rideOffers.api";
 import { cleanName, cleanString } from "../../../utils/helper";
 
-function CreateRideOfferForm() {
+function CreateRideOfferForm({ onSubmit }) {
   const navigate = useNavigate();
 
   const [pickupLocation, setPickupLocation] = useState("");
@@ -17,52 +17,53 @@ function CreateRideOfferForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setError(null);
-
-    const cleanPickupLocation = cleanName(pickupLocation);
-    const cleanDropOffLocation = cleanName(dropoffLocation);
-
-    if (!cleanPickupLocation || !cleanDropOffLocation || !departureTime) {
-      setError("All required fields must be provided.");
-      return;
-    }
-
-    if (cleanPickupLocation === cleanDropOffLocation) {
-      setError("Pickup and dropoff locations must not be the same.");
-      return;
-    }
-
-    const departureDate = new Date(departureTime);
-    if (isNaN(departureDate.getTime())) {
-      setError("Departure time must be a valid timestamp.");
-      return;
-    }
-    if (departureDate <= new Date()) {
-      setError("Departure time must be in the future.");
-      return;
-    }
-
-    const note = cleanString(notes);
-    if (note && note.length > 500) {
-      setError("Notes is too long (max 500 characters).");
-      return;
-    }
-
     setLoading(true);
 
-    const payload = {
-      pickup_location: cleanPickupLocation,
-      dropoff_location: cleanDropOffLocation,
-      departure_time: departureDate.toISOString(),
-      notes: note || null,
-    };
-
     try {
+      const cleanPickupLocation = cleanName(pickupLocation);
+      const cleanDropOffLocation = cleanName(dropoffLocation);
+
+      if (!cleanPickupLocation || !cleanDropOffLocation || !departureTime) {
+        setError("All required fields must be provided.");
+        return;
+      }
+
+      if (cleanPickupLocation === cleanDropOffLocation) {
+        setError("Pickup and dropoff locations must not be the same.");
+        return;
+      }
+
+      const departureDate = new Date(departureTime);
+      if (isNaN(departureDate.getTime())) {
+        setError("Departure time must be a valid timestamp.");
+        return;
+      }
+      if (departureDate <= new Date()) {
+        setError("Departure time must be in the future.");
+        return;
+      }
+
+      const note = cleanString(notes);
+      if (note && note.length > 500) {
+        setError("Notes is too long (max 500 characters).");
+        return;
+      }
+
+      const payload = {
+        pickup_location: cleanPickupLocation,
+        dropoff_location: cleanDropOffLocation,
+        departure_time: departureDate.toISOString(),
+        notes: note || null,
+      };
+
       const response = await createRideOffer(payload);
-      console.log("Ride offer created successfully:", response.data);
+      if (onSubmit) {
+        onSubmit(response.data);
+      }
+
       navigate("/ride-offer");
-    } catch (error) {
-      console.error("Failed to create ride offer:", error);
-      setError(error.response?.data?.message || "Error creating ride offer");
+    } catch (err) {
+      setError(err.response?.data?.message || "Failed to create ride offer");
     } finally {
       setLoading(false);
     }
@@ -71,6 +72,7 @@ function CreateRideOfferForm() {
   const handleCancel = () => {
     navigate("/ride-offer");
   };
+
   return (
     <main>
       <h1>Create Ride Offer</h1>

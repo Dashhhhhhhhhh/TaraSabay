@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { getRideOffers } from "../api/rideOffers.api";
+import { getRideOffers, createRideOffer } from "../api/rideOffers.api";
 import RideOfferList from "../components/RideOfferList";
+import RideOfferForm from "../components/RideOfferForm";
 import RideOfferDetailsModal from "../components/RideOfferDetailsModal";
-
 function RideOfferPage() {
   const navigate = useNavigate();
 
@@ -13,6 +13,8 @@ function RideOfferPage() {
   const [error, setError] = useState(null);
 
   const [selectedRideOffer, setSelectedRideOffer] = useState(null);
+
+  const [showCreateForm, setShowCreateForm] = useState(false);
 
   useEffect(() => {
     const fetchRideOffers = async () => {
@@ -38,7 +40,7 @@ function RideOfferPage() {
   };
 
   const handleCreateRide = () => {
-    navigate("/ride-offer/create");
+    navigate("/ride-offer/ride-offer-form");
   };
 
   const handleCloseModal = () => {
@@ -49,6 +51,7 @@ function RideOfferPage() {
   if (error) return <p>Error: {error}</p>;
   if (!rideOffers || rideOffers.length === 0)
     return <p>No ride offers found.</p>;
+
   return (
     <main>
       <h1>Ride Offers</h1>
@@ -66,6 +69,23 @@ function RideOfferPage() {
         <RideOfferDetailsModal
           rideOffer={selectedRideOffer}
           onClose={handleCloseModal}
+        />
+      )}
+
+      {showCreateForm && (
+        <RideOfferForm
+          onSubmit={async (payload) => {
+            try {
+              await createRideOffer(payload);
+              const response = await getRideOffers();
+              setRideOffers(response.data);
+              setShowCreateForm(false);
+            } catch (err) {
+              setError(
+                err.response?.data?.message || "Failed to create profile",
+              );
+            }
+          }}
         />
       )}
     </main>

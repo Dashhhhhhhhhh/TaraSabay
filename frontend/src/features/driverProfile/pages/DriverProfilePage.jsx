@@ -81,28 +81,6 @@ function DriveProfilePage() {
         />
       )}
 
-      {showCreateForm && (
-        <DriverProfileForm
-          onSubmit={async (payload) => {
-            try {
-              console.log("Payload:", payload);
-
-              await createDriverProfile(payload);
-
-              const profile = await getMyDriverProfile();
-
-              setDriver(profile.data);
-
-              setShowCreateForm(false);
-            } catch (err) {
-              setError(
-                err.response?.data?.message || "Failed to create profile",
-              );
-            }
-          }}
-        />
-      )}
-
       {showEditForm && (
         <DriverProfileForm
           initialValues={driver}
