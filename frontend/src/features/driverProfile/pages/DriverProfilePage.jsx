@@ -1,11 +1,15 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+import DriverProfileEmptyState from "./../DriverProfileEmptyState";
+import DriverProfileForm from "../DriverProfileForm";
+import DriverProfileCard from "../DriverProfileCard";
+
 import {
   createDriverProfile,
   getMyDriverProfile,
+  updateDriverProfile,
 } from "../api/driverProfile.api";
-import DriverProfileForm from "../DriverProfileForm";
 
 function DriveProfilePage() {
   const navigate = useNavigate();
@@ -15,22 +19,27 @@ function DriveProfilePage() {
   const [error, setError] = useState(null);
 
   const [showCreateForm, setShowCreateForm] = useState(false);
+
+  const [showEditForm, setShowEditForm] = useState(false);
+
   useEffect(() => {
     const fetchDriverProfile = async () => {
       try {
         const response = await getMyDriverProfile();
         setDriver(response.data);
       } catch (err) {
-        console.error("Failed to fetch driver profile:", err);
-        setError(err.response?.data?.message || "Error fetching ride offers");
-      } finally {
-        setLoading(false);
         setDriver(null);
         setError(null);
+      } finally {
+        setLoading(false);
       }
     };
     fetchDriverProfile();
   }, []);
+
+  const handleEdit = () => {
+    setShowEditForm(true);
+  };
 
   const handleHomepage = () => {
     navigate("/homepage");
@@ -42,37 +51,26 @@ function DriveProfilePage() {
   return (
     <main>
       <div>
-        {driver ? (
-          <div>
-            <h1>Driver Profile</h1>
-            <p>Manage your driver setup information for offering rides.</p>
-            <ul>
-              <li>Name: {driver.user_full_name}</li>
-              <li>Vehicle: {driver.vehicle_type}</li>
-              <li>Seats: {driver.seat_capacity}</li>
-              <li>Created at: {driver.created_at}</li>
-              <li>Updated at: {driver.updated_at}</li>
-            </ul>
-          </div>
+        {driver && !showEditForm ? (
+          <DriverProfileCard
+            driver={driver}
+            onEdit={() => setShowEditForm(true)}
+          />
         ) : (
-          <div className="empty-state">
-            <h2>No Driver Profile Found</h2>
-            <p>
-              No Driver Profile Yet You can still use TaraSabay as a passenger.
-              If you also want to offer rides, set up your driver profile first.
-            </p>
-            <button onClick={() => setShowCreateForm(true)}>
-              Create Driver Profile
-            </button>
-          </div>
+          !driver &&
+          !showCreateForm && (
+            <DriverProfileEmptyState onCreate={() => setShowCreateForm(true)} />
+          )
         )}
       </div>
+
       {showCreateForm && (
         <DriverProfileForm
           onSubmit={async (payload) => {
             try {
-              const response = await createDriverProfile(payload);
-              setDriver(response.data);
+              await createDriverProfile(payload);
+              const profile = await getMyDriverProfile();
+              setDriver(profile.data);
               setShowCreateForm(false);
             } catch (err) {
               setError(
@@ -82,6 +80,52 @@ function DriveProfilePage() {
           }}
         />
       )}
+
+      {showCreateForm && (
+        <DriverProfileForm
+          onSubmit={async (payload) => {
+            try {
+              console.log("Payload:", payload);
+
+              await createDriverProfile(payload);
+
+              const profile = await getMyDriverProfile();
+
+              setDriver(profile.data);
+
+              setShowCreateForm(false);
+            } catch (err) {
+              setError(
+                err.response?.data?.message || "Failed to create profile",
+              );
+            }
+          }}
+        />
+      )}
+
+      {showEditForm && (
+        <DriverProfileForm
+          initialValues={driver}
+          onSubmit={async (driver_profile_id, payload) => {
+            try {
+              console.log(driver);
+              console.log(driver?.driver_profile_id);
+
+              await updateDriverProfile(driver.driver_profile_id, payload);
+
+              const profile = await getMyDriverProfile();
+              setDriver(profile.data);
+
+              setShowEditForm(false);
+            } catch (err) {
+              setError(
+                err.response?.data?.message || "Failed to create profile",
+              );
+            }
+          }}
+        />
+      )}
+
       <button onClick={handleHomepage}>Homepage</button>
     </main>
   );

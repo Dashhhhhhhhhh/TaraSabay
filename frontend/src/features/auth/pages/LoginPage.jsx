@@ -4,7 +4,7 @@ import LoginForm from "../LoginForm";
 function LoginPage() {
   return (
     <main>
-      <h1>TARASABAY</h1>
+      <h1>TaraSabay</h1>
       <p>
         TaraSabay makes daily commuting easier by helping communities share
         rides, save gas, and save money.

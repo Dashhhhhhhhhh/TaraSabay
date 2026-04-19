@@ -3,6 +3,7 @@ const router = express.Router();
 
 const {
   createDriverProfileController,
+  getMyDriverProfileController,
   getDriverProfileByUserIdController,
   updateDriverProfileController,
 } = require("./driver.controller");
@@ -13,7 +14,7 @@ const { authorizeRoles } = require("./../../middlewares/auhtorizeRoles");
 router.post(
   "/",
   authenticateJWT,
-  authorizeRoles(["Admin", "Driver"]),
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
   createDriverProfileController,
 );
 
@@ -27,7 +28,7 @@ router.get(
 router.patch(
   "/:driver_profile_id",
   authenticateJWT,
-  authorizeRoles(["Admin", "Driver"]),
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
   updateDriverProfileController,
 );
 module.exports = router;

@@ -88,7 +88,8 @@ async function updateDriverProfile(driver_profile_id, updatedData) {
         UPDATE driver_profiles
         SET
             vehicle_type = $1,
-            seat_capacity = $2
+            seat_capacity = $2,
+            updated_at = NOW()
         WHERE
             driver_profile_id = $3
         RETURNING *;
@@ -101,6 +102,7 @@ async function updateDriverProfile(driver_profile_id, updatedData) {
 async function getMyDriverProfile(user_id) {
   const result = await pool.query(
     `SELECT
+      d.driver_profile_id,
       d.vehicle_type,
       d.seat_capacity,
       d.created_at,

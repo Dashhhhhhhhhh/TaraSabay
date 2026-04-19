@@ -7,9 +7,13 @@ const {
 
 async function createDriverProfileController(req, res) {
   try {
-    const result = await createDriverProfileService(req.body);
+    const user_id = req.user.user_id;
+    const { vehicle_type, seat_capacity } = req.body;
 
-    if (!result.succcess) {
+    const payload = { user_id, vehicle_type, seat_capacity };
+    const result = await createDriverProfileService(payload);
+
+    if (!result.success) {
       const statusMap = {
         MISSING_REQUIRED_FIELDS: 400,
         INVALID_USER_ID: 400,

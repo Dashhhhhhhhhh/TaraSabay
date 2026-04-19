@@ -1,9 +1,16 @@
 import { useState } from "react";
 import { cleanName } from "../../utils/helper";
+import { useNavigate } from "react-router-dom";
 
-function DriverProfileForm({ onSubmit }) {
-  const [vehicle_type, setVehicleType] = useState("");
-  const [seatCapacity, setSeatCapacity] = useState("");
+function DriverProfileForm({ onSubmit, initialValues }) {
+  const navigate = useNavigate();
+
+  const [vehicle_type, setVehicleType] = useState(
+    initialValues?.vehicle_type || "",
+  );
+  const [seatCapacity, setSeatCapacity] = useState(
+    initialValues?.seat_capacity || "",
+  );
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -26,8 +33,15 @@ function DriverProfileForm({ onSubmit }) {
       seat_capacity: parsedSeatCapacity,
     };
 
-    // ✅ Pass cleaned data upward
-    onSubmit(payload);
+    if (initialValues?.driver_profile_id) {
+      onSubmit(initialValues.driver_profile_id, payload);
+    } else {
+      onSubmit(payload);
+    }
+  };
+
+  const handleBack = () => {
+    navigate("/driver");
   };
 
   return (
@@ -57,7 +71,11 @@ function DriverProfileForm({ onSubmit }) {
         />
       </div>
 
-      <button type="submit">Create Driver Profile</button>
+      <button type="submit">
+        {initialValues ? "Update Driver Profile" : "Create Driver Profile"}
+      </button>
+
+      <button onClick={handleBack}>Back</button>
     </form>
   );
 }

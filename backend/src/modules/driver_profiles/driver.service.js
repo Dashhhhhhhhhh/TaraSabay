@@ -6,7 +6,7 @@ const {
   findDriverProfileByUserId,
   findUserById,
   createDriverProfile,
-  findDriverProfileWithUserInfoByUserId,
+  getDriverProfileByUserId,
   findDriverProfileById,
   updateDriverProfile,
   getMyDriverProfile,
@@ -14,6 +14,14 @@ const {
 
 async function createDriverProfileService(driverData) {
   const { user_id, vehicle_type, seat_capacity } = driverData;
+
+  console.log("Service called with payload:", {
+    user_id,
+    vehicle_type,
+    seat_capacity,
+  });
+
+  console.log("Validating user_id:", `"${user_id}"`, typeof user_id);
 
   const cleanVehicleType = cleanName(vehicle_type);
 
@@ -59,6 +67,7 @@ async function createDriverProfileService(driverData) {
       message: "Vehicle type must be one of: sedan, van, SUV, or motorcycle.",
     };
   }
+
   const parsedSeatCapacity = Number(seat_capacity);
 
   if (!Number.isInteger(parsedSeatCapacity)) {
@@ -78,7 +87,7 @@ async function createDriverProfileService(driverData) {
   }
 
   const driver = await createDriverProfile({
-    user_id: user_id,
+    user_id,
     vehicle_type: cleanVehicleType,
     seat_capacity: parsedSeatCapacity,
   });
@@ -111,7 +120,7 @@ async function getDriverProfileByUserIdService(user_id) {
     };
   }
 
-  const driver = await findDriverProfileWithUserInfoByUserId(user_id);
+  const driver = await getDriverProfileByUserId(user_id);
 
   if (!driver) {
     return {
