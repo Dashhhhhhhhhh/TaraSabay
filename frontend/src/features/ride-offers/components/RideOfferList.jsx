@@ -1,4 +1,8 @@
+import { useNavigate } from "react-router-dom";
+
 function RideOfferList({ rideOffers, onViewRideOffer }) {
+  const navigate = useNavigate();
+
   return (
     <table>
       <thead>
@@ -22,6 +26,14 @@ function RideOfferList({ rideOffers, onViewRideOffer }) {
             <td>
               <button type="button" onClick={() => onViewRideOffer(offer)}>
                 View
+              </button>
+              <button
+                type="button"
+                onClick={() =>
+                  navigate(`/ride-offer/${offer.ride_offer_id}/edit`)
+                }
+              >
+                Edit
               </button>
             </td>
           </tr>

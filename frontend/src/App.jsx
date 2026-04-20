@@ -11,11 +11,12 @@ import LoginPage from "./features/auth/pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import { UserProvider } from "./features/profile/UserContext";
 import ProfilePage from "./features/profile/pages/ProfilePage";
+
 import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
-import RideOfferForm from "./features/ride-offers/components/RideOfferForm";
-import RideOfferDetailsModal from "./features/ride-offers/components/RideOfferDetailsModal";
+import CreateRideOfferPage from "./features/ride-offers/pages/CreateRideOfferpage";
+import EditRideOfferPage from "./features/ride-offers/pages/EditRideOfferPage";
+
 import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
-import DriverProfileForm from "./features/driverProfile/DriverProfileForm";
 
 function App() {
   return (
@@ -25,65 +26,23 @@ function App() {
           <Route path="/" element={<Navigate to="/login" />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="/homepage"
-            element={
-              <ProtectedRoute>
-                <HomePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/profile"
-            element={
-              <ProtectedRoute>
-                <ProfilePage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ride-offer"
-            element={
-              <ProtectedRoute>
-                <RideOfferPage />
-              </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/ride-offer/ride-offer-form"
-            element={
-              <ProtectedRoute>
-                <RideOfferForm />
-              </ProtectedRoute>
-            }
-          />
 
-          <Route
-            path="/ride-offer/:ride_offer_id"
-            element={
-              <ProtectedRoute>
-                <RideOfferDetailsModal />
-              </ProtectedRoute>
-            }
-          />
+          {/* Protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/homepage" element={<HomePage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/ride-offer" element={<RideOfferPage />} />
+            <Route
+              path="/ride-offer/create"
+              element={<CreateRideOfferPage />}
+            />
 
-          <Route
-            path="/driver"
-            element={
-              <ProtectedRoute>
-                <DriveProfilePage />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/driver/driver-form"
-            element={
-              <ProtectedRoute>
-                <DriverProfileForm />
-              </ProtectedRoute>
-            }
-          />
+            <Route
+              path="/ride-offer/:ride_offer_id/edit"
+              element={<EditRideOfferPage />}
+            />
+            <Route path="/driver" element={<DriveProfilePage />} />
+          </Route>
         </Routes>
       </UserProvider>
     </Router>

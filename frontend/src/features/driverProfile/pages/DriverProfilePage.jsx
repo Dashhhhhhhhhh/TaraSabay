@@ -37,10 +37,6 @@ function DriveProfilePage() {
     fetchDriverProfile();
   }, []);
 
-  const handleEdit = () => {
-    setShowEditForm(true);
-  };
-
   const handleHomepage = () => {
     navigate("/homepage");
   };
@@ -86,9 +82,6 @@ function DriveProfilePage() {
           initialValues={driver}
           onSubmit={async (driver_profile_id, payload) => {
             try {
-              console.log(driver);
-              console.log(driver?.driver_profile_id);
-
               await updateDriverProfile(driver.driver_profile_id, payload);
 
               const profile = await getMyDriverProfile();

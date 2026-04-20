@@ -21,3 +21,10 @@ export function cleanString(str) {
   const normalized = str.trim();
   return normalized.length > 0 ? normalized : null;
 }
+
+export function toDatetimeLocal(isoString) {
+  const date = new Date(isoString);
+  const tzOffset = date.getTimezoneOffset() * 60000; // offset in ms
+  const localISOTime = new Date(date - tzOffset).toISOString().slice(0, 16);
+  return localISOTime;
+}

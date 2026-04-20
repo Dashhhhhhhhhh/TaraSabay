@@ -3,6 +3,8 @@ import "./../css/RideOfferDetailsModal.css";
 function RideOfferDetailsModal({ rideOffer, onClose }) {
   if (!rideOffer) return null;
 
+  
+
   return (
     <div className="ride-offer-modal">
       <div

@@ -1,9 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { createRideOffer } from "../api/rideOffers.api";
-import { cleanName, cleanString } from "../../../utils/helper";
+import { cleanName, cleanString, toDatetimeLocal } from "../../../utils/helper";
 
-function CreateRideOfferForm({ onSubmit }) {
+function CreateRideOfferForm({ onSubmit, initialValues }) {
   const navigate = useNavigate();
 
   const [pickupLocation, setPickupLocation] = useState("");
@@ -14,59 +13,63 @@ function CreateRideOfferForm({ onSubmit }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleSubmit = async (event) => {
+  useEffect(() => {
+    if (initialValues) {
+      setPickupLocation(initialValues.pickup_location || "");
+      setDropoffLocation(initialValues.dropoff_location || "");
+      setDepartureTime(initialValues.departure_time || "");
+      setNotes(initialValues.notes || "");
+    }
+  }, [initialValues]);
+
+  const handleSubmit = (event) => {
     event.preventDefault();
     setError(null);
     setLoading(true);
 
-    try {
-      const cleanPickupLocation = cleanName(pickupLocation);
-      const cleanDropOffLocation = cleanName(dropoffLocation);
+    const cleanPickupLocation = cleanName(pickupLocation);
+    const cleanDropOffLocation = cleanName(dropoffLocation);
 
-      if (!cleanPickupLocation || !cleanDropOffLocation || !departureTime) {
-        setError("All required fields must be provided.");
-        return;
-      }
-
-      if (cleanPickupLocation === cleanDropOffLocation) {
-        setError("Pickup and dropoff locations must not be the same.");
-        return;
-      }
-
-      const departureDate = new Date(departureTime);
-      if (isNaN(departureDate.getTime())) {
-        setError("Departure time must be a valid timestamp.");
-        return;
-      }
-      if (departureDate <= new Date()) {
-        setError("Departure time must be in the future.");
-        return;
-      }
-
-      const note = cleanString(notes);
-      if (note && note.length > 500) {
-        setError("Notes is too long (max 500 characters).");
-        return;
-      }
-
-      const payload = {
-        pickup_location: cleanPickupLocation,
-        dropoff_location: cleanDropOffLocation,
-        departure_time: departureDate.toISOString(),
-        notes: note || null,
-      };
-
-      const response = await createRideOffer(payload);
-      if (onSubmit) {
-        onSubmit(response.data);
-      }
-
-      navigate("/ride-offer");
-    } catch (err) {
-      setError(err.response?.data?.message || "Failed to create ride offer");
-    } finally {
-      setLoading(false);
+    if (!cleanPickupLocation || !cleanDropOffLocation || !departureTime) {
+      setError("All required fields must be provided.");
+      return;
     }
+
+    if (cleanPickupLocation === cleanDropOffLocation) {
+      setError("Pickup and dropoff locations must not be the same.");
+      return;
+    }
+
+    const departureDate = new Date(departureTime);
+    if (isNaN(departureDate.getTime())) {
+      setError("Departure time must be a valid timestamp.");
+      return;
+    }
+    if (departureDate <= new Date()) {
+      setError("Departure time must be in the future.");
+      return;
+    }
+
+    const note = cleanString(notes);
+    if (note && note.length > 500) {
+      setError("Notes is too long (max 500 characters).");
+      return;
+    }
+
+    const payload = {
+      pickup_location: cleanPickupLocation,
+      dropoff_location: cleanDropOffLocation,
+      departure_time: departureDate.toISOString(),
+      notes: note || null,
+    };
+
+    if (initialValues?.ride_offer_id) {
+      onSubmit(initialValues.ride_offer_id, payload);
+    } else {
+      onSubmit(payload);
+    }
+
+    setLoading(false);
   };
 
   const handleCancel = () => {
@@ -75,8 +78,12 @@ function CreateRideOfferForm({ onSubmit }) {
 
   return (
     <main>
-      <h1>Create Ride Offer</h1>
-      <p>Fill in the trip details below to post your ride for passengers.</p>
+      <h1>{initialValues ? "Edit Ride Offer" : "Create Ride Offer"}</h1>
+      <p>
+        {initialValues
+          ? "Update the trip details below."
+          : "Fill in the trip details below to post your ride for passengers."}
+      </p>
 
       {loading && <p>Submitting...</p>}
       {error && (
@@ -107,9 +114,10 @@ function CreateRideOfferForm({ onSubmit }) {
 
         <div>
           <label>Departure Time</label>
+          jsx
           <input
             type="datetime-local"
-            value={departureTime}
+            value={departureTime ? toDatetimeLocal(departureTime) : ""}
             onChange={(e) => setDepartureTime(e.target.value)}
             required
             disabled={loading}
@@ -128,8 +136,9 @@ function CreateRideOfferForm({ onSubmit }) {
         </div>
 
         <button type="submit" disabled={loading}>
-          Create Offer
+          {initialValues ? "Update Offer" : "Create Offer"}
         </button>
+
         <button onClick={handleCancel} type="button" disabled={loading}>
           cancel
         </button>
