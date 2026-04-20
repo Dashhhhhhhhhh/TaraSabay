@@ -1,10 +1,14 @@
 import "./../css/RideOfferDetailsModal.css";
 
-function RideOfferDetailsModal({ rideOffer, onClose }) {
+function RideOfferDetailsModal({
+  rideOffer,
+  onClose,
+  onCancel,
+  currentUserId,
+}) {
   if (!rideOffer) return null;
 
-  
-
+  const isOwner = rideOffer.user_id === currentUserId;
   return (
     <div className="ride-offer-modal">
       <div
@@ -36,6 +40,14 @@ function RideOfferDetailsModal({ rideOffer, onClose }) {
           <strong>Notes:</strong> {rideOffer.notes || "-"}
         </p>
 
+        {isOwner && (
+          <button
+            type="button"
+            onClick={() => onCancel(rideOffer.ride_offer_id)}
+          >
+            Cancel Offer
+          </button>
+        )}
         <button type="button" onClick={onClose}>
           Close
         </button>
