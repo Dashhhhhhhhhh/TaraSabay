@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createRequestResponseController,
   getRequestResponseByIdController,
+  getRequestResponsesByRideRequestIdController,
 } = require("./response_request.controller");
 
 const { authenticateJWT } = require("./../../middlewares/auth.middleware");
@@ -21,6 +22,13 @@ router.get(
   authenticateJWT,
   authorizeRoles(["Admin", "Driver"]),
   getRequestResponseByIdController,
+);
+
+router.get(
+  "/:ride_request_id/request-responses",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver"]),
+  getRequestResponsesByRideRequestIdController,
 );
 
 module.exports = router;

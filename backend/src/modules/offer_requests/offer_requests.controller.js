@@ -15,6 +15,7 @@ async function createOfferRequestController(req, res) {
     });
     if (!result.success) {
       const statusMap = {
+        EXCEEDS_AVAILABLE_SEATS: 400,
         MISSING_REQUIRED_FIELDS: 400,
         INVALID_USER_ID: 400,
         INVALID_SEAT_CAPACITY: 400,

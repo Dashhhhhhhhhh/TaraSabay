@@ -1,4 +1,4 @@
-import api from "./../../../api/axios";
+import api from "./../../../api/axios.js";
 
 export async function createRideOffer(offerData) {
   const response = await api.post("/ride-offer", offerData);

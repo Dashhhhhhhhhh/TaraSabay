@@ -27,6 +27,13 @@ function HomePage() {
     navigate("/driver");
   };
 
+  const handleMyOfferRequests = () => {
+    navigate("/my-offer-requests");
+  };
+
+  const handleMyRequestResponse = () => {
+    navigate("/my-request-response");
+  };
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -47,6 +54,8 @@ function HomePage() {
       <button disabled>Ride Requests (Coming Soon)</button>
       <button disabled>Messages (Coming Soon)</button>
       <button disabled>Reports (Coming Soon)</button>
+      <button onClick={handleMyRequestResponse}>My Request Response</button>
+      <button onClick={handleMyOfferRequests}>My Offer Requests</button>
       <button onClick={handleProfile}>Profile </button>
       <button onClick={handleDriverProfile}>Driver Profile</button>
       <button onClick={handleLogout}>Log Out</button>

@@ -21,9 +21,10 @@ async function findExistingPendingOfferRequest(
   const result = await pool.query(
     `SELECT
         ride_offer_id,
-        passenger_user_id   
+        passenger_user_id,  
+        status 
      FROM offer_requests
-     WHERE ride_offer_id = $1 AND passenger_user_id = $2`,
+     WHERE ride_offer_id = $1 AND passenger_user_id = $2 AND status = 'pending'`,
     [ride_offer_id, passenger_user_id],
   );
   return result.rows[0];

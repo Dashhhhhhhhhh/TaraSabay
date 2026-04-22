@@ -18,6 +18,10 @@ import EditRideOfferPage from "./features/ride-offers/pages/EditRideOfferPage";
 
 import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
 
+import MyOfferRequestsPage from "./features/offerRequests/pages/MyOfferRequestsPage";
+
+import MyRequestResponsePage from "./features/request-responses/pages/MyRequestResponsePage";
+
 function App() {
   return (
     <Router>
@@ -42,6 +46,16 @@ function App() {
               element={<EditRideOfferPage />}
             />
             <Route path="/driver" element={<DriveProfilePage />} />
+
+            <Route
+              path="/my-offer-requests"
+              element={<MyOfferRequestsPage />}
+            />
+
+            <Route
+              path="/my-request-response"
+              element={<MyRequestResponsePage />}
+            />
           </Route>
         </Routes>
       </UserProvider>
