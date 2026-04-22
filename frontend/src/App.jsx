@@ -20,6 +20,8 @@ import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
 
 import MyOfferRequestsPage from "./features/offerRequests/pages/MyOfferRequestsPage";
 
+import RideRequestsPage from "./features/ride-request/page/RideRequestsPage";
+
 import MyRequestResponsePage from "./features/request-responses/pages/MyRequestResponsePage";
 
 function App() {
@@ -56,6 +58,8 @@ function App() {
               path="/my-request-response"
               element={<MyRequestResponsePage />}
             />
+
+            <Route path="/ride-request" element={<RideRequestsPage />} />
           </Route>
         </Routes>
       </UserProvider>

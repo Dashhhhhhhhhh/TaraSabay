@@ -1,5 +1,7 @@
 import { useState } from "react";
 
+import { cleanString } from "./../../../utils/helper";
+
 function OfferRequestForm({ onSubmit, maxSeats, loading }) {
   const [requestedSeats, setRequestedSeats] = useState("");
   const [message, setMessage] = useState("");
@@ -23,9 +25,15 @@ function OfferRequestForm({ onSubmit, maxSeats, loading }) {
       return;
     }
 
+    const cleanedMessage = cleanString(message);
+    if (cleanedMessage && cleanedMessage.length > 500) {
+      setError("Message is too long (max 500 characters).");
+      return;
+    }
+
     const payload = {
       requested_seats: parsedRequestedSeats,
-      message: message || null,
+      message: cleanedMessage || null,
     };
 
     onSubmit(payload);

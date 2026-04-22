@@ -6,6 +6,8 @@ import {
   getMyRequestResponses,
 } from "../api/requestResponses.api";
 
+import CreateRequestResponseModal from "../components/CreateRequestResponseModal";
+
 import "./MyRequestResponsePage.css";
 
 function MyRequestResponsePage() {
@@ -15,6 +17,9 @@ function MyRequestResponsePage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [selectedRequest, setSelectedRequest] = useState(false);
   const fetchMyRequestResponse = async () => {
     try {
       const response = await getMyRequestResponses();
@@ -31,6 +36,10 @@ function MyRequestResponsePage() {
     fetchMyRequestResponse();
   }, []);
 
+  const handleCloseModal = () => {
+    setSelectedRequest(null);
+    navigate("/my-request-response");
+  };
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -53,7 +62,10 @@ function MyRequestResponsePage() {
           </thead>
           <tbody>
             {responses.map((resp) => (
-              <tr key={resp.request_response_id}>
+              <tr
+                key={resp.request_response_id}
+                onClick={() => setSelectedRequest(resp)}
+              >
                 <td>{resp.message}</td>
                 <td>{resp.status}</td>
                 <td>{resp.pickup_location || "N/A"}</td>
@@ -64,10 +76,21 @@ function MyRequestResponsePage() {
                     : "-"}
                 </td>
                 <td>{resp.requested_seats}</td>
+                <td>
+                  <button onClick={() => setSelectedRequest(resp)}>
+                    Respond
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
+      )}
+      {selectedRequest && (
+        <CreateRequestResponseModal
+          request={selectedRequest}
+          onClose={handleCloseModal}
+        />
       )}
       <button onClick={() => navigate("/homepage")}>Back to Homepage</button>
     </div>

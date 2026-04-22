@@ -11,7 +11,7 @@ export async function getOfferRequestById(offer_request_id) {
 }
 
 export async function cancelOfferRequest(offer_request_id) {
-  const response = await api.patch(`offer-request/${offer_request_id}`);
+  const response = await api.patch(`/offer-request/${offer_request_id}`);
   return response.data;
 }
 
