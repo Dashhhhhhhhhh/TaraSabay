@@ -1,26 +1,17 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cleanName, cleanString, toDatetimeLocal } from "../../../utils/helper";
 
-function CreateRideOfferForm({ onSubmit, initialValues }) {
+function RideRequestForm({ onSubmit }) {
   const navigate = useNavigate();
 
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropoffLocation, setDropoffLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
   const [notes, setNotes] = useState("");
-
+  const [requestedSeats, setRequestedSeats] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  useEffect(() => {
-    if (initialValues) {
-      setPickupLocation(initialValues.pickup_location || "");
-      setDropoffLocation(initialValues.dropoff_location || "");
-      setDepartureTime(initialValues.departure_time || "");
-      setNotes(initialValues.notes || "");
-    }
-  }, [initialValues]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -31,7 +22,12 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
       const cleanPickupLocation = cleanName(pickupLocation);
       const cleanDropOffLocation = cleanName(dropoffLocation);
 
-      if (!cleanPickupLocation || !cleanDropOffLocation || !departureTime) {
+      if (
+        !cleanPickupLocation ||
+        !cleanDropOffLocation ||
+        !departureTime ||
+        !requestedSeats
+      ) {
         setError("All required fields must be provided.");
         return;
       }
@@ -57,36 +53,38 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
         return;
       }
 
+      const seats = Number(requestedSeats);
+      if (!Number.isInteger(seats)) {
+        setError("Requested seats must be an integer.");
+        return;
+      }
+      if (seats <= 0) {
+        setError("Requested seats must be greater than 0.");
+        return;
+      }
+
       const payload = {
         pickup_location: cleanPickupLocation,
         dropoff_location: cleanDropOffLocation,
         departure_time: departureDate.toISOString(),
+        requested_seats: seats,
         notes: note || null,
       };
 
-      if (initialValues?.ride_offer_id) {
-        await onSubmit(initialValues.ride_offer_id, payload);
-        await onSubmit(payload);
-      }
+      await onSubmit(payload);
     } catch (err) {
-      setError("Something went wrong while submitting.");
+      setError("Something went wrong.");
     } finally {
       setLoading(false);
     }
   };
+
   const handleCancel = () => {
-    navigate("/ride-offer");
+    navigate("/ride-request");
   };
 
   return (
     <main>
-      <h1>{initialValues ? "Edit Ride Offer" : "Create Ride Offer"}</h1>
-      <p>
-        {initialValues
-          ? "Update the trip details below."
-          : "Fill in the trip details below to post your ride for passengers."}
-      </p>
-
       {loading && <p>Submitting...</p>}
       {error && (
         <p style={{ color: "red", marginBottom: "1rem" }}>Error: {error}</p>
@@ -116,13 +114,24 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
 
         <div>
           <label>Departure Time</label>
-          jsx
           <input
             type="datetime-local"
             value={departureTime ? toDatetimeLocal(departureTime) : ""}
             onChange={(e) => setDepartureTime(e.target.value)}
             required
             disabled={loading}
+          />
+        </div>
+
+        <div>
+          <label>Requested Seats</label>
+          <input
+            type="number"
+            value={requestedSeats}
+            onChange={(e) => setRequestedSeats(e.target.value)}
+            required
+            disabled={loading}
+            min={1}
           />
         </div>
 
@@ -138,15 +147,14 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
         </div>
 
         <button type="submit" disabled={loading}>
-          {initialValues ? "Update Offer" : "Create Offer"}
+          Create Request
         </button>
-
         <button onClick={handleCancel} type="button" disabled={loading}>
-          cancel
+          Cancel
         </button>
       </form>
     </main>
   );
 }
 
-export default CreateRideOfferForm;
+export default RideRequestForm;
