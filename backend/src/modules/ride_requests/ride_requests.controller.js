@@ -4,6 +4,7 @@ const {
   getRideRequestByIdService,
   updateRideRequestService,
   cancelRideRequestService,
+  getMyRideRequestService,
 } = require("./ride_requests.service");
 
 async function createRideRequestController(req, res) {
@@ -157,10 +158,34 @@ async function cancelRideRequestController(req, res) {
   }
 }
 
+async function getMyRideRequestController(req, res) {
+  try {
+    const rider_user_id = req.user.user_id;
+
+    const result = await getMyRideRequestService(rider_user_id);
+    if (!result.success) {
+      const statusMap = {
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        RIDE_REQUEST_NOT_FOUND: 404,
+      };
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching ride request:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching request response",
+    });
+  }
+}
 module.exports = {
   createRideRequestController,
   getAllRideRequestsController,
   getRideRequestByIdController,
   updateRideRequestController,
   cancelRideRequestController,
+  getMyRideRequestController,
 };

@@ -28,6 +28,10 @@ const {
   getMyDriverProfileController,
 } = require("./../driver_profiles/driver.controller");
 
+const {
+  getMyRideRequestController,
+} = require("./../ride_requests/ride_requests.controller");
+
 router.post("/register", regiterAuthController);
 
 router.post("/login", loginAuthController);
@@ -69,4 +73,10 @@ router.get(
   getMyDriverProfileController,
 );
 
+router.get(
+  "/me/ride-request",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
+  getMyRideRequestController,
+);
 module.exports = router;

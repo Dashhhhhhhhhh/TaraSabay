@@ -26,3 +26,8 @@ export async function getRequestResponsesByRideRequestId(ride_request_id) {
   );
   return response.data;
 }
+
+export async function getMyRideRequest() {
+  const response = await api.get("/auth/me/ride-request");
+  return response.data;
+}

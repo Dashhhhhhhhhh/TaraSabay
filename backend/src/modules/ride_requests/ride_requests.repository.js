@@ -120,10 +120,31 @@ async function cancelRideRequest(ride_request_id) {
   return result.rows[0];
 }
 
+async function getMyRideRequest(rider_user_id) {
+  const result = await pool.query(
+    `SELECT
+        ride_request_id,
+        rider_user_id,
+        pickup_location,
+        dropoff_location,
+        departure_time,
+        requested_seats,
+        notes,
+        status,
+        created_at,
+        updated_At
+    FROM ride_requests 
+    WHERE rider_user_id = $1`,
+    [rider_user_id],
+  );
+  return result.rows;
+}
+
 module.exports = {
   createRideRequest,
   getAllRideRequests,
   getRideRequestById,
   updateRideRequest,
   cancelRideRequest,
+  getMyRideRequest,
 };

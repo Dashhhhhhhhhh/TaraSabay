@@ -39,6 +39,10 @@ function HomePage() {
     navigate("/ride-request");
   };
 
+  const handleMyRideRequest = () => {
+    navigate("/my-ride-request");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -61,6 +65,7 @@ function HomePage() {
       <button disabled>Reports (Coming Soon)</button>
       <button onClick={handleMyRequestResponse}>My Request Response</button>
       <button onClick={handleMyOfferRequests}>My Offer Requests</button>
+      <button onClick={handleMyRideRequest}>My Ride Requests</button>
       <button onClick={handleProfile}>Profile </button>
       <button onClick={handleDriverProfile}>Driver Profile</button>
       <button onClick={handleLogout}>Log Out</button>

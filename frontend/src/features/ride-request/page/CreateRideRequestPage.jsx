@@ -15,7 +15,7 @@ function CreateRideRequestPage() {
 
     try {
       await createRideRequest(payload);
-      navigate("/ride-request");
+      navigate("/my-ride-request");
     } catch (err) {
       setError(err.response?.data?.message || "Failed to create ride request");
     } finally {

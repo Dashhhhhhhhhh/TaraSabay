@@ -1,0 +1,50 @@
+.my-ride-request-page {
+  padding: 24px;
+}
+
+.my-ride-request-page h2 {
+  margin-bottom: 16px;
+  font-size: 28px;
+}
+
+.my-ride-request-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.my-ride-request-table th,
+.my-ride-request-table td {
+  border: 1px solid #dcdcdc;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.my-ride-request-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.my-ride-request-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.my-ride-request-table tr:hover {
+  background-color: #f0f6ff;
+}
+
+.my-ride-request-table td {
+  word-break: break-word;
+}
+
+.my-ride-request-empty,
+.my-ride-request-error,
+.my-ride-request-loading {
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.my-ride-request-error {
+  color: red;
+}

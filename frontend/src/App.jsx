@@ -26,6 +26,8 @@ import MyRequestResponsePage from "./features/request-responses/pages/MyRequestR
 
 import CreateRideRequestPage from "./features/ride-request/page/CreateRideRequestPage";
 
+import MyRideRequestPage from "./features/ride-request/page/MyRideRequestPage";
+
 function App() {
   return (
     <Router>
@@ -67,6 +69,8 @@ function App() {
             />
 
             <Route path="/ride-request" element={<RideRequestsPage />} />
+
+            <Route path="/my-ride-request" element={<MyRideRequestPage />} />
           </Route>
         </Routes>
       </UserProvider>

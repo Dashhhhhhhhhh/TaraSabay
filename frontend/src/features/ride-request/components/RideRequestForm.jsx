@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { cleanName, cleanString, toDatetimeLocal } from "../../../utils/helper";
 
-function RideRequestForm({ onSubmit }) {
+function RideRequestForm({ onSubmit, onCancel }) {
   const navigate = useNavigate();
 
   const [pickupLocation, setPickupLocation] = useState("");
@@ -80,7 +80,9 @@ function RideRequestForm({ onSubmit }) {
   };
 
   const handleCancel = () => {
-    navigate("/ride-request");
+    if (onCancel) {
+      onCancel();
+    }
   };
 
   return (

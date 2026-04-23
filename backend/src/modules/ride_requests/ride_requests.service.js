@@ -4,6 +4,7 @@ const {
   getRideRequestById,
   updateRideRequest,
   cancelRideRequest,
+  getMyRideRequest,
 } = require("./ride_requests.repository");
 
 const { cleanName, cleanString, isInteger } = require("./../../utils/helper");
@@ -439,10 +440,30 @@ async function cancelRideRequestService(ride_request_id, rider_user_id, role) {
     data: cancelRide,
   };
 }
+
+async function getMyRideRequestService(rider_user_id) {
+  if (!rider_user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+
+  const rider = await getMyRideRequest(rider_user_id);
+
+  return {
+    success: true,
+    code: "FETCH_MY_RIDE_REQUEST_SUCCESS",
+    message: "Ride requests retrieved successfully.",
+    data: rider,
+  };
+}
 module.exports = {
   createRideRequestService,
   getAllRideRequestsService,
   getRideRequestByIdService,
   updateRideRequestService,
   cancelRideRequestService,
+  getMyRideRequestService,
 };
