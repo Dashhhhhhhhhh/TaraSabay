@@ -1,12 +1,7 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
-import {
-  createRequestResponse,
-  getMyRequestResponses,
-} from "../api/requestResponses.api";
-
-import CreateRequestResponseModal from "../components/CreateRequestResponseModal";
+import { getMyRequestResponses } from "../api/requestResponses.api";
 
 import "./MyRequestResponsePage.css";
 
@@ -17,29 +12,24 @@ function MyRequestResponsePage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const [selectedRequest, setSelectedRequest] = useState(false);
-  const fetchMyRequestResponse = async () => {
+  const fetchMyRequestResponses = async () => {
     try {
       const response = await getMyRequestResponses();
       setResponses(response.data);
     } catch (err) {
       console.error("Failed to fetch request response:", err);
-      setError(err.message);
+      setError(
+        err.response?.data?.message || "Failed to fetch request responses",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchMyRequestResponse();
+    fetchMyRequestResponses();
   }, []);
 
-  const handleCloseModal = () => {
-    setSelectedRequest(null);
-    navigate("/my-request-response");
-  };
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -62,10 +52,7 @@ function MyRequestResponsePage() {
           </thead>
           <tbody>
             {responses.map((resp) => (
-              <tr
-                key={resp.request_response_id}
-                onClick={() => setSelectedRequest(resp)}
-              >
+              <tr key={resp.request_response_id}>
                 <td>{resp.message}</td>
                 <td>{resp.status}</td>
                 <td>{resp.pickup_location || "N/A"}</td>
@@ -76,22 +63,12 @@ function MyRequestResponsePage() {
                     : "-"}
                 </td>
                 <td>{resp.requested_seats}</td>
-                <td>
-                  <button onClick={() => setSelectedRequest(resp)}>
-                    Respond
-                  </button>
-                </td>
               </tr>
             ))}
           </tbody>
         </table>
       )}
-      {selectedRequest && (
-        <CreateRequestResponseModal
-          request={selectedRequest}
-          onClose={handleCloseModal}
-        />
-      )}
+
       <button onClick={() => navigate("/homepage")}>Back to Homepage</button>
     </div>
   );

@@ -10,6 +10,13 @@ export async function getRequestResponsesByRideRequest(request_response_id) {
   return response.data;
 }
 
+export async function getRequestResponsesByRideRequestId(ride_request_id) {
+  const response = await api.get(
+    `/ride-request/${ride_request_id}/request-responses`,
+  );
+  return response.data;
+}
+
 export async function getMyRequestResponses() {
   const response = await api.get("/auth/me/request-responses");
   return response.data;

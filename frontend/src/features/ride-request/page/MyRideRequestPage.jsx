@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import RideRequestForm from "../components/RideRequestForm";
 
+import RideRequestResponseModal from "../../request-responses/components/RideRequestResponseModal";
+
 import {
   getMyRideRequest,
   cancelRideRequest,
@@ -18,6 +20,8 @@ function MyRideRequestPage() {
   const [loading, setLoading] = useState(true);
 
   const [showForm, setShowForm] = useState(false);
+
+  const [selectedRide, setSelectedRide] = useState(null);
 
   const fetchMyRideRequest = async () => {
     try {
@@ -62,6 +66,10 @@ function MyRideRequestPage() {
     }
   };
 
+  const handleViewResponses = (ride) => {
+    setSelectedRide(ride);
+  };
+
   const handleCancelForm = () => {
     setShowForm(false);
   };
@@ -87,6 +95,7 @@ function MyRideRequestPage() {
                 <th>Status</th>
                 <th>Created At</th>
                 <th>Updated At</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -110,6 +119,14 @@ function MyRideRequestPage() {
                       </button>
                     )}
                   </td>
+                  <td>
+                    <button
+                      type="button"
+                      onClick={() => handleViewResponses(req)}
+                    >
+                      View Responses
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -123,6 +140,13 @@ function MyRideRequestPage() {
           />
         ) : (
           <button onClick={() => setShowForm(true)}>Create Ride Request</button>
+        )}
+
+        {selectedRide && (
+          <RideRequestResponseModal
+            rideRequest={selectedRide}
+            onClose={() => setSelectedRide(null)}
+          />
         )}
 
         <button onClick={() => navigate("/homepage")}>Back to Homepage</button>
