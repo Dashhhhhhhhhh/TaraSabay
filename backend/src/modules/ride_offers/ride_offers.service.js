@@ -6,6 +6,7 @@ const {
   updateRideOffer,
   cancelRideOffer,
   getRideOfferById,
+  getMyRideOffers,
 } = require("./ride_offers.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -437,10 +438,38 @@ async function cancelRideOfferService(ride_offer_id, user_id, role) {
     data: cancelledRideOffer,
   };
 }
+
+async function getMyRideOffersService(user_id) {
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+  }
+
+  const offer = await getMyRideOffers(user_id);
+
+  return {
+    success: true,
+    code: "FETCH_MY_RIDE_OFFER_SUCCESS",
+    message: "Ride offers fetched successfully.",
+    data: offer,
+  };
+}
+
 module.exports = {
   createRideOfferService,
   findRideOfferWithDriverInfoByiDService,
   getAllRideOffersService,
   updateRideOfferService,
   cancelRideOfferService,
+  getMyRideOffersService,
 };

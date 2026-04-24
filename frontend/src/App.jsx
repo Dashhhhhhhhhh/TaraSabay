@@ -12,9 +12,9 @@ import HomePage from "./pages/HomePage";
 import { UserProvider } from "./features/profile/UserContext";
 import ProfilePage from "./features/profile/pages/ProfilePage";
 
-import RideOfferPage from "./features/ride-offers/pages/RideOffersPage";
-import CreateRideOfferPage from "./features/ride-offers/pages/CreateRideOfferpage";
-import EditRideOfferPage from "./features/ride-offers/pages/EditRideOfferPage";
+import RideOfferPage from "./features/ride-offers/page/RideOffersPage";
+import CreateRideOfferPage from "./features/ride-offers/page/CreateRideOfferpage";
+import EditRideOfferPage from "./features/ride-offers/page/EditRideOfferPage";
 
 import DriveProfilePage from "./features/driverProfile/pages/DriverProfilePage";
 
@@ -28,6 +28,9 @@ import CreateRideRequestPage from "./features/ride-request/page/CreateRideReques
 
 import MyRideRequestPage from "./features/ride-request/page/MyRideRequestPage";
 
+import MyRideOffersPage from "./features/ride-offers/page/MyRideOffersPage";
+
+import RideOfferRequestPage from "./features/ride-offers/page/RideOfferRequestPage";
 function App() {
   return (
     <Router>
@@ -71,6 +74,13 @@ function App() {
             <Route path="/ride-request" element={<RideRequestsPage />} />
 
             <Route path="/my-ride-request" element={<MyRideRequestPage />} />
+
+            <Route path="/my-ride-offers" element={<MyRideOffersPage />} />
+
+            <Route
+              path="/ride-offer/:ride_offer_id/offer-requests"
+              element={<RideOfferRequestPage />}
+            />
           </Route>
         </Routes>
       </UserProvider>

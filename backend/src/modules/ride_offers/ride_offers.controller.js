@@ -4,6 +4,7 @@ const {
   getAllRideOffersService,
   updateRideOfferService,
   cancelRideOfferService,
+  getMyRideOffersService,
 } = require("./ride_offers.service");
 
 async function createRideOfferController(req, res) {
@@ -169,10 +170,35 @@ async function cancelRideOfferController(req, res) {
   }
 }
 
+async function getMyRideOffersController(req, res) {
+  try {
+    const user_id = req.user.user_id;
+
+    const result = await getMyRideOffersService(user_id);
+    if (!result.success) {
+      const statusMap = {
+        MISSING_USER_ID: 404,
+        INVALID_USER_ID: 400,
+      };
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching ride offers:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error fetching offer requests.",
+    });
+  }
+}
+
 module.exports = {
   createRideOfferController,
   findRideOfferWithDriverInfoByiDController,
   getAllRideOffersController,
   updateRideOfferController,
   cancelRideOfferController,
+  getMyRideOffersController,
 };

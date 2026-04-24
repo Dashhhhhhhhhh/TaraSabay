@@ -66,6 +66,7 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
 
       if (initialValues?.ride_offer_id) {
         await onSubmit(initialValues.ride_offer_id, payload);
+      } else {
         await onSubmit(payload);
       }
     } catch (err) {
@@ -74,6 +75,7 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
       setLoading(false);
     }
   };
+
   const handleCancel = () => {
     navigate("/ride-offer");
   };
@@ -116,7 +118,6 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
 
         <div>
           <label>Departure Time</label>
-          jsx
           <input
             type="datetime-local"
             value={departureTime ? toDatetimeLocal(departureTime) : ""}

@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { updateRideOffer, getRideOfferById } from "../api/rideOffers.api";
 
-import RideOfferForm from "./../components/RideOfferForm";
+import RideOfferForm from "../components/RideOfferForm";
 
 function EditRideOfferPage() {
   const { ride_offer_id } = useParams();

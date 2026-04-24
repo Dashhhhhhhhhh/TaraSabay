@@ -99,13 +99,13 @@ function RideOfferPage() {
       <RideOfferList
         rideOffers={rideOffers}
         onViewRideOffer={handleViewRideOffer}
+        onCancel={handleCancelHandler}
       />
 
       {selectedRideOffer && (
         <RideOfferDetailsModal
           rideOffer={selectedRideOffer}
           onClose={handleCloseModal}
-          onCancel={handleCancelHandler}
           currentUserId={user?.user_id}
         />
       )}

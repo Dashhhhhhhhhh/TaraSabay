@@ -24,3 +24,13 @@ export async function cancelRideOffer(ride_offer_id) {
   const response = await api.patch(`/ride-offer/${ride_offer_id}/cancel`);
   return response.data;
 }
+
+export async function getMyRideOffers(user_id) {
+  const response = await api.get(`/auth/me/ride-offers`);
+  return response.data;
+}
+
+export async function getOfferRequestsByOfferId(ride_offer_id) {
+  const response = await api.get(`/ride-offer/${ride_offer_id}/offer-requests`);
+  return response.data;
+}

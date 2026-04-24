@@ -10,7 +10,7 @@ const {
 } = require("./ride_offers.controller");
 
 const {
-  getOfferRequestsByOfferIdController,
+  getOfferRequestsByOfferController,
 } = require("./../offer_requests/offer_requests.controller");
 
 const { authenticateJWT } = require("./../../middlewares/auth.middleware");
@@ -52,10 +52,10 @@ router.patch(
 );
 
 router.get(
-  "/:ride_offer_id/offer-request",
+  "/:ride_offer_id/offer-requests",
   authenticateJWT,
-  authorizeRoles(["Admin", "Driver", "Passenger"]),
-  getOfferRequestsByOfferIdController,
+  authorizeRoles(["Admin", "Driver"]),
+  getOfferRequestsByOfferController,
 );
 
 module.exports = router;

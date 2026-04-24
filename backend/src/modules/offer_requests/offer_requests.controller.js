@@ -1,7 +1,7 @@
 const {
   createOfferRequestService,
   getOfferRequestByIdService,
-  getOfferRequestsByOfferIdService,
+  getOfferRequestsByOfferService,
   getMyOfferRequestService,
   cancelOfferRequestService,
 } = require("./offer_requests.service");
@@ -68,13 +68,13 @@ async function getOfferRequestByIdController(req, res) {
   }
 }
 
-async function getOfferRequestsByOfferIdController(req, res) {
+async function getOfferRequestsByOfferController(req, res) {
   try {
     const { ride_offer_id } = req.params;
     const user_id = req.user.user_id;
     const { role } = req.user;
 
-    const result = await getOfferRequestsByOfferIdService(
+    const result = await getOfferRequestsByOfferService(
       ride_offer_id,
       user_id,
       role,
@@ -162,7 +162,7 @@ async function cancelOfferRequestController(req, res) {
 module.exports = {
   createOfferRequestController,
   getOfferRequestByIdController,
-  getOfferRequestsByOfferIdController,
+  getOfferRequestsByOfferController,
   getMyOfferRequestController,
   cancelOfferRequestController,
 };

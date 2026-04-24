@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function RideOfferList({ rideOffers, onViewRideOffer }) {
+function RideOfferList({ rideOffers, onViewRideOffer, onCancel }) {
   const navigate = useNavigate();
 
   return (
@@ -24,9 +24,12 @@ function RideOfferList({ rideOffers, onViewRideOffer }) {
             <td>{offer.available_seats}</td>
             <td>{offer.status}</td>
             <td>
-              <button type="button" onClick={() => onViewRideOffer(offer)}>
-                View
-              </button>
+              <button onClick={() => onViewRideOffer(offer)}>View</button>
+              {offer.status === "open" && (
+                <button onClick={() => onCancel(offer.ride_offer_id)}>
+                  Cancel
+                </button>
+              )}
               <button
                 type="button"
                 onClick={() =>

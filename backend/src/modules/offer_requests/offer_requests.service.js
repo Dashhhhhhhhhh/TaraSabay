@@ -3,7 +3,7 @@ const {
   createOfferRequest,
   getOfferRequestById,
   findRideOfferById,
-  getOfferRequestsByOfferId,
+  getOfferRequestsByOffer,
   getMyOfferRequest,
   cancelOfferRequest,
 } = require("./offer_requests.repository");
@@ -177,7 +177,7 @@ async function getOfferRequestByIdService(offer_request_id, user_id, role) {
   };
 }
 
-async function getOfferRequestsByOfferIdService(ride_offer_id, user_id, role) {
+async function getOfferRequestsByOfferService(ride_offer_id, user_id, role) {
   if (!ride_offer_id) {
     return {
       success: false,
@@ -211,7 +211,7 @@ async function getOfferRequestsByOfferIdService(ride_offer_id, user_id, role) {
     };
   }
 
-  const offerRequests = await getOfferRequestsByOfferId(ride_offer_id);
+  const offerRequests = await getOfferRequestsByOffer(ride_offer_id);
 
   return {
     success: true,
@@ -325,7 +325,7 @@ async function cancelOfferRequestService(
 module.exports = {
   createOfferRequestService,
   getOfferRequestByIdService,
-  getOfferRequestsByOfferIdService,
+  getOfferRequestsByOfferService,
   getMyOfferRequestService,
   cancelOfferRequestService,
 };

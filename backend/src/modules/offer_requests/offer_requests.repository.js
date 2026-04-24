@@ -78,7 +78,7 @@ async function getOfferRequestById(offer_request_id) {
   return result.rows[0];
 }
 
-async function getOfferRequestsByOfferId(ride_offer_id) {
+async function getOfferRequestsByOffer(ride_offer_id) {
   const result = await pool.query(
     `SELECT
             offer_request_id,
@@ -93,7 +93,7 @@ async function getOfferRequestsByOfferId(ride_offer_id) {
         WHERE ride_offer_id = $1`,
     [ride_offer_id],
   );
-  return result.rows[0];
+  return result.rows;
 }
 
 async function getMyOfferRequest(passenger_user_id) {
@@ -139,7 +139,7 @@ module.exports = {
   createOfferRequest,
   getOfferRequestById,
   findRideOfferById,
-  getOfferRequestsByOfferId,
+  getOfferRequestsByOffer,
   getMyOfferRequest,
   cancelOfferRequest,
 };

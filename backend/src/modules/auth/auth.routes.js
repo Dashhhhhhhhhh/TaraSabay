@@ -32,6 +32,10 @@ const {
   getMyRideRequestController,
 } = require("./../ride_requests/ride_requests.controller");
 
+const {
+  getMyRideOffersController,
+} = require("./../ride_offers/ride_offers.controller");
+
 router.post("/register", regiterAuthController);
 
 router.post("/login", loginAuthController);
@@ -78,5 +82,12 @@ router.get(
   authenticateJWT,
   authorizeRoles(["Admin", "Driver", "Passenger"]),
   getMyRideRequestController,
+);
+
+router.get(
+  "/me/ride-offers",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver", "Passenger"]),
+  getMyRideOffersController,
 );
 module.exports = router;
