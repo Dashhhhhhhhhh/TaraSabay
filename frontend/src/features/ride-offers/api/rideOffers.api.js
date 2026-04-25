@@ -25,7 +25,7 @@ export async function cancelRideOffer(ride_offer_id) {
   return response.data;
 }
 
-export async function getMyRideOffers(user_id) {
+export async function getMyRideOffers() {
   const response = await api.get(`/auth/me/ride-offers`);
   return response.data;
 }
