@@ -67,7 +67,7 @@ async function getMeController(req, res) {
       const status = statusMap[result.code] || 500;
       return res.status(status).json(result);
     }
-    return res.status(201).json(result);
+    return res.status(200).json(result);
   } catch (error) {
     console.error("Error Fetching user:", error);
     return res.status(500).json({

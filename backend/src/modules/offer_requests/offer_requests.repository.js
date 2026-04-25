@@ -122,14 +122,51 @@ async function getMyOfferRequest(passenger_user_id) {
   return result.rows;
 }
 
-async function cancelOfferRequest(passenger_user_id) {
+async function cancelOfferRequest(offer_request_id) {
   const result = await pool.query(
     `UPDATE offer_requests
         SET status = 'cancelled',
             updated_at = NOW()
         WHERE offer_request_id = $1
         RETURNING *`,
-    [passenger_user_id],
+    [offer_request_id],
+  );
+  return result.rows[0];
+}
+
+async function updateOfferRequestStatus(offer_request_id, newStatus) {
+  const result = await pool.query(
+    `UPDATE offer_requests
+      SET status = $2,
+          updated_at = NOW()
+      WHERE offer_request_id = $1
+    RETURNING *`,
+    [offer_request_id, newStatus],
+  );
+  return result.rows[0];
+}
+
+async function decreaseAvailableSeats(ride_offer_id, requested_seats) {
+  const result = await pool.query(
+    `UPDATE ride_offers
+      SET available_seats = available_seats - $2,
+        updated_at = NOW()
+    WHERE ride_offer_id = $1
+      AND available_seats >= $2
+    RETURNING *`,
+    [ride_offer_id, requested_seats],
+  );
+  return result.rows[0];
+}
+
+async function updateRideOfferStatus(ride_offer_id, newStatus) {
+  const result = await pool.query(
+    `UPDATE ride_offers
+        SET status = $2,
+            updated_at = NOW()
+        WHERE ride_offer_id = $1
+        RETURNING *`,
+    [ride_offer_id, newStatus],
   );
   return result.rows[0];
 }
@@ -142,4 +179,7 @@ module.exports = {
   getOfferRequestsByOffer,
   getMyOfferRequest,
   cancelOfferRequest,
+  updateOfferRequestStatus,
+  decreaseAvailableSeats,
+  updateRideOfferStatus,
 };

@@ -1,6 +1,5 @@
 const { hashPassword, comparePassword } = require("../../utils/security");
 const { generateToken } = require("../../utils/jwt");
-const { compare } = require("bcrypt");
 
 const {
   findRoleByName,
@@ -160,8 +159,6 @@ async function loginAuthService(userData) {
     role: user.role,
   });
 
-  console.log("generated token:", token);
-
   return {
     success: true,
     message: "Login successful",
@@ -183,13 +180,13 @@ async function getMeService(user_id) {
   const user = await findUserProfileById(user_id);
   if (!user) {
     return {
-      succes: false,
+      success: false,
       code: "USER_NOT_FOUND",
       message: "Authenticated user not found.",
     };
   }
 
-  if (user && user.isactive == false) {
+  if (user && user.is_active === false) {
     return {
       success: false,
       code: "ACCOUNT_INACTIVE",

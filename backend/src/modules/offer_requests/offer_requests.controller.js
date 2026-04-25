@@ -4,6 +4,8 @@ const {
   getOfferRequestsByOfferService,
   getMyOfferRequestService,
   cancelOfferRequestService,
+  acceptOfferRequestService,
+  rejectOfferRequestService,
 } = require("./offer_requests.service");
 
 async function createOfferRequestController(req, res) {
@@ -159,10 +161,91 @@ async function cancelOfferRequestController(req, res) {
   }
 }
 
+async function acceptOfferRequestController(req, res) {
+  try {
+    const { offer_request_id } = req.params;
+    const user_id = req.user.user_id;
+    const { role } = req.user;
+    const result = await acceptOfferRequestService(
+      offer_request_id,
+      user_id,
+      role,
+    );
+    if (!result.success) {
+      const statusMap = {
+        MISSING_OFFER_REQUEST_ID: 400,
+        INVALID_OFFER_REQUEST_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MISSING_ROLE: 400,
+
+        OFFER_REQUEST_NOT_FOUND: 404,
+        RIDE_OFFER_NOT_FOUND: 404,
+
+        FORBIDDEN_ACCESS: 403,
+
+        REQUEST_ALREADY_FINAL: 409,
+        RIDE_OFFER_NOT_OPEN: 409,
+        NOT_ENOUGH_AVAILABLE_SEATS: 409,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error accepting offer requests:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error accepting offer requests.",
+    });
+  }
+}
+
+async function rejectOfferRequestController(req, res) {
+  try {
+    const { offer_request_id } = req.params;
+    const user_id = req.user.user_id;
+    const { role } = req.user;
+    const result = await rejectOfferRequestService(
+      offer_request_id,
+      user_id,
+      role,
+    );
+    if (!result.success) {
+      const statusMap = {
+        MISSING_OFFER_REQUEST_ID: 400,
+        INVALID_OFFER_REQUEST_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MISSING_ROLE: 400,
+
+        OFFER_REQUEST_NOT_FOUND: 404,
+        RIDE_OFFER_NOT_FOUND: 404,
+
+        FORBIDDEN_ACCESS: 403,
+
+        REQUEST_ALREADY_FINAL: 409,
+      };
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error rejecting offer requests:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error rejecting offer requests.",
+    });
+  }
+}
+
 module.exports = {
   createOfferRequestController,
   getOfferRequestByIdController,
   getOfferRequestsByOfferController,
   getMyOfferRequestController,
   cancelOfferRequestController,
+  acceptOfferRequestController,
+  rejectOfferRequestController,
 };

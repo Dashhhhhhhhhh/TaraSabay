@@ -5,6 +5,8 @@ const {
   createOfferRequestController,
   getOfferRequestByIdController,
   cancelOfferRequestController,
+  acceptOfferRequestController,
+  rejectOfferRequestController,
 } = require("./offer_requests.controller");
 
 const { authenticateJWT } = require("./../../middlewares/auth.middleware");
@@ -31,4 +33,17 @@ router.patch(
   cancelOfferRequestController,
 );
 
+router.patch(
+  "/:offer_request_id/accept",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver"]),
+  acceptOfferRequestController,
+);
+
+router.patch(
+  "/:offer_request_id/reject",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver"]),
+  rejectOfferRequestController,
+);
 module.exports = router;

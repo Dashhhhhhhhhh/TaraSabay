@@ -73,7 +73,17 @@ function MyRideOffersPage() {
                 <td>{offer.notes || "-"}</td>
                 <td>{new Date(offer.created_at).toLocaleString()}</td>
                 <td>{new Date(offer.updated_at).toLocaleString()}</td>
-                <td></td>
+                <td>
+                  <button
+                    onClick={() =>
+                      navigate(
+                        `/ride-offer/${offer.ride_offer_id}/offer-requests`,
+                      )
+                    }
+                  >
+                    View
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
