@@ -5,6 +5,9 @@ const {
   createRequestResponseController,
   getRequestResponseByIdController,
   getRequestResponsesByRideRequestIdController,
+  acceptRequestResponseController,
+  rejectRequestResponseController,
+  cancelRequestResponseController,
 } = require("./response_request.controller");
 
 const { authenticateJWT } = require("./../../middlewares/auth.middleware");
@@ -31,4 +34,24 @@ router.get(
   getRequestResponsesByRideRequestIdController,
 );
 
+router.patch(
+  "/:request_response_id/accept",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Passenger"]),
+  acceptRequestResponseController,
+);
+
+router.patch(
+  "/:request_response_id/reject",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Passenger"]),
+  rejectRequestResponseController,
+);
+
+router.patch(
+  "/:request_response_id/cancel",
+  authenticateJWT,
+  authorizeRoles(["Admin", "Driver"]),
+  cancelRequestResponseController,
+);
 module.exports = router;

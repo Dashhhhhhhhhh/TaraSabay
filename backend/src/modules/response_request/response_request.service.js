@@ -1,12 +1,14 @@
 const {
   createRequestResponse,
-
   getRideRequestById,
   getRequestResponseByDriverAndRequest,
   driverExists,
   getRequestResponseWithRelations,
   getRequestResponsesByRideRequestId,
   getMyRequestResponse,
+  updateRequestResponseStatus,
+  updateRideRequestStatus,
+  findRequestResponseById,
 } = require("./response_request.repository");
 
 const { isValidUUID } = require("./../../utils/security");
@@ -262,9 +264,335 @@ async function getMyRequestResponseService(driver_user_id) {
   };
 }
 
+async function acceptRequestResponseService(
+  request_response_id,
+  user_id,
+  role,
+) {
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+  }
+
+  if (!request_response_id) {
+    return {
+      success: false,
+      code: "MISSING_REQUEST_RESPONSE_ID",
+      message: "Ride response ID is required.",
+    };
+  }
+  if (!isValidUUID(request_response_id)) {
+    return {
+      success: false,
+      code: "INVALID_REQUEST_RESPONSE_ID",
+      message: "Request response ID must be a valid UUID.",
+    };
+  }
+
+  if (!role) {
+    return {
+      success: false,
+      code: "MISSING_ROLE",
+      message: "User role is required.",
+    };
+  }
+
+  const existingRequest = await findRequestResponseById(request_response_id);
+
+  if (!existingRequest) {
+    return {
+      success: false,
+      code: "REQUEST_RESPONSE_NOT_FOUND",
+      message: "Request response not found.",
+    };
+  }
+  if (!existingRequest.ride_request_id) {
+    return {
+      success: false,
+      code: "RIDE_REQUEST_NOT_FOUND",
+      message: "Ride request not found.",
+    };
+  }
+
+  if (existingRequest.status !== "pending") {
+    return {
+      success: false,
+      code: "REQUEST_ALREADY_FINAL",
+      message: "Request is not pending.",
+    };
+  }
+
+  const rideRequest = await getRideRequestById(existingRequest.ride_request_id);
+
+  if (!rideRequest) {
+    return {
+      success: false,
+      code: "RIDE_REQUEST_NOT_FOUND",
+      message: "Ride request not found.",
+    };
+  }
+
+  if (rideRequest.rider_user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to accept this response.",
+    };
+  }
+
+  if (rideRequest.status !== "open") {
+    return {
+      success: false,
+      code: "REQUEST_NOT_OPEN",
+      message: "Request is not open.",
+    };
+  }
+
+  const updatedRequestResponse = await updateRequestResponseStatus(
+    request_response_id,
+    "accepted",
+  );
+
+  const updatedRideRequest = await updateRideRequestStatus(
+    existingRequest.ride_request_id,
+    "matched",
+  );
+
+  return {
+    success: true,
+    code: "REQUEST_RESPONSE_ACCEPTED",
+    message: "Request response accepted and ride request matched.",
+    data: {
+      requestResponse: updatedRequestResponse,
+      rideRequest: updatedRideRequest,
+    },
+  };
+}
+
+async function rejectRequestResponseService(
+  request_response_id,
+  user_id,
+  role,
+) {
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+  }
+
+  if (!request_response_id) {
+    return {
+      success: false,
+      code: "MISSING_REQUEST_RESPONSE_ID",
+      message: "Ride response ID is required.",
+    };
+  }
+
+  if (!isValidUUID(request_response_id)) {
+    return {
+      success: false,
+      code: "INVALID_REQUEST_RESPONSE_ID",
+      message: "Request response ID must be a valid UUID.",
+    };
+  }
+
+  if (!role) {
+    return {
+      success: false,
+      code: "MISSING_ROLE",
+      message: "User role is required.",
+    };
+  }
+
+  const existingRequest = await findRequestResponseById(request_response_id);
+
+  if (!existingRequest) {
+    return {
+      success: false,
+      code: "REQUEST_RESPONSE_NOT_FOUND",
+      message: "Request response not found.",
+    };
+  }
+
+  if (!existingRequest.ride_request_id) {
+    return {
+      success: false,
+      code: "RIDE_REQUEST_NOT_FOUND",
+      message: "Ride request not found.",
+    };
+  }
+
+  if (existingRequest.status !== "pending") {
+    return {
+      success: false,
+      code: "REQUEST_ALREADY_FINAL",
+      message: "Request is not pending.",
+    };
+  }
+
+  const rideRequest = await getRideRequestById(existingRequest.ride_request_id);
+
+  if (!rideRequest) {
+    return {
+      success: false,
+      code: "RIDE_REQUEST_NOT_FOUND",
+      message: "Ride request not found.",
+    };
+  }
+
+  if (rideRequest.rider_user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to accept this response.",
+    };
+  }
+
+  if (rideRequest.status !== "open") {
+    return {
+      success: false,
+      code: "REQUEST_NOT_OPEN",
+      message: "Request is not open.",
+    };
+  }
+
+  const updatedRequestResponse = await updateRequestResponseStatus(
+    request_response_id,
+    "rejected",
+  );
+
+  return {
+    success: true,
+    code: "REQUEST_RESPONSE_REJECTED",
+    message: "Request response rejected.",
+    data: {
+      requestResponse: updatedRequestResponse,
+    },
+  };
+}
+
+async function cancelRequestResponseService(
+  request_response_id,
+  user_id,
+  role,
+) {
+  if (!user_id) {
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  }
+
+  if (!isValidUUID(user_id)) {
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
+  }
+
+  if (!request_response_id) {
+    return {
+      success: false,
+      code: "MISSING_REQUEST_RESPONSE_ID",
+      message: "Ride response ID is required.",
+    };
+  }
+
+  if (!isValidUUID(request_response_id)) {
+    return {
+      success: false,
+      code: "INVALID_REQUEST_RESPONSE_ID",
+      message: "Request response ID must be a valid UUID.",
+    };
+  }
+
+  if (!role) {
+    return {
+      success: false,
+      code: "MISSING_ROLE",
+      message: "User role is required.",
+    };
+  }
+
+  const existingRequest = await findRequestResponseById(request_response_id);
+
+  if (!existingRequest) {
+    return {
+      success: false,
+      code: "REQUEST_RESPONSE_NOT_FOUND",
+      message: "Request response not found.",
+    };
+  }
+
+  if (!existingRequest.ride_request_id) {
+    return {
+      success: false,
+      code: "RIDE_REQUEST_NOT_FOUND",
+      message: "Ride request not found.",
+    };
+  }
+
+  if (existingRequest.driver_user_id !== user_id && role !== "Admin") {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to cancel this response.",
+    };
+  }
+
+  if (existingRequest.status !== "pending") {
+    return {
+      success: false,
+      code: "REQUEST_ALREADY_FINAL",
+      message: "Request is not pending.",
+    };
+  }
+
+
+
+  const updatedRequestResponse = await updateRequestResponseStatus(
+    request_response_id,
+    "cancelled",
+  );
+
+  return {
+    success: true,
+    code: "REQUEST_RESPONSE_CANCELLED",
+    message: "Request response cancelled.",
+    data: {
+      requestResponse: updatedRequestResponse,
+    },
+  };
+}
 module.exports = {
   createRequestResponseService,
   getRequestResponseByIdservice,
   getRequestResponsesByRideRequestIdService,
   getMyRequestResponseService,
+  acceptRequestResponseService,
+  rejectRequestResponseService,
+  cancelRequestResponseService,
 };

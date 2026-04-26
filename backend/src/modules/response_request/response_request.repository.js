@@ -106,10 +106,16 @@ async function getRequestResponsesByRideRequestId(ride_request_id) {
         rr.status,
         rr.created_at,
         rr.updated_at,
+        rrq.pickup_location,
+        rrq.dropoff_location,
+        rrq.departure_time,
+        rrq.requested_seats,
         u.first_name || ' ' || u.last_name AS driver_full_name
-     FROM request_responses rr
-     LEFT JOIN users u
-        ON rr.driver_user_id = u.user_id
+    FROM request_responses rr
+    LEFT JOIN users u
+      ON rr.driver_user_id = u.user_id
+    LEFT JOIN ride_requests rrq
+      ON rr.ride_request_id = rrq.ride_request_id
     WHERE rr.ride_request_id = $1`,
     [ride_request_id],
   );
@@ -137,6 +143,48 @@ async function getMyRequestResponse(driver_user_id) {
   );
   return result.rows;
 }
+
+async function updateRequestResponseStatus(request_response_id, newStatus) {
+  const result = await pool.query(
+    `UPDATE request_responses
+     SET status = $2,
+         updated_at = NOW()
+     WHERE request_response_id = $1
+     RETURNING *`,
+    [request_response_id, newStatus],
+  );
+  return result.rows[0];
+}
+
+async function updateRideRequestStatus(ride_request_id, newStatus) {
+  const result = await pool.query(
+    `UPDATE ride_requests
+      SET status = $2,
+      updated_at = NOW()
+      where ride_request_id = $1
+    RETURNING *`,
+    [ride_request_id, newStatus],
+  );
+  return result.rows[0];
+}
+async function findRequestResponseById(request_response_id) {
+  const result = await pool.query(
+    `SELECT
+        request_response_id,
+        ride_request_id,
+        driver_user_id,
+        message,
+        status,
+        created_at,
+        updated_at
+     FROM request_responses
+     WHERE request_response_id = $1`,
+    [request_response_id],
+  );
+
+  return result.rows[0];
+}
+
 module.exports = {
   createRequestResponse,
   getRideRequestById,
@@ -145,4 +193,7 @@ module.exports = {
   getRequestResponseWithRelations,
   getRequestResponsesByRideRequestId,
   getMyRequestResponse,
+  updateRequestResponseStatus,
+  updateRideRequestStatus,
+  findRequestResponseById,
 };

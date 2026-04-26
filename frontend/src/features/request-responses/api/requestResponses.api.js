@@ -21,3 +21,24 @@ export async function getMyRequestResponses() {
   const response = await api.get("/auth/me/request-responses");
   return response.data;
 }
+
+export async function acceptRequestResponse(request_response_id) {
+  const response = await api.patch(
+    `/request-responses/${request_response_id}/accept`,
+  );
+  return response.data;
+}
+
+export async function rejectRequestResponse(request_response_id) {
+  const response = await api.patch(
+    `/request-responses/${request_response_id}/reject`,
+  );
+  return response.data;
+}
+
+export async function cancelRequestResponse(request_response_id) {
+  const response = await api.patch(
+    `/request-responses/${request_response_id}/cancel`,
+  );
+  return response.data;
+}

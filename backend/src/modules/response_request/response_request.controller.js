@@ -3,6 +3,9 @@ const {
   getRequestResponseByIdservice,
   getRequestResponsesByRideRequestIdService,
   getMyRequestResponseService,
+  acceptRequestResponseService,
+  rejectRequestResponseService,
+  cancelRequestResponseService,
 } = require("./response_request.service");
 
 async function createRequestResponseController(req, res) {
@@ -130,9 +133,132 @@ async function getMyRequestResponseController(req, res) {
     });
   }
 }
+
+async function acceptRequestResponseController(req, res) {
+  try {
+    const { request_response_id } = req.params;
+    const user_id = req.user.user_id;
+    const role = req.user;
+
+    const result = await acceptRequestResponseService(
+      request_response_id,
+      user_id,
+      role,
+    );
+
+    if (!result.success) {
+      const statusMap = {
+        MISSING_REQUEST_RESPONSE_ID: 400,
+        INVALID_REQUEST_RESPONSE_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MISSING_ROLE: 400,
+        REQUEST_RESPONSE_NOT_FOUND: 404,
+        RIDE_REQUEST_NOT_FOUND: 404,
+        FORBIDDEN_ACCESS: 403,
+        REQUEST_RESPONSE_ALREADY_FINAL: 409,
+        RIDE_REQUEST_NOT_OPEN: 409,
+        INTERNAL_ERROR: 500,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching request response:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching request response",
+    });
+  }
+}
+
+async function rejectRequestResponseController(req, res) {
+  try {
+    const { request_response_id } = req.params;
+    const user_id = req.user.user_id;
+    const role = req.user;
+
+    const result = await rejectRequestResponseService(
+      request_response_id,
+      user_id,
+      role,
+    );
+
+    if (!result.success) {
+      const statusMap = {
+        MISSING_REQUEST_RESPONSE_ID: 400,
+        INVALID_REQUEST_RESPONSE_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MISSING_ROLE: 400,
+        REQUEST_RESPONSE_NOT_FOUND: 404,
+        RIDE_REQUEST_NOT_FOUND: 404,
+        FORBIDDEN_ACCESS: 403,
+        REQUEST_ALREADY_FINAL: 409,
+        REQUEST_NOT_OPEN: 409,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching cancel response:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching cancel response",
+    });
+  }
+}
+
+async function cancelRequestResponseController(req, res) {
+  try {
+    const { request_response_id } = req.params;
+    const user_id = req.user.user_id;
+    const role = req.user;
+
+    const result = await cancelRequestResponseService(
+      request_response_id,
+      user_id,
+      role,
+    );
+
+    if (!result.success) {
+      const statusMap = {
+        MISSING_REQUEST_RESPONSE_ID: 400,
+        INVALID_REQUEST_RESPONSE_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
+        MISSING_ROLE: 400,
+        REQUEST_RESPONSE_NOT_FOUND: 404,
+        RIDE_REQUEST_NOT_FOUND: 404,
+        FORBIDDEN_ACCESS: 403,
+        REQUEST_RESPONSE_ALREADY_FINAL: 409,
+        RIDE_REQUEST_NOT_OPEN: 409,
+        INTERNAL_ERROR: 500,
+      };
+
+      const status = statusMap[result.code] || 500;
+      return res.status(status).json(result);
+    }
+    return res.status(200).json(result);
+  } catch (error) {
+    console.error("Error fetching request response:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Internal server error during fetching request response",
+    });
+  }
+}
+
 module.exports = {
   createRequestResponseController,
   getRequestResponseByIdController,
   getRequestResponsesByRideRequestIdController,
   getMyRequestResponseController,
+  acceptRequestResponseController,
+  rejectRequestResponseController,
+  cancelRequestResponseController,
 };
