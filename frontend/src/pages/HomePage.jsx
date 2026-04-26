@@ -47,6 +47,10 @@ function HomePage() {
     navigate("/my-ride-offers");
   };
 
+  const handleMyMessages = () => {
+    navigate("/my-messages");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -73,6 +77,7 @@ function HomePage() {
       <button onClick={handleMyRideOffers}>My Ride Offers</button>
       <button onClick={handleProfile}>Profile </button>
       <button onClick={handleDriverProfile}>Driver Profile</button>
+      <button onClick={handleMyMessages}>Messages</button>
       <button onClick={handleLogout}>Log Out</button>
     </main>
   );

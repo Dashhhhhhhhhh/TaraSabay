@@ -31,6 +31,9 @@ import MyRideRequestPage from "./features/ride-request/page/MyRideRequestPage";
 import MyRideOffersPage from "./features/ride-offers/page/MyRideOffersPage";
 
 import RideOfferRequestPage from "./features/ride-offers/page/RideOfferRequestPage";
+
+import MyMessagesPage from "./features/messages/pages/MyMessagesPage";
+
 function App() {
   return (
     <Router>
@@ -81,6 +84,8 @@ function App() {
               path="/ride-offer/:ride_offer_id/offer-requests"
               element={<RideOfferRequestPage />}
             />
+
+            <Route path="/my-messages" element={<MyMessagesPage />} />
           </Route>
         </Routes>
       </UserProvider>

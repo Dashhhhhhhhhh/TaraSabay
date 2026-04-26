@@ -13,7 +13,6 @@ function MyRideOffersPage() {
   const fetchMyRideOffers = async () => {
     try {
       const response = await getMyRideOffers();
-      console.log("My ride offers response:", response);
       setRideOffers(response.data || []);
     } catch (err) {
       console.error("Failed to fetch my ride offers:", err);
