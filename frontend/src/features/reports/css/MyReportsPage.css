@@ -1,0 +1,88 @@
+.my-reports-page {
+  padding: 24px;
+  margin: 24px auto;
+  max-width: 1000px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.my-reports-page h2 {
+  margin-bottom: 16px;
+  font-size: 28px;
+}
+
+.my-reports-table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: #fff;
+}
+
+.my-reports-table th,
+.my-reports-table td {
+  border: 1px solid #dcdcdc;
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.my-reports-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.my-reports-table tr:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.my-reports-table tr:hover {
+  background-color: #f0f6ff;
+}
+
+.my-reports-table td {
+  word-break: break-word;
+}
+
+.my-reports-empty,
+.my-reports-error,
+.my-reports-loading {
+  margin-top: 16px;
+  font-size: 16px;
+}
+
+.my-reports-error {
+  color: red;
+}
+
+.selected-report {
+  margin-top: 24px;
+  padding: 16px;
+  border: 1px solid #dcdcdc;
+  border-radius: 8px;
+  background-color: #ffffff;
+}
+
+.selected-report h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  font-size: 20px;
+}
+
+.selected-report p {
+  margin: 8px 0;
+  line-height: 1.5;
+}
+
+.selected-report button {
+  margin-top: 12px;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #0077cc;
+  color: #fff;
+  cursor: pointer;
+}
+
+.selected-report button:hover {
+  background-color: #005fa3;
+}

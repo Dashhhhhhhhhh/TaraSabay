@@ -105,7 +105,7 @@ function MyMessagesPages() {
           </p>
 
           <p>
-            <strong>Status:</strong>{" "}
+            <strong>Status:</strong>
             {selectedMessage.is_read ? "Read" : "Unread"}
           </p>
 
@@ -149,7 +149,7 @@ function MyMessagesPages() {
         />
       )}
 
-      <button onClick={handleBack}>Back</button>
+      <button onClick={handleBack}>Back to homepage</button>
     </div>
   );
 }
