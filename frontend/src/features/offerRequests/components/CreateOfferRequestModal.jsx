@@ -9,7 +9,6 @@ function CreateOfferRequestModal({ offer, onClose }) {
 
   if (!offer) return null;
 
-  // Reset state when modal unmounts
   useEffect(() => {
     return () => {
       setError(null);

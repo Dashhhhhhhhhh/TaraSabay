@@ -95,8 +95,9 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
       )}
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Pickup Location</label>
+          <label htmlFor="pickup_location">Pickup Location</label>
           <input
+            id="pickup_location"
             type="text"
             value={pickupLocation}
             onChange={(e) => setPickupLocation(e.target.value)}
@@ -106,8 +107,9 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
         </div>
 
         <div>
-          <label>Dropoff Location</label>
+          <label htmlFor="dropoff_location">Dropoff Location</label>
           <input
+            id="dropoff_location"
             type="text"
             value={dropoffLocation}
             onChange={(e) => setDropoffLocation(e.target.value)}
@@ -117,8 +119,9 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
         </div>
 
         <div>
-          <label>Departure Time</label>
+          <label htmlFor="departure_time">Departure Time</label>
           <input
+            id="departure_time"
             type="datetime-local"
             value={departureTime ? toDatetimeLocal(departureTime) : ""}
             onChange={(e) => setDepartureTime(e.target.value)}
@@ -128,8 +131,9 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
         </div>
 
         <div>
-          <label>Notes (optional)</label>
+          <label htmlFor="notes">Notes (optional)</label>
           <textarea
+            id="notes"
             value={notes}
             onChange={(e) => setNotes(e.target.value)}
             maxLength={500}
@@ -143,7 +147,7 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
         </button>
 
         <button onClick={handleCancel} type="button" disabled={loading}>
-          cancel
+          Cancel
         </button>
       </form>
     </main>

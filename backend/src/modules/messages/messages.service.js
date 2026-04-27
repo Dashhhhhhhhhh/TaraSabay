@@ -289,7 +289,7 @@ async function markMessageAsReadService(message_id, user_id, role) {
     };
   }
 
-  if (message.receiver_user_id !== user_id && role !== "admin") {
+  if (message.receiver_user_id !== user_id && role !== "Admin") {
     return {
       success: false,
       code: "FORBIDDEN_ACCESS",

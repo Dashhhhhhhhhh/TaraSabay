@@ -117,7 +117,7 @@ async function findMessageById(message_id) {
       m.created_at,
       m.updated_at,
       sender.first_name || ' ' || sender.last_name AS sender_full_name,
-      receiver.first_name || ' ' || receiver.last_name AS receiver_full_name,
+      receiver.first_name || ' ' || receiver.last_name AS receiver_full_name
    FROM messages m
    JOIN users sender ON m.sender_user_id = sender.user_id
    JOIN users receiver ON m.receiver_user_id = receiver.user_id
