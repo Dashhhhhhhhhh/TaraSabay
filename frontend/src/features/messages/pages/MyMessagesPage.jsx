@@ -2,12 +2,11 @@ import { useState, useEffect } from "react";
 import { getMyMessages, markMessageAsRead } from "../api/messages.api";
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../features/profile/UserContext";
-
 import CreateMessageModal from "../components/CreateMessageModal";
-
+import CreateReportModal from "../../reports/components/CreateReportModal";
 import "./../css/MyMessagesPage.css";
-
 import MessageList from "../components/MessageList";
+
 function MyMessagesPages() {
   const navigate = useNavigate();
 
@@ -21,6 +20,7 @@ function MyMessagesPages() {
   const [markReadLoadingId, setMarkReadLoadingId] = useState(null);
 
   const [showMessageModal, setShowMessageModal] = useState(false);
+  const [showReportModal, setShowReportModal] = useState(false);
 
   const replyReceiverId =
     selectedMessage && user
@@ -136,6 +136,14 @@ function MyMessagesPages() {
               Reply
             </button>
           )}
+
+          <button
+            onClick={() => {
+              setShowReportModal(true);
+            }}
+          >
+            Report
+          </button>
         </div>
       )}
 
@@ -146,6 +154,17 @@ function MyMessagesPages() {
           ride_offer_id={selectedMessage.ride_offer_id}
           ride_request_id={selectedMessage.ride_request_id}
           onSuccess={CreateMessageModal}
+        />
+      )}
+
+      {showReportModal && selectedMessage && (
+        <CreateReportModal
+          onClose={() => setShowReportModal(false)}
+          reported_user_id={selectedMessage.sender_user_id}
+          ride_offer_id={selectedMessage.ride_offer_id}
+          ride_request_id={selectedMessage.ride_request_id}
+          message_id={selectedMessage.message_id}
+          onSuccess={() => console.log("Report created!")}
         />
       )}
 

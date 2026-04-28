@@ -23,18 +23,21 @@ async function createReportService(reportData) {
     details,
   } = reportData;
 
-  if (!reported_by_user_id)
+  if (!reported_by_user_id) {
     return {
       success: false,
       code: "MISSING_USER_ID",
       message: "Sender user ID is required.",
     };
-  if (!isValidUUID(reported_by_user_id))
+  }
+
+  if (!isValidUUID(reported_by_user_id)) {
     return {
       success: false,
       code: "INVALID_USER_ID",
       message: "Sender user ID must be a valid UUID.",
     };
+  }
 
   const cleanReason = cleanString(reason);
   if (!cleanReason || cleanReason.length === 0) {
@@ -44,11 +47,21 @@ async function createReportService(reportData) {
       message: "A reason must be provided to complete this request.",
     };
   }
-  if (cleanReason && cleanReason.length > 1000) {
+
+  if (cleanReason.length > 1000) {
     return {
       success: false,
       code: "INVALID_REASON",
       message: "Reason is too long (max 1000 characters).",
+    };
+  }
+
+  const cleanDetails = details ? cleanString(details) : null;
+  if (cleanDetails && cleanDetails.length > 1000) {
+    return {
+      success: false,
+      code: "INVALID_DETAILS",
+      message: "Details is too long (max 1000 characters).",
     };
   }
 
@@ -63,7 +76,7 @@ async function createReportService(reportData) {
     return {
       success: false,
       code: "MISSING_REPORT_TARGET",
-      message: "A reported user ID must be provided to submit a report.",
+      message: "A report target must be provided.",
     };
   }
 
@@ -84,8 +97,6 @@ async function createReportService(reportData) {
     };
   }
 
-  let targetType;
-
   if (reported_user_id) {
     if (!isValidUUID(reported_user_id)) {
       return {
@@ -94,6 +105,7 @@ async function createReportService(reportData) {
         message: "Reported user ID must be a valid UUID.",
       };
     }
+
     const reportedUser = await findUserById(reported_user_id);
     if (!reportedUser) {
       return {
@@ -102,6 +114,7 @@ async function createReportService(reportData) {
         message: "Reported user does not exist.",
       };
     }
+
     if (reported_by_user_id === reported_user_id) {
       return {
         success: false,
@@ -109,43 +122,63 @@ async function createReportService(reportData) {
         message: "You cannot report yourself.",
       };
     }
-    targetType = "user";
   }
 
   if (ride_offer_id) {
+    if (!isValidUUID(ride_offer_id)) {
+      return {
+        success: false,
+        code: "INVALID_RIDE_OFFER_ID",
+        message: "Ride offer ID must be a valid UUID.",
+      };
+    }
+
     const rideOffer = await findRideOfferById(ride_offer_id);
     if (!rideOffer) {
       return {
         success: false,
         code: "RIDE_OFFER_NOT_FOUND",
-        message: "Ride offer does not exists.",
+        message: "Ride offer does not exist.",
       };
     }
-    targetType = "ride_offer";
   }
 
   if (ride_request_id) {
+    if (!isValidUUID(ride_request_id)) {
+      return {
+        success: false,
+        code: "INVALID_RIDE_REQUEST_ID",
+        message: "Ride request ID must be a valid UUID.",
+      };
+    }
+
     const rideRequest = await findRideRequestById(ride_request_id);
     if (!rideRequest) {
       return {
         success: false,
         code: "RIDE_REQUEST_NOT_FOUND",
-        message: "Ride request does not exists.",
+        message: "Ride request does not exist.",
       };
     }
-    targetType = "ride_request";
   }
 
   if (message_id) {
+    if (!isValidUUID(message_id)) {
+      return {
+        success: false,
+        code: "INVALID_MESSAGE_ID",
+        message: "Message ID must be a valid UUID.",
+      };
+    }
+
     const message = await findMessageById(message_id);
     if (!message) {
       return {
         success: false,
         code: "MESSAGE_NOT_FOUND",
-        message: "Message does not exists.",
+        message: "Message does not exist.",
       };
     }
-    targetType = "message";
   }
 
   const report = await createReport({
@@ -155,7 +188,7 @@ async function createReportService(reportData) {
     ride_request_id,
     message_id,
     reason: cleanReason,
-    details: details ? cleanString(details) : null,
+    details: cleanDetails,
     status: "open",
   });
 
@@ -166,7 +199,6 @@ async function createReportService(reportData) {
     data: report,
   };
 }
-
 async function findReportByIdService(report_id, user_id, role) {
   if (!report_id)
     return {

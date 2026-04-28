@@ -55,6 +55,10 @@ function HomePage() {
     navigate("/my-report-page");
   };
 
+  const handleAdminReport = () => {
+    navigate("/admin-report");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -70,7 +74,6 @@ function HomePage() {
         shared journeys.
       </p>
       <p>You are now logged in to your dashboard.</p>
-
       <button onClick={handleRideOffers}>Ride Offers</button>
       <button onClick={handleRideRequest}>Ride Requests </button>
       <button onClick={handleMyRequestResponse}>My Request Response</button>
@@ -81,6 +84,11 @@ function HomePage() {
       <button onClick={handleDriverProfile}>Driver Profile</button>
       <button onClick={handleMyMessages}>Messages</button>
       <button onClick={handleMyReportPage}>My Reports</button>
+      {user?.role === "Admin" && (
+        <button onClick={() => navigate("/admin-reports")}>
+          Admin Reports
+        </button>
+      )}
       <button onClick={handleLogout}>Log Out</button>
     </main>
   );

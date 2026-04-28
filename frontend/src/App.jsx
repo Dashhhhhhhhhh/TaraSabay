@@ -36,6 +36,8 @@ import MyMessagesPage from "./features/messages/pages/MyMessagesPage";
 
 import MyReportsPage from "./features/reports/pages/MyReportsPage";
 
+import AdminReportsPage from "./features/reports/pages/AdminReportsPage";
+
 function App() {
   return (
     <Router>
@@ -54,42 +56,36 @@ function App() {
               path="/ride-offer/create"
               element={<CreateRideOfferPage />}
             />
-
             <Route
               path="/ride-offer/:ride_offer_id/edit"
               element={<EditRideOfferPage />}
             />
             <Route path="/driver" element={<DriveProfilePage />} />
-
             <Route
               path="/my-offer-requests"
               element={<MyOfferRequestsPage />}
             />
-
             <Route
               path="/my-request-response"
               element={<MyRequestResponsePage />}
             />
-
             <Route
               path="/ride-request/create"
               element={<CreateRideRequestPage />}
             />
-
             <Route path="/ride-request" element={<RideRequestsPage />} />
-
             <Route path="/my-ride-request" element={<MyRideRequestPage />} />
-
             <Route path="/my-ride-offers" element={<MyRideOffersPage />} />
-
             <Route
               path="/ride-offer/:ride_offer_id/offer-requests"
               element={<RideOfferRequestPage />}
             />
-
             <Route path="/my-report-page" element={<MyReportsPage />} />
-
             <Route path="/my-messages" element={<MyMessagesPage />} />
+
+            <Route element={<ProtectedRoute allowedRoles={["Admin"]} />}>
+              <Route path="/admin-reports" element={<AdminReportsPage />} />
+            </Route>
           </Route>
         </Routes>
       </UserProvider>

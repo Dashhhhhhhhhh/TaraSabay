@@ -30,6 +30,7 @@ async function createReportController(req, res) {
         MISSING_REASON: 400,
         MISSING_REPORT_TARGET: 400,
         INVALID_MESSAGE_TEXT: 400,
+        INVALID_DETAILS: 400,
         INVALID_CONTEXT: 400,
         MULTIPLE_REPORT_TARGETS: 400,
         USER_NOT_FOUND: 404,

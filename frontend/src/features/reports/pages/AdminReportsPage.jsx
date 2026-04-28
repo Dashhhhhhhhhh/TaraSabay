@@ -1,27 +1,18 @@
 import { useState, useEffect } from "react";
-import { useUser } from "../../../features/profile/UserContext";
-import { useNavigate } from "react-router";
-import { getMyReports } from "../api/reports.api";
+import { useNavigate } from "react-router-dom";
+import { getAllReportsForAdmin } from "../api/reports.api";
 
-import ReportList from "../components/ReportList";
-import CreateReportModal from "../components/CreateReportModal";
-
-import "../css/MyReportsPage.css";
-
-function MyReportsPage() {
+function AdminReportsPage() {
   const navigate = useNavigate();
-  const { user, loading: userLoading, error: userError } = useUser();
 
   const [reports, setReports] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-
-  // fix typo: setSelectedReport instead of setSelectedRepot
   const [selectedReport, setSelectedReport] = useState(null);
 
-  const fetchMyReports = async () => {
+  const fetchMyAdminReports = async () => {
     try {
-      const response = await getMyReports();
+      const response = await getAllReportsForAdmin();
       setReports(response.data || []);
     } catch (err) {
       console.error("Failed to fetch reports:", err);
@@ -32,7 +23,7 @@ function MyReportsPage() {
   };
 
   useEffect(() => {
-    fetchMyReports();
+    fetchMyAdminReports();
   }, []);
 
   const handleViewReport = (report) => {
@@ -47,10 +38,10 @@ function MyReportsPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="my-reports-page">
+    <div className="admin-reports-page">
       <h2>Reports</h2>
 
-      <table className="my-reports-table">
+      <table className="admin-reports-table">
         <thead>
           <tr>
             <th>Target</th>
@@ -71,7 +62,7 @@ function MyReportsPage() {
             </tr>
           ) : (
             reports.map((report) => (
-              <tr key={report.report_id || report.message_id}>
+              <tr key={report.report_id}>
                 <td>
                   {report.reported_user_id
                     ? "User"
@@ -89,7 +80,12 @@ function MyReportsPage() {
                 <td>{new Date(report.created_at).toLocaleString()}</td>
                 <td>{new Date(report.updated_at).toLocaleString()}</td>
                 <td>
-                  <button onClick={() => handleViewReport(report)}>View</button>
+                  <button
+                    type="button"
+                    onClick={() => handleViewReport(report)}
+                  >
+                    View
+                  </button>
                 </td>
               </tr>
             ))
@@ -98,8 +94,8 @@ function MyReportsPage() {
       </table>
 
       {selectedReport && (
-        <div className="selected-report">
-          <h3>Report Details</h3>
+        <div className="selected-admin-report">
+          <h3>Admin Report Details</h3>
           <p>
             <strong>Target:</strong>{" "}
             {selectedReport.reported_user_id
@@ -137,4 +133,4 @@ function MyReportsPage() {
   );
 }
 
-export default MyReportsPage;
+export default AdminReportsPage;
