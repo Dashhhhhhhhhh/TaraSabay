@@ -12,7 +12,7 @@ function MyOfferRequestPage() {
   const navigate = useNavigate();
 
   const [offers, setOffers] = useState([]);
-  const [error, setError] = useState(null);
+  const [error] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const fetchMyOfferRequest = async () => {
@@ -23,6 +23,7 @@ function MyOfferRequestPage() {
       console.error("Failed to fetch offer requests:", err);
 
       if (err.response) {
+        // Response was received and logged above.
       } else if (err.request) {
         console.error("No response received. Request details:", err.request);
       } else {
@@ -45,6 +46,7 @@ function MyOfferRequestPage() {
       console.error("Failed to cancel offer requests:", err);
 
       if (err.response) {
+        // Response was received and logged above.
       } else if (err.request) {
         console.error("No response received. Request details:", err.request);
       } else {

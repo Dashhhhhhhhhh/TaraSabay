@@ -5,9 +5,7 @@ import OfferRequestForm from "./OfferRequestForm";
 function CreateOfferRequestModal({ offer, onClose }) {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(null);
-
-  if (!offer) return null;
+  const [, setSuccess] = useState(null);
 
   useEffect(() => {
     return () => {
@@ -16,6 +14,8 @@ function CreateOfferRequestModal({ offer, onClose }) {
       setSuccess(null);
     };
   }, []);
+
+  if (!offer) return null;
 
   const handleCreateOfferRequest = async (payload) => {
     setLoading(true);

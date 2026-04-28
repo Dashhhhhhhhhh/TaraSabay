@@ -55,10 +55,6 @@ function HomePage() {
     navigate("/my-report-page");
   };
 
-  const handleAdminReport = () => {
-    navigate("/admin-report");
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");

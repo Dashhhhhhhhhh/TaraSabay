@@ -22,7 +22,7 @@ async function createRequestResponseController(req, res) {
 
     if (!result.success) {
       const statusMap = {
-        MISSING_RIDE_REQUEST: 400,
+        MISSING_RIDE_REQUEST_ID: 400,
         MISSING_USER_ID: 400,
         INVALID_RIDE_REQUEST_ID: 400,
         INVALID_USER_ID: 400,
@@ -156,7 +156,7 @@ async function acceptRequestResponseController(req, res) {
         REQUEST_RESPONSE_NOT_FOUND: 404,
         RIDE_REQUEST_NOT_FOUND: 404,
         FORBIDDEN_ACCESS: 403,
-        REQUEST_RESPONSE_ALREADY_FINAL: 409,
+        REQUEST_ALREADY_FINAL: 409,
         RIDE_REQUEST_NOT_OPEN: 409,
         INTERNAL_ERROR: 500,
       };
@@ -235,7 +235,7 @@ async function cancelRequestResponseController(req, res) {
         REQUEST_RESPONSE_NOT_FOUND: 404,
         RIDE_REQUEST_NOT_FOUND: 404,
         FORBIDDEN_ACCESS: 403,
-        REQUEST_RESPONSE_ALREADY_FINAL: 409,
+        REQUEST_ALREADY_FINAL: 409,
         RIDE_REQUEST_NOT_OPEN: 409,
         INTERNAL_ERROR: 500,
       };

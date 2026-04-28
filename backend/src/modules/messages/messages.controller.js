@@ -51,12 +51,16 @@ async function createMessageController(req, res) {
 async function findMessageByIdController(req, res) {
   try {
     const message_id = req.params.message_id;
-    const result = await findMessageByIdService(message_id);
+    const user_id = req.user.user_id;
+    const { role } = req.user;
+    const result = await findMessageByIdService(message_id, user_id, role);
 
     if (!result.success) {
       const statusMap = {
         MISSING_MESSAGE_ID: 400,
         INVALID_MESSAGE_ID: 400,
+        MISSING_USER_ID: 400,
+        INVALID_USER_ID: 400,
         MESSAGE_NOT_FOUND: 404,
         FORBIDDEN_ACCESS: 403,
       };

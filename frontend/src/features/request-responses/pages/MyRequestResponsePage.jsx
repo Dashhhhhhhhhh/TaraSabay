@@ -15,7 +15,7 @@ function MyRequestResponsePage() {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const [cancelLoading, setCancelLoading] = useState(false);
+  const [, setCancelLoading] = useState(false);
 
   const fetchMyRequestResponses = async () => {
     try {

@@ -58,7 +58,7 @@ async function findRideOfferWithDriverInfoByiDController(req, res) {
     if (!result.success) {
       const statusMap = {
         MISSING_RIDE_OFFER_ID: 400,
-        INVALID_RODE_OFFER_ID: 404,
+        INVALID_RIDE_OFFER_ID: 404,
         RIDE_OFFER_NOT_FOUND: 404,
       };
       const status = statusMap[result.code] || 500;

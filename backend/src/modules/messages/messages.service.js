@@ -193,7 +193,7 @@ async function createMessageService(messageData) {
   };
 }
 
-async function findMessageByIdService(message_id) {
+async function findMessageByIdService(message_id, user_id, role) {
   if (!message_id)
     return {
       success: false,
@@ -206,6 +206,18 @@ async function findMessageByIdService(message_id) {
       code: "INVALID_MESSAGE_ID",
       message: "Message ID must be a valid UUID.",
     };
+  if (!user_id)
+    return {
+      success: false,
+      code: "MISSING_USER_ID",
+      message: "User ID is required.",
+    };
+  if (!isValidUUID(user_id))
+    return {
+      success: false,
+      code: "INVALID_USER_ID",
+      message: "User ID must be a valid UUID.",
+    };
 
   const message = await findMessageById(message_id);
 
@@ -214,6 +226,18 @@ async function findMessageByIdService(message_id) {
       success: false,
       code: "MESSAGE_NOT_FOUND",
       message: "The requested message could not be found.",
+    };
+  }
+
+  if (
+    message.sender_user_id !== user_id &&
+    message.receiver_user_id !== user_id &&
+    role !== "Admin"
+  ) {
+    return {
+      success: false,
+      code: "FORBIDDEN_ACCESS",
+      message: "You are not authorized to access this message.",
     };
   }
 

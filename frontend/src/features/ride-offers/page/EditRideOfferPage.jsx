@@ -9,14 +9,14 @@ function EditRideOfferPage() {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [offer, setOffer] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchOffer = async () => {
       try {
         const response = await getRideOfferById(ride_offer_id);
         setOffer(response.data);
-      } catch (err) {
+      } catch {
         setError("Failed to load ride offer");
       }
     };

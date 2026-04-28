@@ -26,7 +26,7 @@ async function createOfferRequestController(req, res) {
         INVALID_MESSAGE: 400,
         RIDE_OFFER_NOT_FOUND: 404,
         RIDE_OFFER_NOT_OPEN: 409,
-        CANNOT_REQUEST_OWN_RIDE_OFFER: 409,
+        CANNOT_REQUEST_OWN_RIDE: 409,
         REQUESTED_SEATS_EXCEED_AVAILABLE_SEATS: 409,
         DUPLICATE_PENDING_REQUEST: 409,
       };
@@ -86,7 +86,7 @@ async function getOfferRequestsByOfferController(req, res) {
         MISSING_RIDE_OFFER_ID: 400,
         INVALID_RIDE_OFFER_ID: 400,
         RIDE_OFFER_NOT_FOUND: 404,
-        FORBIDDEN_ACCESS: 404,
+        FORBIDDEN_ACCESS: 403,
       };
       const status = statusMap[result.code] || 500;
       return res.status(status).json(result);

@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { createRideOffer } from "../api/rideOffers.api";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import RideOfferForm from "./../components/RideOfferForm";
 

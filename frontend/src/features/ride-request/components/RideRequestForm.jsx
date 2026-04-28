@@ -1,10 +1,7 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { cleanName, cleanString, toDatetimeLocal } from "../../../utils/helper";
 
 function RideRequestForm({ onSubmit, onCancel }) {
-  const navigate = useNavigate();
-
   const [pickupLocation, setPickupLocation] = useState("");
   const [dropoffLocation, setDropoffLocation] = useState("");
   const [departureTime, setDepartureTime] = useState("");
@@ -72,7 +69,7 @@ function RideRequestForm({ onSubmit, onCancel }) {
       };
 
       await onSubmit(payload);
-    } catch (err) {
+    } catch {
       setError("Something went wrong.");
     } finally {
       setLoading(false);

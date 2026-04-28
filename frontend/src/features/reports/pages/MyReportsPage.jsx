@@ -1,16 +1,11 @@
 import { useState, useEffect } from "react";
-import { useUser } from "../../../features/profile/UserContext";
-import { useNavigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 import { getMyReports } from "../api/reports.api";
-
-import ReportList from "../components/ReportList";
-import CreateReportModal from "../components/CreateReportModal";
 
 import "../css/MyReportsPage.css";
 
 function MyReportsPage() {
   const navigate = useNavigate();
-  const { user, loading: userLoading, error: userError } = useUser();
 
   const [reports, setReports] = useState([]);
   const [error, setError] = useState(null);

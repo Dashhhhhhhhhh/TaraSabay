@@ -10,7 +10,7 @@ import MessageList from "../components/MessageList";
 function MyMessagesPages() {
   const navigate = useNavigate();
 
-  const { user, loading: userLoading, error: userError } = useUser();
+  const { user } = useUser();
 
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
@@ -153,7 +153,10 @@ function MyMessagesPages() {
           receiver_user_id={replyReceiverId}
           ride_offer_id={selectedMessage.ride_offer_id}
           ride_request_id={selectedMessage.ride_request_id}
-          onSuccess={CreateMessageModal}
+          onSuccess={async () => {
+            await fetchMyMessages();
+            setShowMessageModal(false);
+          }}
         />
       )}
 

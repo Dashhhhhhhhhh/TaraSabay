@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createRequestResponse } from "../api/requestResponses.api";
 import RequestResponseForm from "./RequestResponseForm";
 

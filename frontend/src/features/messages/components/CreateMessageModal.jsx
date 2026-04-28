@@ -10,9 +10,9 @@ function CreateMessageModal({
   ride_request_id,
   onSuccess,
 }) {
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(null);
+  const [, setSuccess] = useState(null);
 
   const handleCreateMessage = async (payload) => {
     setLoading(true);

@@ -203,14 +203,14 @@ async function findReportByIdService(report_id, user_id, role) {
   if (!report_id)
     return {
       success: false,
-      code: "MISSING_USER_ID",
-      message: "Sender user ID is required.",
+      code: "MISSING_REPORT_ID",
+      message: "Report ID is required.",
     };
   if (!isValidUUID(report_id))
     return {
       success: false,
-      code: "INVALID_USER_ID",
-      message: "Sender user ID must be a valid UUID.",
+      code: "INVALID_REPORT_ID",
+      message: "Report ID must be a valid UUID.",
     };
 
   const report = await findReportById(report_id);
@@ -222,7 +222,7 @@ async function findReportByIdService(report_id, user_id, role) {
     };
   }
 
-  if (report.reported_by_user_id !== user_id && role !== "admin") {
+  if (report.reported_by_user_id !== user_id && role !== "Admin") {
     return {
       success: false,
       code: "FORBIDDEN_ACCESS",

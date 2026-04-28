@@ -37,7 +37,7 @@ function CreateReportForm({ onSubmit }) {
       await onSubmit(payload);
       setReason("");
       setDetails("");
-    } catch (err) {
+    } catch {
       setError("Something went wrong while submitting.");
     } finally {
       setLoading(false);

@@ -14,14 +14,13 @@ function RideOfferRequestPage() {
   const navigate = useNavigate();
 
   const { ride_offer_id } = useParams();
-  const { offer_request_id } = useParams();
   const [offerRequests, setOfferRequests] = useState([]);
   const [error, setError] = useState(null);
 
   const [loading, setLoading] = useState(true);
 
-  const [acceptLoading, setAcceptLoading] = useState(false);
-  const [rejectLoading, setRejectLoading] = useState(false);
+  const [, setAcceptLoading] = useState(false);
+  const [, setRejectLoading] = useState(false);
 
   const fetchOfferRequests = async () => {
     try {

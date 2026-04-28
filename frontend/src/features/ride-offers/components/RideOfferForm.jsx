@@ -69,7 +69,7 @@ function CreateRideOfferForm({ onSubmit, initialValues }) {
       } else {
         await onSubmit(payload);
       }
-    } catch (err) {
+    } catch {
       setError("Something went wrong while submitting.");
     } finally {
       setLoading(false);

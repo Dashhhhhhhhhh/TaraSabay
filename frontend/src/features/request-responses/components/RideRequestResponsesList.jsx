@@ -13,8 +13,8 @@ function RideRequestResponsesList({ rideRequestId }) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const [acceptLoadingId, setAcceptLoadingId] = useState(false);
-  const [rejectLoadingId, setrejectLoadingId] = useState(false);
+  const [, setAcceptLoadingId] = useState(false);
+  const [, setrejectLoadingId] = useState(false);
 
   const fetchResponses = async () => {
     try {

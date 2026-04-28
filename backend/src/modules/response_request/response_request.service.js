@@ -217,7 +217,7 @@ async function getRequestResponsesByRideRequestIdService(
     };
   }
 
-  if (rideRequest.rider_user_id !== user_id && role !== admin) {
+  if (rideRequest.rider_user_id !== user_id && role !== "Admin") {
     return {
       success: false,
       code: "FORBIDDEN_ACCESS",

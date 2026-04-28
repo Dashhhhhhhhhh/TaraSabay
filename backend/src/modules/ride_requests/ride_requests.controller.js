@@ -41,7 +41,7 @@ async function getAllRideRequestsController(req, res) {
   try {
     const result = await getAllRideRequestsService();
 
-    return res.status(201).json(result);
+    return res.status(200).json(result);
   } catch (error) {
     console.error("Error fetching ride requests:", error);
     return res.status(500).json({
@@ -140,7 +140,7 @@ async function cancelRideRequestController(req, res) {
         MISSING_USER_ID: 400,
         INVALID_USER_ID: 400,
         RIDE_REQUEST_NOT_FOUND: 404,
-        FORBIDDEN_ACCESS: 404,
+        FORBIDDEN_ACCESS: 403,
         RIDE_REQUEST_ALREADY_CANCELLED: 409,
         RIDE_REQUEST_NOT_CANCELLABLE: 409,
       };

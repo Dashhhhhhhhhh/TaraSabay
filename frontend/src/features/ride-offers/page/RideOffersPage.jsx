@@ -10,14 +10,13 @@ import RideOfferDetailsModal from "../components/RideOfferDetailsModal";
 function RideOfferPage() {
   const navigate = useNavigate();
 
-  const { user, loading: userLoading, error: userError } = useUser();
+  const { user } = useUser();
 
   const [rideOffers, setRideOffers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const [cancelLoading, setCancelLoading] = useState(false);
+  const [, setCancelLoading] = useState(false);
 
   const [selectedRideOffer, setSelectedRideOffer] = useState(null);
 
@@ -106,6 +105,7 @@ function RideOfferPage() {
         <RideOfferDetailsModal
           rideOffer={selectedRideOffer}
           onClose={handleCloseModal}
+          onCancel={handleCancelHandler}
           currentUserId={user?.user_id}
         />
       )}

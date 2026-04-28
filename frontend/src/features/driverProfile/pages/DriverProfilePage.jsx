@@ -27,7 +27,7 @@ function DriveProfilePage() {
       try {
         const response = await getMyDriverProfile();
         setDriver(response.data);
-      } catch (err) {
+      } catch {
         setDriver(null);
         setError(null);
       } finally {

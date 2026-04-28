@@ -12,7 +12,7 @@ export async function getMyMessages() {
 
 export async function getMessageById(message_id) {
   const response = await api.get(`/messages/${message_id}`);
-  return response.data;w
+  return response.data;
 }
 
 export async function markMessageAsRead(message_id) {

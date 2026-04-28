@@ -27,7 +27,7 @@ function CreateMessageForm({ onSubmit }) {
     try {
       await onSubmit({ message_text });
       setMessage("");
-    } catch (err) {
+    } catch {
       setError("Something went wrong while submitting.");
     } finally {
       setLoading(false);
