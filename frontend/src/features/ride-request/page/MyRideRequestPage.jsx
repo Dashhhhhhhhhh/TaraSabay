@@ -78,13 +78,37 @@ function MyRideRequestPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div>
-      <div className="my-ride-request-page">
-        <h2>My Ride Requests ({ride.length})</h2>
-        {ride.length === 0 ? (
-          <p>No ride requests found.</p>
-        ) : (
-          <table className="my-ride-request-table">
+    <main className="page">
+      <div className="page-header">
+        <div>
+          <h1>My Ride Requests ({ride.length})</h1>
+          <p>Create, track, and manage your submitted ride requests.</p>
+        </div>
+
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={() => setShowForm(true)}
+          >
+            Create Ride Request
+          </button>
+
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/homepage")}
+          >
+            Back to Homepage
+          </button>
+        </div>
+      </div>
+
+      {ride.length === 0 ? (
+        <p>No ride requests found.</p>
+      ) : (
+        <div className="table-wrapper">
+          <table className="data-table my-ride-request-table">
             <thead>
               <tr>
                 <th>Pickup</th>
@@ -106,52 +130,55 @@ function MyRideRequestPage() {
                   <td>{new Date(req.departure_time).toLocaleString()}</td>
                   <td>{req.requested_seats}</td>
                   <td>{req.notes || "-"}</td>
-                  <td>{req.status}</td>
+                  <td>
+                    <span className={`status-badge status-${req.status}`}>
+                      {req.status}
+                    </span>
+                  </td>
                   <td>{new Date(req.created_at).toLocaleString()}</td>
                   <td>{new Date(req.updated_at).toLocaleString()}</td>
                   <td>
-                    {req.status === "open" && (
+                    <div className="table-actions">
+                      {req.status === "open" && (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleCancelRideRequest(req)}
+                        >
+                          Cancel
+                        </button>
+                      )}
                       <button
                         type="button"
-                        onClick={() => handleCancelRideRequest(req)}
+                        className="btn btn-primary btn-sm"
+                        onClick={() => handleViewResponses(req)}
                       >
-                        Cancel
+                        Responses
                       </button>
-                    )}
-                  </td>
-                  <td>
-                    <button
-                      type="button"
-                      onClick={() => handleViewResponses(req)}
-                    >
-                      View Responses
-                    </button>
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        )}
-        {showForm ? (
-          <RideRequestForm
-            onSubmit={handleCreateRideRequest}
-            onCancel={handleCancelForm}
-            loading={loading}
-          />
-        ) : (
-          <button onClick={() => setShowForm(true)}>Create Ride Request</button>
-        )}
+        </div>
+      )}
 
-        {selectedRide && (
-          <RideRequestResponseModal
-            rideRequest={selectedRide}
-            onClose={() => setSelectedRide(null)}
-          />
-        )}
+      {showForm && (
+        <RideRequestForm
+          onSubmit={handleCreateRideRequest}
+          onCancel={handleCancelForm}
+          loading={loading}
+        />
+      )}
 
-        <button onClick={() => navigate("/homepage")}>Back to Homepage</button>
-      </div>
-    </div>
+      {selectedRide && (
+        <RideRequestResponseModal
+          rideRequest={selectedRide}
+          onClose={() => setSelectedRide(null)}
+        />
+      )}
+    </main>
   );
 }
 

@@ -1,50 +1,13 @@
-.ride-requests-page {
-  padding: 24px;
-}
-
-.ride-requests-page h1 {
-  margin-bottom: 16px;
-  font-size: 28px;
-}
-
 .ride-requests-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
+  min-width: 850px;
 }
 
 .ride-requests-table th,
 .ride-requests-table td {
-  border: 1px solid #dcdcdc;
-  padding: 12px;
-  text-align: left;
   vertical-align: top;
 }
 
-.ride-requests-table th {
-  background-color: #f5f5f5;
-  font-weight: 600;
-}
-
-.ride-requests-table tr:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.ride-requests-table tr:hover {
-  background-color: #f0f6ff;
-}
-
-.ride-requests-table td {
-  word-break: break-word;
-}
-
-.ride-requests-empty,
-.ride-requests-error,
-.ride-requests-loading {
-  margin-top: 16px;
-  font-size: 16px;
-}
-
-.ride-requests-error {
-  color: red;
+.ride-requests-table td:nth-child(5) {
+  max-width: 240px;
+  white-space: normal;
 }

@@ -39,25 +39,37 @@ function RideRequestsPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="ride-requests-page">
-      <h2>Ride Requests</h2>
-      <p>
-        View your submitted ride requests and their current status in TaraSabay
-      </p>
-      <button onClick={handleHomepage}>Homepage</button>
+    <main className="page">
+      <div className="ride-requests-page">
+        <div className="page-header">
+          <div>
+            <h1>Ride Requests</h1>
+            <p>Browse passenger ride requests and respond as a driver.</p>
+          </div>
 
-      <RideRequestList
-        rideRequests={rideRequests}
-        onViewRideRequest={setSelectedRideRequest}
-      />
+          <div className="page-actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={handleHomepage}
+            >
+              Homepage
+            </button>
+          </div>
+        </div>
 
-      {selectedRideRequest && selectedRideRequest.status !== "cancelled" && (
-        <CreateRequestResponseModal
-          request={selectedRideRequest}
-          onClose={() => setSelectedRideRequest(null)}
+        <RideRequestList
+          rideRequests={rideRequests}
+          onViewRideRequest={setSelectedRideRequest}
         />
-      )}
-    </div>
+        {selectedRideRequest && selectedRideRequest.status !== "cancelled" && (
+          <CreateRequestResponseModal
+            request={selectedRideRequest}
+            onClose={() => setSelectedRideRequest(null)}
+          />
+        )}
+      </div>
+    </main>
   );
 }
 

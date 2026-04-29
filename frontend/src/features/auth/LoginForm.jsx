@@ -22,8 +22,6 @@ function LoginForm() {
 
       localStorage.setItem("user", JSON.stringify(response.data.user));
 
-      console.log("Login success:", response);
-
       navigate("/homepage");
     } catch (error) {
       if (error.response) {
@@ -47,7 +45,6 @@ function LoginForm() {
           required
         />
       </div>
-
       <div>
         <label htmlFor="password">Password</label>
         <input
@@ -59,7 +56,6 @@ function LoginForm() {
           required
         />
       </div>
-
       <button type="submit">Login</button>
     </form>
   );

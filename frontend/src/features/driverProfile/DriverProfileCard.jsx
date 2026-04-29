@@ -2,18 +2,45 @@ function DriverProfileCard({ driver, onEdit }) {
   if (!driver) return null;
 
   return (
-    <div className="driver-profile-card">
-      <h1>Driver Profile</h1>
-      <p>Manage your driver setup information for offering rides.</p>
-      <ul>
-        <li>Name: {driver.user_full_name}</li>
-        <li>Vehicle: {driver.vehicle_type}</li>
-        <li>Seats: {driver.seat_capacity}</li>
-        <li>Created at: {driver.created_at}</li>
-        <li>Updated at: {driver.updated_at}</li>
-      </ul>
-      <button onClick={onEdit}>Edit Profile</button>
-    </div>
+    <section className="detail-card">
+      <div className="card-header">
+        <div>
+          <h2>Driver Information</h2>
+          <p>Your current driver setup for offering rides.</p>
+        </div>
+
+        <button type="button" className="btn btn-primary" onClick={onEdit}>
+          Edit Profile
+        </button>
+      </div>
+
+      <div className="detail-list">
+        <div className="detail-row">
+          <span>Name</span>
+          <strong>{driver.user_full_name}</strong>
+        </div>
+
+        <div className="detail-row">
+          <span>Vehicle</span>
+          <strong>{driver.vehicle_type}</strong>
+        </div>
+
+        <div className="detail-row">
+          <span>Seats</span>
+          <strong>{driver.seat_capacity}</strong>
+        </div>
+
+        <div className="detail-row">
+          <span>Created At</span>
+          <strong>{new Date(driver.created_at).toLocaleString()}</strong>
+        </div>
+
+        <div className="detail-row">
+          <span>Updated At</span>
+          <strong>{new Date(driver.updated_at).toLocaleString()}</strong>
+        </div>
+      </div>
+    </section>
   );
 }
 

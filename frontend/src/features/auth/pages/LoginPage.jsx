@@ -9,7 +9,8 @@ function LoginPage() {
         TaraSabay makes daily commuting easier by helping communities share
         rides, save gas, and save money.
       </p>
-      <h1>Login</h1>
+
+      <h2>Login</h2>
       <p>Sign in to your TaraSabay account.</p>
 
       <LoginForm />

@@ -23,7 +23,6 @@ function MyOfferRequestPage() {
       console.error("Failed to fetch offer requests:", err);
 
       if (err.response) {
-        // Response was received and logged above.
       } else if (err.request) {
         console.error("No response received. Request details:", err.request);
       } else {
@@ -46,7 +45,6 @@ function MyOfferRequestPage() {
       console.error("Failed to cancel offer requests:", err);
 
       if (err.response) {
-        // Response was received and logged above.
       } else if (err.request) {
         console.error("No response received. Request details:", err.request);
       } else {
@@ -61,18 +59,31 @@ function MyOfferRequestPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div>
-      <div className="my-offer-requests-page">
-        <h2>My Offer Requests</h2>
-        {offers.length === 0 ? (
-          <p>No offer requests found.</p>
-        ) : (
-          <table className="my-offer-requests-table">
+    <main className="page">
+      <div className="page-header">
+        <div>
+          <h1>My Offer Requests</h1>
+          <p>Track ride offers you requested to join.</p>
+        </div>
+
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/homepage")}
+          >
+            Back to Homepage
+          </button>
+        </div>
+      </div>
+      {offers.length === 0 ? (
+        <p>No offer requests found.</p>
+      ) : (
+        <div className="table-wrapper">
+          <table className="data-table my-offer-requests-table">
             <thead>
               <tr>
-                <th>Request ID</th>
                 <th>Ride Offer ID</th>
-                <th>Passenger User ID</th>
                 <th>Requested Seats</th>
                 <th>Message</th>
                 <th>Status</th>
@@ -84,29 +95,40 @@ function MyOfferRequestPage() {
             <tbody>
               {offers.map((offer) => (
                 <tr key={offer.offer_request_id}>
-                  <td>{offer.offer_request_id}</td>
                   <td>{offer.ride_offer_id}</td>
-                  <td>{offer.passenger_user_id}</td>
                   <td>{offer.requested_seats}</td>
                   <td>{offer.message || "-"}</td>
-                  <td>{offer.offer_request_status}</td>
+                  <td>
+                    <span
+                      className={`status-badge status-${offer.offer_request_status}`}
+                    >
+                      {offer.offer_request_status}
+                    </span>
+                  </td>
                   <td>{new Date(offer.created_at).toLocaleString()}</td>
                   <td>{new Date(offer.updated_at).toLocaleString()}</td>
                   <td>
-                    {offer.offer_request_status === "pending" && (
-                      <button onClick={() => handleCancelOfferRequest(offer)}>
-                        Cancel Request
-                      </button>
-                    )}
+                    <div className="table-actions">
+                      {offer.offer_request_status === "pending" ? (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => handleCancelOfferRequest(offer)}
+                        >
+                          Cancel Request
+                        </button>
+                      ) : (
+                        <span className="muted-text">No actions</span>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ))}
             </tbody>
           </table>
-        )}
-        <button onClick={() => navigate("/homepage")}>Back to Homepage</button>
-      </div>
-    </div>
+        </div>
+      )}
+    </main>
   );
 }
 

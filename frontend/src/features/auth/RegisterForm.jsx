@@ -53,6 +53,9 @@ function RegisterForm({ onSubmit }) {
           onChange={(event) => setFirstName(event.target.value)}
           required
         />
+      </div>
+
+      <div>
         <label htmlFor="middle_initial">Middle Initial</label>
         <input
           id="middle_initial"
@@ -61,6 +64,9 @@ function RegisterForm({ onSubmit }) {
           value={middleInitial}
           onChange={(event) => setMiddleInitial(event.target.value)}
         />
+      </div>
+
+      <div>
         <label htmlFor="last_name">Last Name</label>
         <input
           id="last_name"
@@ -70,6 +76,9 @@ function RegisterForm({ onSubmit }) {
           onChange={(event) => setLastName(event.target.value)}
           required
         />
+      </div>
+
+      <div>
         <label htmlFor="email">Email</label>
         <input
           id="email"
@@ -79,6 +88,9 @@ function RegisterForm({ onSubmit }) {
           onChange={(event) => setEmail(event.target.value)}
           required
         />
+      </div>
+
+      <div>
         <label htmlFor="password">Password</label>
         <input
           id="password"
@@ -88,6 +100,9 @@ function RegisterForm({ onSubmit }) {
           onChange={(event) => setPassword(event.target.value)}
           required
         />
+      </div>
+
+      <div>
         <label htmlFor="contactNumber">Contact Number</label>
         <input
           id="contactNumber"
@@ -96,6 +111,9 @@ function RegisterForm({ onSubmit }) {
           value={contactNumber}
           onChange={(event) => setContactNumber(event.target.value)}
         />
+      </div>
+
+      <div>
         <label htmlFor="role">Role</label>
         <select
           id="role"
@@ -109,7 +127,7 @@ function RegisterForm({ onSubmit }) {
         </select>
       </div>
 
-      <button type="submit">Submit</button>
+      <button type="submit">Register</button>
     </form>
   );
 }

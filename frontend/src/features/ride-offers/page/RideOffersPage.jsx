@@ -88,13 +88,31 @@ function RideOfferPage() {
     return <p>No ride offers found.</p>;
 
   return (
-    <main>
-      <h1>Ride Offers</h1>
-      <p>View current transportation options in TaraSabay</p>
+    <main className="page">
+      <div className="page-header">
+        <div>
+          <h1>Ride Offers</h1>
+          <p>View current transportation options in TaraSabay</p>
+        </div>
 
-      <button onClick={handleHomepage}>Homepage</button>
-      <button onClick={handleCreateRideOffer}>Create a Ride Offer</button>
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleHomepage}
+          >
+            Homepage
+          </button>
 
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleCreateRideOffer}
+          >
+            Create a Ride Offer
+          </button>
+        </div>
+      </div>
       <RideOfferList
         rideOffers={rideOffers}
         onViewRideOffer={handleViewRideOffer}

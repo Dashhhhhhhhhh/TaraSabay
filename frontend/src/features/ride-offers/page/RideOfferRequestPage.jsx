@@ -26,7 +26,6 @@ function RideOfferRequestPage() {
     try {
       const response = await getOfferRequestsByOfferId(ride_offer_id);
 
-      console.log("API response:", response.offerRequests);
       setOfferRequests(response.offerRequests);
     } catch (err) {
       console.error("Failed to fetch offer requests:", err);
@@ -75,69 +74,91 @@ function RideOfferRequestPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="ride-offer-request-page">
-      <h2>Ride Offer Requests</h2>
-      {offerRequests.length === 0 ? (
-        <p>No ride offer requests found.</p>
-      ) : (
-        <table className="ride-offer-requests-table">
-          <thead>
-            <tr>
-              <th>Passenger</th>
-              <th>Seats</th>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Created At</th>
-              <th>Updated At</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {offerRequests.map((req) => (
-              <tr key={req.offer_request_id}>
-                <td>{req.passenger_user_id}</td>
-                <td>{req.requested_seats}</td>
-                <td>{req.message || "-"}</td>
-                <td>
-                  <span className={`status-badge ${req.status}`}>
-                    {req.status}
-                  </span>
-                </td>
-                <td>{new Date(req.created_at).toLocaleString()}</td>
-                <td>{new Date(req.updated_at).toLocaleString()}</td>
-                <td>
-                  {req.status === "pending" ? (
-                    <>
-                      <button
-                        className="btn-accept"
-                        onClick={() =>
-                          handleAcceptOfferRequest(req.offer_request_id)
-                        }
-                      >
-                        Accept
-                      </button>
-                      <button
-                        className="btn-reject"
-                        onClick={() =>
-                          handleRejectOfferRequest(req.offer_request_id)
-                        }
-                      >
-                        Reject
-                      </button>
-                    </>
-                  ) : (
-                    <span className={`status-badge ${req.status}`}>
-                      {req.status}
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-      <button onClick={() => navigate("/my-ride-offers")}>Back</button>
-    </div>
+    <main className="page">
+      <div className="ride-offer-request-page">
+        <div className="page-header">
+          <div>
+            <h1>Ride Offer Requests</h1>
+            <p>Review passenger requests for this ride offer.</p>
+          </div>
+
+          <div className="page-actions">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => navigate("/my-ride-offers")}
+            >
+              Back
+            </button>
+          </div>
+        </div>
+
+        {offerRequests.length === 0 ? (
+          <p>No ride offer requests found.</p>
+        ) : (
+          <div className="table-wrapper">
+            <table className="data-table ride-offer-requests-table">
+              <thead>
+                <tr>
+                  <th>Passenger</th>
+                  <th>Seats</th>
+                  <th>Message</th>
+                  <th>Status</th>
+                  <th>Created At</th>
+                  <th>Updated At</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                {offerRequests.map((req) => (
+                  <tr key={req.offer_request_id}>
+                    <td>{req.passenger_user_id}</td>
+                    <td>{req.requested_seats}</td>
+                    <td>{req.message || "-"}</td>
+                    <td>
+                      <span className={`status-badge status-${req.status}`}>
+                        {req.status}
+                      </span>
+                    </td>
+                    <td>{new Date(req.created_at).toLocaleString()}</td>
+                    <td>{new Date(req.updated_at).toLocaleString()}</td>
+                    <td>
+                      <div className="table-actions">
+                        {req.status === "pending" ? (
+                          <>
+                            <button
+                              type="button"
+                              className="btn btn-primary btn-sm"
+                              onClick={() =>
+                                handleAcceptOfferRequest(req.offer_request_id)
+                              }
+                            >
+                              Accept
+                            </button>
+
+                            <button
+                              type="button"
+                              className="btn btn-danger btn-sm"
+                              onClick={() =>
+                                handleRejectOfferRequest(req.offer_request_id)
+                              }
+                            >
+                              Reject
+                            </button>
+                          </>
+                        ) : (
+                          <span className="muted-text">No actions</span>
+                        )}
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </main>
   );
 }
 

@@ -4,12 +4,11 @@ import { registerUser } from "./../api/auth.api";
 import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const handleRegister = async (payload) => {
     try {
-      const response = await registerUser(payload);
-      console.log("Register success:", response.data);
+      await registerUser(payload);
 
       navigate("/login");
     } catch (err) {

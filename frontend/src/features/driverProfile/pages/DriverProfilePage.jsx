@@ -45,7 +45,23 @@ function DriveProfilePage() {
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <main>
+    <main className="page">
+      <div className="page-header">
+        <div>
+          <h1>Driver Profile</h1>
+          <p>Manage your driver information for offering rides.</p>
+        </div>
+
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={handleHomepage}
+          >
+            Homepage
+          </button>
+        </div>
+      </div>
       <div>
         {driver && !showEditForm ? (
           <DriverProfileCard
@@ -59,7 +75,6 @@ function DriveProfilePage() {
           )
         )}
       </div>
-
       {showCreateForm && (
         <DriverProfileForm
           onSubmit={async (payload) => {
@@ -76,7 +91,6 @@ function DriveProfilePage() {
           }}
         />
       )}
-
       {showEditForm && (
         <DriverProfileForm
           initialValues={driver}
@@ -96,8 +110,6 @@ function DriveProfilePage() {
           }}
         />
       )}
-
-      <button onClick={handleHomepage}>Homepage</button>
     </main>
   );
 }

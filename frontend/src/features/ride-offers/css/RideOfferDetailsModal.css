@@ -1,46 +1,61 @@
-/* Modal overlay */
+.ride-offer-modal-content {
+  background: #fff;
+  width: 100%;
+  max-width: 560px;
+  padding: 24px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22);
+  box-sizing: border-box;
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.modal-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.modal-details {
+  display: grid;
+  gap: 10px;
+}
+
+.modal-details p {
+  margin: 0;
+  line-height: 1.5;
+  color: #374151;
+}
+
+.modal-details strong {
+  color: #111827;
+}
+
 .ride-offer-modal {
   position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(15, 23, 42, 0.55);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 1000;
-  padding: 1rem;
+  padding: 16px;
   box-sizing: border-box;
 }
 
-/* Card content */
-.ride-offer-modal-content {
-  background: #fff;
-  width: 100%;
-  max-width: 500px;
-  padding: 1.5rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
-  box-sizing: border-box;
-}
-
-
-.ride-offer-modal-content h2 {
-  margin: 0 0 1rem;
-}
-
-.ride-offer-modal-content p {
-  margin: 0 0 0.75rem;
-  line-height: 1.4;
-}
-
-.ride-offer-modal-content button {
-  display: block;
-  width: 100%;
-  margin-top: 1rem;
-  padding: 0.75rem 1rem;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
 }

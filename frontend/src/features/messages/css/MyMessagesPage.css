@@ -1,83 +1,124 @@
-.my-messages-page {
-  padding: 24px;
-}
-
-.my-messages-page h2 {
-  margin-bottom: 16px;
-  font-size: 28px;
-}
-
 .my-messages-table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: #fff;
+  min-width: 950px;
 }
 
 .my-messages-table th,
 .my-messages-table td {
-  border: 1px solid #dcdcdc;
-  padding: 12px;
-  text-align: left;
   vertical-align: top;
 }
 
-.my-messages-table th {
-  background-color: #f5f5f5;
-  font-weight: 600;
+.my-messages-table td:nth-child(3) {
+  max-width: 280px;
+  white-space: normal;
 }
 
-.my-messages-table tr:nth-child(even) {
-  background-color: #fafafa;
-}
-
-.my-messages-table tr:hover {
-  background-color: #f0f6ff;
-}
-
-.my-messages-table td {
-  word-break: break-word;
-}
-
-.my-messages-empty,
-.my-messages-error,
-.my-messages-loading {
-  margin-top: 16px;
-  font-size: 16px;
-}
-
-.my-messages-error {
-  color: red;
-}
-
-.selected-message {
-  margin-top: 24px;
+.message-details-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 16px;
-  border: 1px solid #dcdcdc;
-  border-radius: 8px;
+  z-index: 1000;
+}
+
+.message-details-modal-content {
   background-color: #ffffff;
+  width: 100%;
+  max-width: 720px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22);
 }
 
-.selected-message h3 {
-  margin-top: 0;
-  margin-bottom: 12px;
-  font-size: 20px;
+.modal-details {
+  display: grid;
+  gap: 10px;
 }
 
-.selected-message p {
-  margin: 8px 0;
+.modal-details p {
+  margin: 0;
   line-height: 1.5;
+  color: #374151;
 }
 
-.selected-message button {
-  margin-top: 12px;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  background-color: #0077cc;
-  color: #fff;
-  cursor: pointer;
+.modal-details strong {
+  color: #111827;
 }
 
-.selected-message button:hover {
-  background-color: #005fa3;
+.message-modal,
+.report-modal {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(15, 23, 42, 0.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  z-index: 1100;
+}
+
+.message-modal-content,
+.report-modal-content {
+  background-color: #ffffff;
+  width: 100%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow-y: auto;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.22);
+}
+
+.message-modal-content h2,
+.report-modal-content h2 {
+  margin: 0 0 18px;
+  font-size: 1.4rem;
+  color: #111827;
+}
+
+.message-modal-content p,
+.report-modal-content p {
+  margin-bottom: 12px;
+  color: #374151;
+}
+
+.message-modal-content form,
+.report-modal-content form {
+  max-width: none;
+  width: 100%;
+  padding: 0;
+  box-shadow: none;
+  border-radius: 0;
+  background-color: transparent;
+}
+
+.message-modal-content form div,
+.report-modal-content form div {
+  margin-bottom: 14px;
+}
+
+.message-modal-content textarea,
+.report-modal-content textarea {
+  width: 100%;
+  min-height: 120px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  resize: vertical;
+  outline: none;
+}
+
+.message-modal-content textarea:focus,
+.report-modal-content textarea:focus {
+  border-color: #2563eb;
+}
+
+.message-modal-content form button,
+.report-modal-content form button {
+  width: 100%;
 }

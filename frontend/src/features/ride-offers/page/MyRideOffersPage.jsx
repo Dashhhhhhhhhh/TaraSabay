@@ -30,72 +30,89 @@ function MyRideOffersPage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="my-ride-offer-pages">
-      <h2>My Ride Offers</h2>
+    <main className="page">
+      <div className="page-header">
+        <div>
+          <h1>My Ride Offers</h1>
+          <p>Manage ride offers you created and view passenger requests.</p>
+        </div>
+
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/homepage")}
+            aria-label="Back to Homepage"
+          >
+            Back to Homepage
+          </button>
+        </div>
+      </div>
+
       {rideOffers.length === 0 ? (
         <p>No ride offers found.</p>
       ) : (
-        <table className="my-ride-offers-table">
-          <thead>
-            <tr>
-              <th>Pickup</th>
-              <th>Dropoff</th>
-              <th>Departure</th>
-              <th>Vehicle</th>
-              <th>Seats</th>
-              <th>Status</th>
-              <th>Notes</th>
-              <th>Created At</th>
-              <th>Updated At</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rideOffers.map((offer) => (
-              <tr key={offer.ride_offer_id}>
-                <td>{offer.pickup_location}</td>
-                <td>{offer.dropoff_location}</td>
-                <td>
-                  {new Date(offer.departure_time).toLocaleString("en-PH", {
-                    dateStyle: "medium",
-                    timeStyle: "short",
-                  })}
-                </td>
-                <td>{offer.vehicle_type_snapshot}</td>
-                <td>
-                  {offer.available_seats}/{offer.seat_capacity_snapshot}
-                </td>
-                <td>
-                  <span className={`status-badge ${offer.status}`}>
-                    {offer.status}
-                  </span>
-                </td>
-                <td>{offer.notes || "-"}</td>
-                <td>{new Date(offer.created_at).toLocaleString()}</td>
-                <td>{new Date(offer.updated_at).toLocaleString()}</td>
-                <td>
-                  <button
-                    onClick={() =>
-                      navigate(
-                        `/ride-offer/${offer.ride_offer_id}/offer-requests`,
-                      )
-                    }
-                  >
-                    View
-                  </button>
-                </td>
+        <div className="table-wrapper">
+          <table className="data-table my-ride-offers-table">
+            <thead>
+              <tr>
+                <th>Pickup</th>
+                <th>Dropoff</th>
+                <th>Departure</th>
+                <th>Vehicle</th>
+                <th>Seats</th>
+                <th>Status</th>
+                <th>Notes</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {rideOffers.map((offer) => (
+                <tr key={offer.ride_offer_id}>
+                  <td>{offer.pickup_location}</td>
+                  <td>{offer.dropoff_location}</td>
+                  <td>
+                    {new Date(offer.departure_time).toLocaleString("en-PH", {
+                      dateStyle: "medium",
+                      timeStyle: "short",
+                    })}
+                  </td>
+                  <td>{offer.vehicle_type_snapshot}</td>
+                  <td>
+                    {offer.available_seats}/{offer.seat_capacity_snapshot}
+                  </td>
+                  <td>
+                    <span className={`status-badge status-${offer.status}`}>
+                      {offer.status}
+                    </span>
+                  </td>
+                  <td>{offer.notes || "-"}</td>
+                  <td>{new Date(offer.created_at).toLocaleString()}</td>
+                  <td>{new Date(offer.updated_at).toLocaleString()}</td>
+                  <td>
+                    <div className="table-actions">
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() =>
+                          navigate(
+                            `/ride-offer/${offer.ride_offer_id}/offer-requests`,
+                          )
+                        }
+                      >
+                        View
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
-      <button
-        onClick={() => navigate("/homepage")}
-        aria-label="Back to Homepage"
-      >
-        Back to Homepage
-      </button>
-    </div>
+    </main>
   );
 }
 

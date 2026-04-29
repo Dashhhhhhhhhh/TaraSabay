@@ -33,7 +33,6 @@ function CreateReportForm({ onSubmit }) {
     setLoading(true);
 
     try {
-      console.log("Submitting payload:", payload);
       await onSubmit(payload);
       setReason("");
       setDetails("");

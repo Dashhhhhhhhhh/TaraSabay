@@ -38,9 +38,6 @@ function CreateMessageModal({
         onClick={(e) => e.stopPropagation()}
       >
         <h2>Create Message</h2>
-        <p>
-          <strong>Message:</strong>
-        </p>
 
         <CreateMessageForm
           onSubmit={(payload) => {
@@ -54,9 +51,16 @@ function CreateMessageModal({
           }}
         />
 
-        <button type="button" onClick={onClose} disabled={loading}>
-          Close
-        </button>
+        <div className="modal-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={onClose}
+            disabled={loading}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );

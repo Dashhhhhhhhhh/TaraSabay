@@ -60,7 +60,6 @@ function DriverProfileForm({ onSubmit, initialValues }) {
           <option value="motorcycle">Motorcycle</option>
         </select>
       </div>
-
       <div>
         <label htmlFor="seat_capacity">Seat Capacity</label>
         <input
@@ -70,12 +69,12 @@ function DriverProfileForm({ onSubmit, initialValues }) {
           onChange={(e) => setSeatCapacity(e.target.value)}
         />
       </div>
-
-      <button type="submit">
+      <button type="submit" className="btn btn-primary">
         {initialValues ? "Update Driver Profile" : "Create Driver Profile"}
       </button>
-
-      <button onClick={handleBack}>Back</button>
+      <button type="button" className="btn btn-secondary" onClick={handleBack}>
+        Back
+      </button>
     </form>
   );
 }

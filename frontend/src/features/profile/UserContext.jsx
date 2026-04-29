@@ -12,7 +12,6 @@ export function UserProvider({ children }) {
     const fetchUser = async () => {
       try {
         const response = await getProfile();
-        console.log("Fetched profile:", response.data);
         setUser(response.data);
       } catch (err) {
         setError(err.response?.data?.message || "Something went wrong");

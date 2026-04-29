@@ -1,94 +1,37 @@
 .responses-wrapper {
-  margin-top: 1rem;
+  margin-top: 16px;
 }
 
 .responses-state {
-  padding: 1rem;
-  border-radius: 8px;
-  background-color: #f8f9fb;
-  margin-top: 0.75rem;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background-color: #f9fafb;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
   font-size: 0.95rem;
 }
 
 .responses-state.error {
-  color: #b42318;
-  background-color: #fef3f2;
-  border: 1px solid #fecdca;
+  color: #991b1b;
+  background-color: #fee2e2;
+  border-color: #fecaca;
 }
 
 .responses-state.empty {
-  color: #475467;
-  background-color: #f8f9fb;
-  border: 1px solid #e4e7ec;
+  color: #4b5563;
 }
 
 .responses-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 0.75rem;
-  background-color: #fff;
-  border: 1px solid #e4e7ec;
-  border-radius: 10px;
-  overflow: hidden;
-}
-
-.responses-table thead {
-  background-color: #f8f9fb;
+  min-width: 1000px;
 }
 
 .responses-table th,
 .responses-table td {
-  text-align: left;
-  padding: 0.85rem 1rem;
-  border-bottom: 1px solid #e4e7ec;
   vertical-align: top;
-  font-size: 0.95rem;
-}
-
-.responses-table th {
-  font-weight: 700;
-  color: #344054;
-}
-
-.responses-table td {
-  color: #101828;
-}
-
-.responses-table tbody tr:hover {
-  background-color: #f9fafb;
 }
 
 .response-message {
-  max-width: 320px;
+  max-width: 240px;
   white-space: normal;
   word-break: break-word;
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 0.3rem 0.7rem;
-  border-radius: 999px;
-  font-size: 0.82rem;
-  font-weight: 600;
-  text-transform: capitalize;
-}
-
-.status-badge.pending {
-  background-color: #fffaeb;
-  color: #b54708;
-}
-
-.status-badge.accepted {
-  background-color: #ecfdf3;
-  color: #027a48;
-}
-
-.status-badge.rejected {
-  background-color: #fef3f2;
-  color: #b42318;
-}
-
-.status-badge.withdrawn {
-  background-color: #f2f4f7;
-  color: #475467;
 }

@@ -65,9 +65,16 @@ function CreateReportModal({
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
 
-        <button type="button" onClick={onClose} disabled={loading}>
-          Close
-        </button>
+        <div className="modal-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={onClose}
+            disabled={loading}
+          >
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );

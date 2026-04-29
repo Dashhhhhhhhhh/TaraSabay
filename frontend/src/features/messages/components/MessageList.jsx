@@ -10,34 +10,52 @@ function MessageList({ messages, onViewMessage }) {
   };
 
   return (
-    <table className="my-messages-table">
-      <thead>
-        <tr>
-          <th>From</th>
-          <th>To</th>
-          <th>Message</th>
-          <th>Context</th>
-          <th>Status</th>
-          <th>Sent At</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        {messages.map((mes) => (
-          <tr key={mes.message_id}>
-            <td>{mes.sender_full_name}</td>
-            <td>{mes.receiver_full_name}</td>
-            <td>{mes.message_text}</td>
-            <td>{getMessageContext(mes)}</td>
-            <td>{mes.is_read ? "Read" : "Unread"}</td>
-            <td>{new Date(mes.created_at).toLocaleString()}</td>
-            <td>
-              <button onClick={() => onViewMessage?.(mes)}>View</button>
-            </td>
+    <div className="table-wrapper">
+      <table className="data-table my-messages-table">
+        <thead>
+          <tr>
+            <th>From</th>
+            <th>To</th>
+            <th>Message</th>
+            <th>Context</th>
+            <th>Status</th>
+            <th>Sent At</th>
+            <th>Actions</th>
           </tr>
-        ))}
-      </tbody>
-    </table>
+        </thead>
+        <tbody>
+          {messages.map((mes) => (
+            <tr key={mes.message_id}>
+              <td>{mes.sender_full_name}</td>
+              <td>{mes.receiver_full_name}</td>
+              <td>{mes.message_text}</td>
+              <td>{getMessageContext(mes)}</td>
+              <td>
+                <span
+                  className={`status-badge ${
+                    mes.is_read ? "status-read" : "status-unread"
+                  }`}
+                >
+                  {mes.is_read ? "Read" : "Unread"}
+                </span>
+              </td>
+              <td>{new Date(mes.created_at).toLocaleString()}</td>
+              <td>
+                <div className="table-actions">
+                  <button
+                    type="button"
+                    className="btn btn-primary btn-sm"
+                    onClick={() => onViewMessage?.(mes)}
+                  >
+                    View
+                  </button>
+                </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
   );
 }
 
