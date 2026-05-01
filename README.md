@@ -22,20 +22,24 @@ I built TaraSabay because of the rising fuel prices and transportation difficult
 ## Tech Stack
 
 **Frontend**
+
 - React
 - Axios
 - CSS
 
 **Backend**
+
 - Node.js
 - Express.js
 - CORS
 - JSON Web Token (JWT)
 
 **Database**
+
 - PostgreSQL
 
 **Authentication and Authorization**
+
 - JWT-based authentication
 - Role-based access control for Passenger, Driver, and Admin routes
 - Password hashing for stored user passwords
@@ -153,28 +157,65 @@ http://localhost:5000
 
 ## Screenshots
 
-Screenshots will be added to show the main user flows of TaraSabay.
+### Login
 
-Planned screenshots:
+![Login](./screenshots/login.png)
 
-- Login page
-- Register page
-- Dashboard
-- Profile page
-- Driver Profile page
-- Ride Offers page
-- Ride Offer Details modal
-- My Ride Offers page
-- Ride Offer Requests page
-- My Offer Requests page
-- Ride Requests page
-- My Ride Requests page
-- Request Responses modal
-- Messages page
-- Message Details modal
-- Create Message modal
-- Reports page
-- Admin Reports page
+### Register
+
+![Register](./screenshots/register.png)
+
+### Dashboard
+
+![Dashboard](./screenshots/dashboard.png)
+
+### Profile
+
+![Profile](./screenshots/profile.png)
+
+### Driver Profile
+
+![Driver Profile](./screenshots/driver-profile.png)
+
+### Ride Offers
+
+![Ride Offers](./screenshots/ride-offers.png)
+
+### My Ride Offers
+
+![My Ride Offers](./screenshots/my-ride-offers.png)
+
+### My Offer Requests
+
+![My Offer Requests](./screenshots/my-offer-requests.png)
+
+### Ride Requests
+
+![Ride Requests](./screenshots/ride-requests.png)
+
+### My Ride Requests
+
+![My Ride Requests](./screenshots/my-ride-requests.png)
+
+### Request Responses
+
+![Request Responses](./screenshots/request-responses.png)
+
+### Messages
+
+![Messages](./screenshots/my-messages.png)
+
+### Message Details
+
+![Message Details](./screenshots/message-details.png)
+
+### My Reports
+
+![My Reports](./screenshots/my-reports.png)
+
+### Admin Reports
+
+![Admin Reports](./screenshots/admin-reports.png)
 
 ## Future Improvements
 
