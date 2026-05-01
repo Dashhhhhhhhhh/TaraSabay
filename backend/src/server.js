@@ -6,9 +6,14 @@ const PORT = process.env.PORT || 5000;
 const express = require("express");
 const app = express();
 
+const allowedOrigins = [
+  "http://localhost:5173",
+  process.env.FRONTEND_URL,
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: allowedOrigins,
   }),
 );
 
@@ -34,10 +39,10 @@ app.use("/request-responses", responseRequest);
 app.use("/messages", messagesRoutes);
 app.use("/reports", reportsRoutes);
 
-app.get("/test-route", (req, res) => {
+app.get("/", (req, res) => {
   res.json({
     success: true,
-    message: `Access granted`,
+    message: "TaraSabay API is running",
   });
 });
 
