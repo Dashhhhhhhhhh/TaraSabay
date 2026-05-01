@@ -1,11 +1,13 @@
 backend/node_modules/
 frontend/node_modules/
+
 backend/.env
+backend/src/.env
 frontend/.env
+
 node_modules/
 dist/
 coverage/
-.DS_Stor
+.DS_Store
 *.log
 .vscode/
-
