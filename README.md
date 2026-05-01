@@ -1,5 +1,7 @@
 # TaraSabay
 
+A full-stack carpooling platform built with React, Node.js, Express, and PostgreSQL.
+
 ## What is TaraSabay?
 
 TaraSabay is a public carpooling platform where commuters can offer rides, request rides, and connect with other users for shared trips.
@@ -100,7 +102,7 @@ If you are using pgAdmin, you can also open `schema.sql` and run it through the 
 ### 1. Clone the repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Dashhhhhhhhhh/TaraSabay.git
 cd TaraSabay
 ```
 
