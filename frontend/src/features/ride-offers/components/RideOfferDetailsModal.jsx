@@ -3,13 +3,9 @@ import "./../css/RideOfferDetailsModal.css";
 function RideOfferDetailsModal({
   rideOffer,
   onClose,
-  onCancel,
-  currentUserId,
   currentUserRole,
   onRequestSeat,
 }) {
-  const isOwner = rideOffer.user_id === currentUserId;
-
   return (
     <div className="ride-offer-modal">
       <div
@@ -47,16 +43,6 @@ function RideOfferDetailsModal({
         </div>
 
         <div className="modal-actions">
-          {isOwner && rideOffer.status === "open" && (
-            <button
-              type="button"
-              className="btn btn-danger"
-              onClick={() => onCancel(rideOffer.ride_offer_id)}
-            >
-              Cancel Offer
-            </button>
-          )}
-
           {currentUserRole === "Passenger" && rideOffer.status === "open" && (
             <button
               type="button"
@@ -66,7 +52,6 @@ function RideOfferDetailsModal({
               Request Seat
             </button>
           )}
-
           <button type="button" className="btn btn-secondary" onClick={onClose}>
             Close
           </button>

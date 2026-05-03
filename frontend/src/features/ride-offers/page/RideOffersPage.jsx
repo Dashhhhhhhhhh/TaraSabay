@@ -130,6 +130,8 @@ function RideOfferPage() {
           rideOffers={rideOffers}
           onViewRideOffer={handleViewRideOffer}
           onCancel={handleCancelHandler}
+          currentUserId={user?.id}
+          currentUserRole={user?.role}
         />
       )}
 
@@ -137,8 +139,6 @@ function RideOfferPage() {
         <RideOfferDetailsModal
           rideOffer={selectedRideOffer}
           onClose={handleCloseModal}
-          onCancel={handleCancelHandler}
-          currentUserId={user?.id}
           currentUserRole={user?.role}
           onRequestSeat={handleRequestSeat}
         />
