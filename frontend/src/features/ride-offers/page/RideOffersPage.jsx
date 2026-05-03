@@ -84,17 +84,6 @@ function RideOfferPage() {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
-  {
-    !rideOffers || rideOffers.length === 0 ? (
-      <p>No ride offers found.</p>
-    ) : (
-      <RideOfferList
-        rideOffers={rideOffers}
-        onViewRideOffer={handleViewRideOffer}
-        onCancel={handleCancelHandler}
-      />
-    );
-  }
 
   return (
     <main className="page">
@@ -122,6 +111,17 @@ function RideOfferPage() {
           </button>
         </div>
       </div>
+
+      {/* ✅ Conditional list rendering goes here */}
+      {!rideOffers || rideOffers.length === 0 ? (
+        <p>No ride offers found.</p>
+      ) : (
+        <RideOfferList
+          rideOffers={rideOffers}
+          onViewRideOffer={handleViewRideOffer}
+          onCancel={handleCancelHandler}
+        />
+      )}
 
       {selectedRideOffer && (
         <RideOfferDetailsModal
