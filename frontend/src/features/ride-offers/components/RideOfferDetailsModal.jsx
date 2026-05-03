@@ -1,15 +1,13 @@
-import { useState } from "react";
 import "./../css/RideOfferDetailsModal.css";
-import CreateOfferRequestModal from "../../offerRequests/components/CreateOfferRequestModal";
 
 function RideOfferDetailsModal({
   rideOffer,
   onClose,
   onCancel,
   currentUserId,
+  currentUserRole,
+  onRequestSeat,
 }) {
-  const [showOfferRequestModal, setShowOfferRequestModal] = useState(false);
-
   const isOwner = rideOffer.user_id === currentUserId;
 
   return (
@@ -58,29 +56,22 @@ function RideOfferDetailsModal({
               Cancel Offer
             </button>
           )}
-          {!isOwner &&
-            rideOffer.status === "open" &&
-            rideOffer.available_seats > 0 && (
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => setShowOfferRequestModal(true)}
-              >
-                Request Seat
-              </button>
-            )}
+
+          {currentUserRole === "Passenger" && rideOffer.status === "open" && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={() => onRequestSeat(rideOffer)}
+            >
+              Request Seat
+            </button>
+          )}
+
           <button type="button" className="btn btn-secondary" onClick={onClose}>
             Close
           </button>
         </div>
       </div>
-
-      {showOfferRequestModal && (
-        <CreateOfferRequestModal
-          offer={rideOffer}
-          onClose={() => setShowOfferRequestModal(false)}
-        />
-      )}
     </div>
   );
 }

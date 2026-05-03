@@ -4,7 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useUser } from "../../../features/profile/UserContext";
 
 import { cancelRideOffer, getRideOffers } from "../api/rideOffers.api";
+
 import RideOfferList from "../components/RideOfferList";
+import RideOfferDetailsModal from "../components/RideOfferDetailsModal";
 import RideOfferDetailsModal from "../components/RideOfferDetailsModal";
 
 function RideOfferPage() {
@@ -19,6 +21,8 @@ function RideOfferPage() {
   const [, setCancelLoading] = useState(false);
 
   const [selectedRideOffer, setSelectedRideOffer] = useState(null);
+
+  const [selectedOfferForRequest, setSelectedOfferForRequest] = useState(null);
 
   const fetchRideOffers = async () => {
     setLoading(true);
@@ -82,6 +86,11 @@ function RideOfferPage() {
     }
   };
 
+  const handleRequestSeat = (offer) => {
+    setSelectedRideOffer(null);
+    setSelectedOfferForRequest(offer);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
@@ -129,7 +138,16 @@ function RideOfferPage() {
           rideOffer={selectedRideOffer}
           onClose={handleCloseModal}
           onCancel={handleCancelHandler}
-          currentUserId={user?.user_id}
+          onRequestSeat={handleRequestSeat}
+          currentUserRole={user?.role}
+          currentUserId={user?.id}
+        />
+      )}
+
+      {selectedOfferForRequest && (
+        <CreateOfferRequestModal
+          offer={selectedOfferForRequest}
+          onClose={() => setSelectedOfferForRequest(null)}
         />
       )}
     </main>
