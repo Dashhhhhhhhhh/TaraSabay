@@ -40,26 +40,39 @@ function OfferRequestForm({ onSubmit, maxSeats, loading }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="number"
-        value={requestedSeats}
-        onChange={(e) => setRequestedSeats(e.target.value)}
-        placeholder="Seats requested"
-        max={maxSeats}
-        min={1}
-        disabled={loading}
-      />
-      <textarea
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        placeholder="Message (optional)"
-        disabled={loading}
-      />
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <button type="submit" disabled={loading}>
-        {loading ? "Submitting..." : "Submit"}
-      </button>
+    <form className="offer-request-form" onSubmit={handleSubmit}>
+      <div className="form-group">
+        <label htmlFor="requestedSeats">Requested Seats</label>
+        <input
+          id="requestedSeats"
+          type="number"
+          value={requestedSeats}
+          onChange={(e) => setRequestedSeats(e.target.value)}
+          placeholder="Seats requested"
+          max={maxSeats}
+          min={1}
+          disabled={loading}
+        />
+      </div>
+
+      <div className="form-group">
+        <label htmlFor="message">Message</label>
+        <textarea
+          id="message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          placeholder="Message (optional)"
+          disabled={loading}
+        />
+      </div>
+
+      {error && <p className="form-error">{error}</p>}
+
+      <div className="modal-actions">
+        <button type="submit" className="btn btn-primary" disabled={loading}>
+          {loading ? "Submitting..." : "Submit Request"}
+        </button>
+      </div>
     </form>
   );
 }

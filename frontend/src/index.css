@@ -431,3 +431,60 @@ button:hover {
   margin: 0;
   color: #6b7280;
 }
+
+/* =========================
+   Offer Request Form
+========================= */
+
+.offer-request-form {
+  width: 100%;
+  max-width: 420px;
+  background-color: #ffffff;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.offer-request-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.offer-request-form label {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.offer-request-form input,
+.offer-request-form textarea {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+}
+
+.offer-request-form input:focus,
+.offer-request-form textarea:focus {
+  border-color: #2563eb;
+}
+
+.offer-request-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.form-error {
+  margin: 0;
+  color: #dc2626;
+  font-weight: 600;
+}
