@@ -50,7 +50,6 @@ CREATE TABLE public.driver_profiles (
 );
 
 
-ALTER TABLE public.driver_profiles OWNER TO postgres;
 
 --
 -- Name: messages; Type: TABLE; Schema: public; Owner: postgres
@@ -73,7 +72,6 @@ CREATE TABLE public.messages (
 );
 
 
-ALTER TABLE public.messages OWNER TO postgres;
 
 --
 -- Name: offer_requests; Type: TABLE; Schema: public; Owner: postgres
@@ -93,7 +91,6 @@ CREATE TABLE public.offer_requests (
 );
 
 
-ALTER TABLE public.offer_requests OWNER TO postgres;
 
 --
 -- Name: reports; Type: TABLE; Schema: public; Owner: postgres
@@ -116,7 +113,6 @@ CREATE TABLE public.reports (
 );
 
 
-ALTER TABLE public.reports OWNER TO postgres;
 
 --
 -- Name: request_responses; Type: TABLE; Schema: public; Owner: postgres
@@ -134,7 +130,6 @@ CREATE TABLE public.request_responses (
 );
 
 
-ALTER TABLE public.request_responses OWNER TO postgres;
 
 --
 -- Name: ride_offers; Type: TABLE; Schema: public; Owner: postgres
@@ -161,7 +156,6 @@ CREATE TABLE public.ride_offers (
 );
 
 
-ALTER TABLE public.ride_offers OWNER TO postgres;
 
 --
 -- Name: ride_requests; Type: TABLE; Schema: public; Owner: postgres
@@ -183,7 +177,6 @@ CREATE TABLE public.ride_requests (
 );
 
 
-ALTER TABLE public.ride_requests OWNER TO postgres;
 
 --
 -- Name: roles; Type: TABLE; Schema: public; Owner: postgres
@@ -197,7 +190,6 @@ CREATE TABLE public.roles (
 );
 
 
-ALTER TABLE public.roles OWNER TO postgres;
 
 --
 -- Name: roles_role_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
@@ -212,7 +204,6 @@ CREATE SEQUENCE public.roles_role_id_seq
     CACHE 1;
 
 
-ALTER SEQUENCE public.roles_role_id_seq OWNER TO postgres;
 
 --
 -- Name: roles_role_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
@@ -241,7 +232,6 @@ CREATE TABLE public.users (
 );
 
 
-ALTER TABLE public.users OWNER TO postgres;
 
 --
 -- Name: roles role_id; Type: DEFAULT; Schema: public; Owner: postgres

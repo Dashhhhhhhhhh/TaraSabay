@@ -1,10 +1,7 @@
 import { useState } from "react";
 import { cleanName } from "../../utils/helper";
-import { useNavigate } from "react-router-dom";
 
 function DriverProfileForm({ onSubmit, initialValues }) {
-  const navigate = useNavigate();
-
   const [vehicle_type, setVehicleType] = useState(
     initialValues?.vehicle_type || "",
   );
@@ -40,10 +37,6 @@ function DriverProfileForm({ onSubmit, initialValues }) {
     }
   };
 
-  const handleBack = () => {
-    navigate("/driver");
-  };
-
   return (
     <form onSubmit={handleSubmit}>
       <div>
@@ -71,9 +64,6 @@ function DriverProfileForm({ onSubmit, initialValues }) {
       </div>
       <button type="submit" className="btn btn-primary">
         {initialValues ? "Update Driver Profile" : "Create Driver Profile"}
-      </button>
-      <button type="button" className="btn btn-secondary" onClick={handleBack}>
-        Back
       </button>
     </form>
   );
