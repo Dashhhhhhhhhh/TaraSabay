@@ -102,17 +102,18 @@ function RideOfferPage() {
             Homepage
           </button>
 
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={handleCreateRideOffer}
-          >
-            Create a Ride Offer
-          </button>
+          {user?.role === "Driver" && (
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleCreateRideOffer}
+            >
+              Create a Ride Offer
+            </button>
+          )}
         </div>
       </div>
 
-      {/* ✅ Conditional list rendering goes here */}
       {!rideOffers || rideOffers.length === 0 ? (
         <p>No ride offers found.</p>
       ) : (

@@ -1,7 +1,9 @@
 import { useNavigate } from "react-router-dom";
+import { useUser } from "../../../features/profile/UserContext";
 
 function RideOfferList({ rideOffers, onViewRideOffer, onCancel }) {
   const navigate = useNavigate();
+  const { user } = useUser();
 
   return (
     <div className="table-wrapper">
@@ -30,6 +32,7 @@ function RideOfferList({ rideOffers, onViewRideOffer, onCancel }) {
               </td>
               <td>
                 <div className="table-actions">
+                  {/* Always visible */}
                   <button
                     type="button"
                     className="btn btn-secondary btn-sm"
@@ -37,24 +40,31 @@ function RideOfferList({ rideOffers, onViewRideOffer, onCancel }) {
                   >
                     View
                   </button>
-                  {offer.status === "open" && (
-                    <button
-                      type="button"
-                      className="btn btn-danger btn-sm"
-                      onClick={() => onCancel(offer.ride_offer_id)}
-                    >
-                      Cancel
-                    </button>
+
+                  {/* ✅ Only visible for Drivers */}
+                  {user?.role === "Driver" && (
+                    <>
+                      {offer.status === "open" && (
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          onClick={() => onCancel(offer.ride_offer_id)}
+                        >
+                          Cancel
+                        </button>
+                      )}
+
+                      <button
+                        type="button"
+                        className="btn btn-primary btn-sm"
+                        onClick={() =>
+                          navigate(`/ride-offer/${offer.ride_offer_id}/edit`)
+                        }
+                      >
+                        Edit
+                      </button>
+                    </>
                   )}
-                  <button
-                    type="button"
-                    className="btn btn-primary btn-sm"
-                    onClick={() =>
-                      navigate(`/ride-offer/${offer.ride_offer_id}/edit`)
-                    }
-                  >
-                    Edit
-                  </button>
                 </div>
               </td>
             </tr>
