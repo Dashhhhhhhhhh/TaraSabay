@@ -64,9 +64,11 @@ function CreateOfferRequestModal({ offer, onClose }) {
         />
 
         {error && <p style={{ color: "red" }}>{error}</p>}
-        <button type="button" onClick={onClose}>
-          Close
-        </button>
+        <div className="modal-actions">
+          <button type="button" className="btn btn-secondary" onClick={onClose}>
+            Close
+          </button>
+        </div>
       </div>
     </div>
   );

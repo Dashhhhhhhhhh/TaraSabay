@@ -7,7 +7,7 @@ import { cancelRideOffer, getRideOffers } from "../api/rideOffers.api";
 
 import RideOfferList from "../components/RideOfferList";
 import RideOfferDetailsModal from "../components/RideOfferDetailsModal";
-import RideOfferDetailsModal from "../components/RideOfferDetailsModal";
+import CreateOfferRequestModal from "../../offerRequests/components/CreateOfferRequestModal";
 
 function RideOfferPage() {
   const navigate = useNavigate();
@@ -138,9 +138,9 @@ function RideOfferPage() {
           rideOffer={selectedRideOffer}
           onClose={handleCloseModal}
           onCancel={handleCancelHandler}
-          onRequestSeat={handleRequestSeat}
-          currentUserRole={user?.role}
           currentUserId={user?.id}
+          currentUserRole={user?.role}
+          onRequestSeat={handleRequestSeat}
         />
       )}
 
