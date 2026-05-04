@@ -54,7 +54,23 @@ function MyRequestResponsePage() {
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
   return (
-    <div className="my-request-response-page">
+    <main className="page">
+      <div className="page-header">
+        <div>
+          <h1>My Request Responses</h1>
+          <p>Track responses you sent to passenger ride requests.</p>
+        </div>
+
+        <div className="page-actions">
+          <button
+            type="button"
+            className="btn btn-secondary"
+            onClick={() => navigate("/homepage")}
+          >
+            Back to Homepage
+          </button>
+        </div>
+      </div>{" "}
       <h2>My Request Responses</h2>
       {responses.length === 0 ? (
         <p>No request response found.</p>
@@ -88,7 +104,9 @@ function MyRequestResponsePage() {
                   {resp.status === "pending" ? (
                     <>
                       <button
-                        className="btn-cancel"
+                        type="button"
+                        className="btn btn-danger btn-sm"
+                        disabled={cancelLoading}
                         onClick={() =>
                           handleRCancelRequestResponse(resp.request_response_id)
                         }
@@ -97,7 +115,7 @@ function MyRequestResponsePage() {
                       </button>
                     </>
                   ) : (
-                    <span className={`status-badge ${resp.status}`}>
+                    <span className={`status-badge status-${resp.status}`}>
                       {resp.status}
                     </span>
                   )}
@@ -107,9 +125,7 @@ function MyRequestResponsePage() {
           </tbody>
         </table>
       )}
-
-      <button onClick={() => navigate("/homepage")}>Back to Homepage</button>
-    </div>
+    </main>
   );
 }
 
