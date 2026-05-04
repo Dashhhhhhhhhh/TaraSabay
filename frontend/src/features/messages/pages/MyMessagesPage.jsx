@@ -152,7 +152,7 @@ function MyMessagesPages() {
                 {selectedMessage &&
                   user &&
                   selectedMessage.is_read === false &&
-                  selectedMessage.receiver_user_id === user._id && (
+                  selectedMessage.receiver_user_id === user.id && (
                     <button
                       type="button"
                       className="btn btn-primary"
