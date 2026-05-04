@@ -132,13 +132,14 @@ async function getMyRequestResponse(driver_user_id) {
         rr.status,
         rr.created_at,
         rs.pickup_location,
+        rs.rider_user_id AS receiver_user_id,
         rs.dropoff_location,
         rs.departure_time,
         rs.requested_seats
-    FROM request_responses rr
-    LEFT JOIN ride_requests rs
+      FROM request_responses rr
+      LEFT JOIN ride_requests rs  
         ON rr.ride_request_id = rs.ride_request_id
-    WHERE rr.driver_user_id = $1`,
+      WHERE rr.driver_user_id = $1`,
     [driver_user_id],
   );
   return result.rows;

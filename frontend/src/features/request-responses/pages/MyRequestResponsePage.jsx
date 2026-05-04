@@ -8,6 +8,7 @@ import {
 
 import "./MyRequestResponsePage.css";
 
+import CreateMessageModal from "../../messages/components/CreateMessageModal";
 function MyRequestResponsePage() {
   const navigate = useNavigate();
 
@@ -16,6 +17,9 @@ function MyRequestResponsePage() {
   const [loading, setLoading] = useState(true);
 
   const [cancelLoading, setCancelLoading] = useState(false);
+
+  const [selectedResponseForMessage, setSelectedResponseForMessage] =
+    useState(null);
 
   const fetchMyRequestResponses = async () => {
     try {
@@ -50,6 +54,10 @@ function MyRequestResponsePage() {
     }
   };
 
+  const handleMessagePassenger = (response) => {
+    setSelectedResponseForMessage(response);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p style={{ color: "red" }}>{error}</p>;
 
@@ -70,60 +78,80 @@ function MyRequestResponsePage() {
             Back to Homepage
           </button>
         </div>
-      </div>{" "}
-      <h2>My Request Responses</h2>
+      </div>
       {responses.length === 0 ? (
         <p>No request response found.</p>
       ) : (
-        <table className="my-request-response-table">
-          <thead>
-            <tr>
-              <th>Message</th>
-              <th>Status</th>
-              <th>Pickup</th>
-              <th>Dropoff</th>
-              <th>Departure</th>
-              <th>Requested Seats</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {responses.map((resp) => (
-              <tr key={resp.request_response_id}>
-                <td>{resp.message}</td>
-                <td>{resp.status}</td>
-                <td>{resp.pickup_location || "N/A"}</td>
-                <td>{resp.dropoff_location || "N/A"}</td>
-                <td>
-                  {resp.departure_time
-                    ? new Date(resp.departure_time).toLocaleString()
-                    : "-"}
-                </td>
-                <td>{resp.requested_seats}</td>
-                <td>
-                  {resp.status === "pending" ? (
-                    <>
+        <div className="table-wrapper">
+          <table className="data-table">
+            <thead>
+              <tr>
+                <th>Message</th>
+                <th>Status</th>
+                <th>Pickup</th>
+                <th>Dropoff</th>
+                <th>Departure</th>
+                <th>Requested Seats</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {responses.map((resp) => (
+                <tr key={resp.request_response_id}>
+                  <td>{resp.message}</td>
+                  <td>{resp.status}</td>
+                  <td>{resp.pickup_location || "N/A"}</td>
+                  <td>{resp.dropoff_location || "N/A"}</td>
+                  <td>
+                    {resp.departure_time
+                      ? new Date(resp.departure_time).toLocaleString()
+                      : "-"}
+                  </td>
+                  <td>{resp.requested_seats}</td>
+                  <td>
+                    {resp.status === "pending" ? (
+                      <>
+                        <button
+                          type="button"
+                          className="btn btn-danger btn-sm"
+                          disabled={cancelLoading}
+                          onClick={() =>
+                            handleRCancelRequestResponse(
+                              resp.request_response_id,
+                            )
+                          }
+                        >
+                          Cancel
+                        </button>
+                      </>
+                    ) : (
                       <button
                         type="button"
-                        className="btn btn-danger btn-sm"
-                        disabled={cancelLoading}
-                        onClick={() =>
-                          handleRCancelRequestResponse(resp.request_response_id)
-                        }
+                        className="btn btn-primary btn-sm"
+                        onClick={() => {
+                          console.log("Selected response for message:", resp);
+                          setSelectedResponseForMessage(resp);
+                        }}
                       >
-                        Cancel
+                        Message
                       </button>
-                    </>
-                  ) : (
-                    <span className={`status-badge status-${resp.status}`}>
-                      {resp.status}
-                    </span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+                    )}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      {selectedResponseForMessage && (
+        <CreateMessageModal
+          onClose={() => setSelectedResponseForMessage(null)}
+          receiver_user_id={selectedResponseForMessage.receiver_user_id}
+          ride_request_id={selectedResponseForMessage.ride_request_id}
+          onSuccess={async () => {
+            setSelectedResponseForMessage(null);
+          }}
+        />
       )}
     </main>
   );

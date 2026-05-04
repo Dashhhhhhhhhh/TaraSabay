@@ -20,6 +20,8 @@ function CreateMessageModal({
     setSuccess(null);
 
     try {
+      console.log("Message payload:", payload);
+
       await createMessage(payload);
       setSuccess("Message created successfully!");
       onSuccess?.();
