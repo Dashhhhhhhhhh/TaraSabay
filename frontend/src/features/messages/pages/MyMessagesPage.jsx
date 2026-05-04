@@ -24,7 +24,7 @@ function MyMessagesPages() {
 
   const replyReceiverId =
     selectedMessage && user
-      ? user.user_id === selectedMessage.sender_user_id
+      ? user.id === selectedMessage.sender_user_id
         ? selectedMessage.receiver_user_id
         : selectedMessage.sender_user_id
       : null;
@@ -152,7 +152,7 @@ function MyMessagesPages() {
                 {selectedMessage &&
                   user &&
                   selectedMessage.is_read === false &&
-                  selectedMessage.receiver_user_id === user.user_id && (
+                  selectedMessage.receiver_user_id === user._id && (
                     <button
                       type="button"
                       className="btn btn-primary"
