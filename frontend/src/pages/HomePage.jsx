@@ -160,13 +160,15 @@ function HomePage() {
               My Ride Requests
             </button>
 
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleMyRequestResponse}
-            >
-              My Request Responses
-            </button>
+            {user?.role === "Driver" && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleMyRequestResponse}
+              >
+                My Request Responses
+              </button>
+            )}
           </div>
         </section>
 
