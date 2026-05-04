@@ -97,14 +97,15 @@ function HomePage() {
             >
               Profile
             </button>
-
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleDriverProfile}
-            >
-              Driver Profile
-            </button>
+            {user?.role === "Driver" && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleDriverProfile}
+              >
+                Driver Profile
+              </button>
+            )}
           </div>
         </section>
 
@@ -120,22 +121,24 @@ function HomePage() {
             >
               Browse Ride Offers
             </button>
-
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleMyRideOffers}
-            >
-              My Ride Offers
-            </button>
-
-            <button
-              type="button"
-              className="btn btn-secondary"
-              onClick={handleMyOfferRequests}
-            >
-              My Offer Requests
-            </button>
+            {user?.role === "Driver" && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleMyRideOffers}
+              >
+                My Ride Offers
+              </button>
+            )}
+            {user?.role === "Passenger" && (
+              <button
+                type="button"
+                className="btn btn-secondary"
+                onClick={handleMyOfferRequests}
+              >
+                My Offer Requests
+              </button>
+            )}
           </div>
         </section>
 

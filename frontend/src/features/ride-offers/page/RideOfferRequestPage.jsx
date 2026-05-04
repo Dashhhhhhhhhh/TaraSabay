@@ -10,6 +10,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import "./../css/RideOfferRequestPage.css";
 
+import CreateMessageModal from "../../messages/components/CreateMessageModal";
+
 function RideOfferRequestPage() {
   const navigate = useNavigate();
 
@@ -21,6 +23,8 @@ function RideOfferRequestPage() {
 
   const [, setAcceptLoading] = useState(false);
   const [, setRejectLoading] = useState(false);
+
+  const [selectedOfferRequest, setSelectedOfferRequest] = useState(null);
 
   const fetchOfferRequests = async () => {
     try {
@@ -68,6 +72,10 @@ function RideOfferRequestPage() {
     } finally {
       setRejectLoading(false);
     }
+  };
+
+  const handleMessagePassenger = (offerRequest) => {
+    setSelectedOfferRequest(offerRequest);
   };
 
   if (loading) return <p>Loading...</p>;
@@ -125,27 +133,15 @@ function RideOfferRequestPage() {
                     <td>
                       <div className="table-actions">
                         {req.status === "pending" ? (
-                          <>
-                            <button
-                              type="button"
-                              className="btn btn-primary btn-sm"
-                              onClick={() =>
-                                handleAcceptOfferRequest(req.offer_request_id)
-                              }
-                            >
-                              Accept
-                            </button>
-
-                            <button
-                              type="button"
-                              className="btn btn-danger btn-sm"
-                              onClick={() =>
-                                handleRejectOfferRequest(req.offer_request_id)
-                              }
-                            >
-                              Reject
-                            </button>
-                          </>
+                          <>Accept button Reject button</>
+                        ) : req.status === "accepted" ? (
+                          <button
+                            type="button"
+                            className="btn btn-primary btn-sm"
+                            onClick={() => handleMessagePassenger(req)}
+                          >
+                            Message
+                          </button>
                         ) : (
                           <span className="muted-text">No actions</span>
                         )}
@@ -156,6 +152,17 @@ function RideOfferRequestPage() {
               </tbody>
             </table>
           </div>
+        )}
+
+        {selectedOfferRequest && (
+          <CreateMessageModal
+            onClose={() => setSelectedOfferRequest(null)}
+            receiver_user_id={selectedOfferRequest.passenger_user_id}
+            ride_offer_id={ride_offer_id}
+            onSuccess={async () => {
+              setSelectedOfferRequest(null);
+            }}
+          />
         )}
       </div>
     </main>
