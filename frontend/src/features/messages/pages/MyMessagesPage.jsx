@@ -11,6 +11,7 @@ function MyMessagesPages() {
   const navigate = useNavigate();
 
   const { user } = useUser();
+  const currentUserId = user?.id || user?.user_id;
 
   const [messages, setMessages] = useState([]);
   const [error, setError] = useState(null);
@@ -23,8 +24,8 @@ function MyMessagesPages() {
   const [showReportModal, setShowReportModal] = useState(false);
 
   const replyReceiverId =
-    selectedMessage && user
-      ? user.id === selectedMessage.sender_user_id
+    selectedMessage && currentUserId
+      ? currentUserId === selectedMessage.sender_user_id
         ? selectedMessage.receiver_user_id
         : selectedMessage.sender_user_id
       : null;
@@ -150,9 +151,9 @@ function MyMessagesPages() {
                 </button>
 
                 {selectedMessage &&
-                  user &&
-                  selectedMessage.is_read === false &&
-                  selectedMessage.receiver_user_id === user.id && (
+                  currentUserId &&
+                  !selectedMessage.is_read &&
+                  selectedMessage.receiver_user_id === currentUserId && (
                     <button
                       type="button"
                       className="btn btn-primary"
@@ -168,7 +169,6 @@ function MyMessagesPages() {
                         : "Mark as Read"}
                     </button>
                   )}
-
                 {selectedMessage && user && replyReceiverId && (
                   <button
                     type="button"
