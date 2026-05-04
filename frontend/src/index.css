@@ -526,3 +526,126 @@ button:hover {
 .offer-request-modal-content > button {
   margin-top: 12px;
 }
+
+/* =========================
+   Request Response Modal
+========================= */
+
+.request-response-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+}
+
+.request-response-modal-content {
+  width: 100%;
+  max-width: 460px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+}
+
+.request-response-modal-content h2 {
+  margin: 0 0 16px;
+  color: #111827;
+}
+
+.request-response-modal-content > button {
+  margin-top: 12px;
+}
+
+/* =========================
+   Request Response Modal
+========================= */
+
+.request-response-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 1000;
+}
+
+.request-response-modal-content {
+  width: 100%;
+  max-width: 520px;
+  background-color: #ffffff;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.25);
+}
+
+.request-response-modal-content h2 {
+  margin: 0 0 16px;
+  color: #111827;
+}
+
+/* =========================
+   Request Response Form
+========================= */
+
+.request-response-form {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto;
+  background-color: #ffffff;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.request-response-form .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 0;
+}
+
+.request-response-form label {
+  margin-bottom: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+.request-response-form textarea {
+  width: 100%;
+  min-height: 90px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  outline: none;
+  resize: vertical;
+}
+
+.request-response-form textarea:focus {
+  border-color: #2563eb;
+}
+
+.request-response-modal-content > .btn-secondary {
+  display: flex;
+  width: 100%;
+  max-width: 420px;
+  margin: 12px auto 0;
+}
+
+.request-response-modal-content h2 {
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 16px;
+  color: #111827;
+}

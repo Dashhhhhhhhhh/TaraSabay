@@ -6,7 +6,6 @@ function RideRequestList({ rideRequests, onViewRideRequest }) {
   return (
     <div className="table-wrapper">
       <table className="data-table ride-requests-table">
-        {" "}
         <thead>
           <tr>
             <th>Pickup</th>

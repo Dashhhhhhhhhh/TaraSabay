@@ -48,7 +48,11 @@ function CreateRequestResponseModal({ request, onClose }) {
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
-        <button type="button" onClick={() => !loading && onClose()}>
+        <button
+          type="button"
+          className="btn btn-secondary"
+          onClick={() => !loading && onClose()}
+        >
           Close
         </button>
       </div>

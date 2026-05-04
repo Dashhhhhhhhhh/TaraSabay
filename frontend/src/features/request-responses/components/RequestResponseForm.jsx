@@ -31,7 +31,7 @@ function RequestResponseForm({
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="request-response-form" onSubmit={handleSubmit}>
       <textarea
         value={message}
         onChange={(e) => setMessage(e.target.value)}
