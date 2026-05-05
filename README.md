@@ -157,6 +157,47 @@ The backend usually runs at:
 http://localhost:5000
 ```
 
+## Live Demo
+
+TaraSabay is deployed using a full-stack production setup:
+
+- Frontend: Vercel
+- Backend API: Render
+- Database: Neon PostgreSQL
+
+Live Frontend:
+
+```txt
+https://tara-sabay.vercel.app
+
+Backend Health Check:
+
+https://tarasabay.onrender.com
+```
+
+Note: The backend is hosted on Render's free tier, so the first request may take a few seconds if the service has been inactive.
+
+## Deployment Architecture
+
+```txt
+User Browser
+   ↓
+Vercel Frontend
+   ↓
+Render Backend API
+   ↓
+Neon PostgreSQL Database
+
+```
+
+## Deployment Notes
+
+The frontend uses `VITE_API_URL` to connect to the deployed backend. The backend uses environment variables for database credentials, JWT configuration, CORS origin, and SSL support for Neon PostgreSQL.
+
+React Router routes are supported on Vercel using a rewrite configuration, allowing nested frontend routes such as `/homepage`, `/profile`, and `/my-messages` to refresh correctly without returning a 404.
+
+Sensitive configuration values are excluded from version control using `.env` files, while `.env.example` files are provided as safe setup references.
+
 ## Screenshots
 
 ### Login
@@ -221,10 +262,13 @@ http://localhost:5000
 
 ## Future Improvements
 
-- Add map-based pickup and dropoff selection.
-- Add route previews and distance-based fare estimation.
-- Add real-time chat or notifications using WebSockets.
-- Improve message threading and unread message counts.
-- Add filtering, sorting, and pagination for large tables.
-- Improve admin report moderation workflow.
-- Add deployment configuration for frontend, backend, and database.
+- Add map-based pickup and dropoff selection with route previews, distance calculation, and fare estimation.
+- Add filtering, sorting, and pagination for ride offers, ride requests, messages, and reports.
+- Add real-time chat, ride updates, and notifications using WebSockets.
+- Improve messaging with conversation threads, unread count badges, message search, and pagination.
+- Improve report moderation with admin status updates, resolution notes, filtering, and duplicate report prevention.
+- Add driver verification, profile photos, license/vehicle document uploads, ratings, and reviews.
+- Add stronger auth and user management features such as email verification, forgot password, refresh tokens, and account suspension tools.
+- Add admin dashboard tools for user management, moderation history, and system activity overview.
+- Add automated tests for backend services, API endpoints, role-based access, and major frontend flows.
+- Add production-readiness improvements such as Docker support, request logging, monitoring, database backups, and migration workflow.
